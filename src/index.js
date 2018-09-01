@@ -49,7 +49,7 @@ const Router = StackNavigator({
         }
     },
 },{
-    initialRouteName:"TestComponent"
+    initialRouteName:"AdminDashboard"
 })
 
 export default Router

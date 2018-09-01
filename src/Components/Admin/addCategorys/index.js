@@ -30,7 +30,8 @@ export default class AddCategory extends Component {
             modalVisible: false,
             num: 0,
             selected: [],
-            coverImageUrl: ""
+            coverImageUrl: "",
+            newCategoryVal: ""
         }
     }
 
@@ -54,12 +55,10 @@ export default class AddCategory extends Component {
             num: num,
             selected: images,
         });
-        // alert(current.uri);
         this.setState({
             coverImageUrl: current.uri,
             modalVisible: false
         })
-        // console.log(this.state.selected);
     }
 
 
@@ -74,6 +73,14 @@ export default class AddCategory extends Component {
         this.setState({
             modalVisible: true
         })
+    }
+
+    submitCategory(){
+        // RNFetchBlob.fs
+        // .readFile(source.uri, 'base64')
+        // .then((data) => {
+        //     console.log(data)
+        // }).catch((a) => console.warn("errrrrCCC", a));
     }
 
 
@@ -130,27 +137,58 @@ export default class AddCategory extends Component {
                             <View style={{ marginTop: 20 }} >
                                 <View style={styles.TextInputContainer}>
                                     <TextInput
+                                        value={this.state.newCategoryVal}
                                         style={styles.TextInput}
                                         underlineColorAndroid="transparent"
                                         placeholderTextColor="#00bcd4"
+                                        onChangeText={(newCategoryVal) => { this.setState({ newCategoryVal }) }}
                                         placeholder="Add catogery" />
                                 </View>
-                                <View  >
 
-                                </View>
-                                <View style={styles.imagePickerCntainer} >
-                                    <TouchableOpacity
-                                        onPress={this.suploadImage.bind(this)}
-                                        activeOpacity={0.6}
-                                        style={styles.imagePickerButton}>
-                                        <View>
-                                            <Icons color="#00bcd4" size={130} name='upload' />
-                                        </View>
-                                        <View>
-                                            <Text style={styles.imagePickerText} >Uploade Photo</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
+
+                                {(this.state.coverImageUrl == "") ?
+                                    <View style={styles.imagePickerCntainer} >
+                                        <TouchableOpacity
+                                            onPress={this.suploadImage.bind(this)}
+                                            activeOpacity={0.6}
+                                            style={styles.imagePickerButton}>
+                                            <View>
+                                                <Icons color="#00bcd4" size={130} name='upload' />
+                                            </View>
+                                            <View>
+                                                <Text style={styles.imagePickerText} >Uploade Photo</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                    :
+                                    <View style={styles.demoCardContainer} >
+                                        <Card style={styles.categoryCard} >
+                                            <ImageBackground
+                                                resizeMode="cover"
+                                                source={{ uri: this.state.coverImageUrl }}
+                                                style={styles.ImageBackground} >
+
+                                                <TouchableOpacity
+                                                    activeOpacity={0.5}
+                                                    onPress={() => { this.setState({ coverImageUrl: "" }) }}
+                                                    style={styles.cancleCoverImage} >
+                                                    <Icon
+                                                        style={{ color: "#00bcd4", fontSize: 70 }}
+                                                        name='md-close' />
+                                                </TouchableOpacity>
+
+                                                <View onPress={this.ViewCategory.bind(this)} activeOpacity={0.7} style={styles.CardItemView} >
+                                                    <Text style={styles.CardItemText} >
+                                                        Laptop
+                                                 </Text>
+                                                    <Text style={styles.CardItemText} >
+                                                        Items :0
+                                                </Text>
+                                                </View>
+                                            </ImageBackground>
+                                        </Card>
+                                    </View>
+                                }
                             </View>
                             <View style={styles.btnView} >
                                 <TouchableOpacity
@@ -225,14 +263,25 @@ const styles = StyleSheet.create({
     ImageBackground: {
         height: Dimensions.get("window").height / 4.3,
         width: Dimensions.get("window").width / 2 - 10,
-        justifyContent: "flex-end"
+        justifyContent: "flex-end",
     },
     categoryCard: {
         width: Dimensions.get("window").width / 2 - 10,
         height: Dimensions.get("window").height / 4.3,
         backgroundColor: "#fff",
         marginBottom: 0,
-        //  elevation: 20,
+        elevation: 20,
+    },
+    demoCardContainer: {
+        padding: 10,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#fff",
+        marginTop: 20,
+        elevation: 10,
+        borderRadius: 5,
+        paddingBottom: 15
+
     },
     CardItemView: {
         backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -326,7 +375,19 @@ const styles = StyleSheet.create({
     galleryContainer: {
         backgroundColor: "#fff",
         flex: 1
-    }
+    },
+    cancleCoverImage: {
+        justifyContent: "center",
+        alignContent: "flex-start",
+        alignSelf: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(250, 250, 250, .5)",
+        padding: 10,
+        width: "50%",
+        height: "55%",
+        marginBottom: 20,
+        borderRadius: 100
+    },
 });
 
 
