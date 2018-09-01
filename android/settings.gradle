@@ -1,0 +1,4 @@
+rootProject.name = 'drazz'
+
+
+include ':app'
