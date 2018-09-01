@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1008180650619",
+    "firebase_url": "https://polling-application-9938a.firebaseio.com",
+    "project_id": "polling-application-9938a",
+    "storage_bucket": "polling-application-9938a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008180650619:android:d2e3320321e52e1b",
+        "android_client_info": {
+          "package_name": "com.drazz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008180650619-3v8440bud9gjsvbjellt73rtj4hqonp8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwMB88ZDtr7CNndW2GQ20cPVad0V-M1SI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

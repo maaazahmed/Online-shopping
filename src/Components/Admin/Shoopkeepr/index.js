@@ -17,7 +17,7 @@ import {
     Right
 } from 'native-base';
 import { BarIndicator } from 'react-native-indicators';
-import firebase from "firebase";
+import firebase from "react-native-firebase";
 import { connect } from "react-redux";
 import { requestList } from "../../../store/action/action"
 
@@ -55,18 +55,15 @@ class ShoopKeeperList extends Component {
         let newRequestList = requestList.slice(0, index).concat(requestList.slice(index + 1))
         firebase.auth().createUserWithEmailAndPassword(user.Email, user.Password)
             .then((res) => {
-                database.child("user/" + res.user.uid).set(user)
+                database.child(`user/${res._user.uid}`).set(user)
                     .then(() => {
                         database.child(`Shoopkeeper-Reques/${user.key}`).remove()
                         this.props.requestList(newRequestList)
-
                     })
             }).catch((error) => {
                 alert(error)
             });
     }
-
-
 
     reject(user, index) {
         let requestList = this.props.PandingRequestList.requestList

@@ -11,7 +11,7 @@ import {
     Dimensions
 } from 'react-native';
 import { Container, Header, Content, Button, Radio } from 'native-base';
-import firebase from "firebase";
+import firebase from "react-native-firebase";
 
 
 const database = firebase.database().ref("/")
@@ -29,11 +29,11 @@ export default class SignIn extends Component {
             Email: this.state.Email,
             Password: this.state.Password,
         }
+        alert("")
         if (user.Email !== "" && user.password !== "") {
             firebase.auth().signInWithEmailAndPassword(user.Email, user.Password)
                 .then((success) => {
                     alert("Success")
-                    alert(firebase.auth().currentUser.uid)
                     let currentUser = firebase.auth().currentUser.uid
                     database.child(`user/${currentUser}`).on("value", (snapshoot) => {
                         let obj = snapshoot.val()
@@ -42,7 +42,6 @@ export default class SignIn extends Component {
                         if(obj.userType === "admin" ){
                             this.props.navigation.navigate("AdminDashboard")
                         }
-
                     })
                 })
                 .catch((error) => {

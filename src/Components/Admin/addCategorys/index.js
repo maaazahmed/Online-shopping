@@ -13,6 +13,8 @@ import {
     PermissionsAndroid
 } from 'react-native';
 import CameraRollPicker from 'react-native-camera-roll-picker';
+import firebase from "react-native-firebase";
+
 
 import { Container, Header, Body, Title, Content, Card, CardItem, Text, Icon } from 'native-base';
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
@@ -200,10 +202,6 @@ export default class AddCategory extends Component {
                         </View>
                     </Dialog>
 
-
-
-
-
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -389,19 +387,3 @@ const styles = StyleSheet.create({
         borderRadius: 100
     },
 });
-
-
-
-
-
-
-
-
-
-{/* <ImageBackground
-                        resizeMode="contain"
-                        source={{uri:"https://webdesignledger.com/wp-content/uploads/2015/08/Web-Design-Ledger-200px-tall.png"}} 
-                        style={styles.DialogContent} >
-                          <View style={styles.addCategotyFeildContainer} >
-                          </View>
-                        </ImageBackground> */}

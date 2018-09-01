@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-    Platform,
     StyleSheet,
     Text,
     View,
@@ -10,19 +9,12 @@ import {
     TouchableOpacity,
     Dimensions
 } from 'react-native';
-import { Container, Header, Content, Button, Radio } from 'native-base';
-import firebase from "firebase";
+import { Radio } from 'native-base';
+import firebase from "react-native-firebase";
 
 
-var config = {
-    apiKey: "AIzaSyCjnOnGjin0ax0pvx_aWPwr3rXyrcwJK4k",
-    authDomain: "polling-application-9938a.firebaseapp.com",
-    databaseURL: "https://polling-application-9938a.firebaseio.com",
-    projectId: "polling-application-9938a",
-    storageBucket: "polling-application-9938a.appspot.com",
-    messagingSenderId: "1008180650619"
-};
-firebase.initializeApp(config);
+
+
 
 const database = firebase.database().ref("/")
 export default class Signup extends Component {
@@ -53,7 +45,8 @@ export default class Signup extends Component {
         else {
             firebase.auth().createUserWithEmailAndPassword(user.Email, user.Password)
                 .then((res) => {
-                    database.child("user/" + res.user.uid).set(user)
+                    // console.log(res._user.uid,"===========")
+                    database.child(`user/${res._user.uid}`).set(user)
                         .then(() => {
                             alert("Success")
                         })
