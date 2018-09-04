@@ -145,7 +145,6 @@ class AddProduct extends Component {
                         }, (snapshot) => {
                             productObj.coverImageUrl = snapshot.downloadURL;
                             database.child(`Categorys/${categoryID}/Products/`).push(productObj)
-                            
                             this.setState({
                                 categoryVal: "Selecte Category",
                                 sellerNameVal: "",

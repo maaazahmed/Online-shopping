@@ -71,7 +71,6 @@ class Dashboard extends Component {
                             <Button onPress={() => this.openDrawer()} transparent>
                                 <Icon name='menu' />
                             </Button>
-
                         </Left>
                         <Body>
                             <Title>User name</Title>

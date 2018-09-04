@@ -64,6 +64,7 @@ class CategoryCardComponent extends Component {
                 <Content>
                     <View style={styles.categoryGridComponent} >
                         {this.props.catogery_List.categoryList.map((value, index) => {
+                            
                             return (
                                 <TouchableOpacity key={index}
                                     onPress={this.ViewCategory.bind(this, value, index)}

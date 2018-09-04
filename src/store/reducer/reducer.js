@@ -4,8 +4,9 @@ const INITIAL_STATE = {
     requestList: [],
     categoryList: [],
     categoryData: [],
+    myProducts: [],
     categoryID: "",
-    coverImage: ""
+    coverImage: "",
 
 }
 
@@ -26,7 +27,7 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 categoryData: action.payload
             })
-            case ActionTypes.CATEGORY_ID:
+        case ActionTypes.CATEGORY_ID:
             return ({
                 ...state,
                 categoryID: action.payload
@@ -35,6 +36,11 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 coverImage: action.payload
+            })
+        case ActionTypes.MY_PRODUCT:
+            return ({
+                ...state,
+                myProducts: action.payload
             })
         default:
             return state;

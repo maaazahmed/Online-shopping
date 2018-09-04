@@ -4,6 +4,7 @@ const ActionTypes = {
   CATEGORY_ID:"CATEGORY_ID",
   CATEGORY_DATA:"CATEGORY_DATA",
   COVER_IMAGE:"COVER_IMAGE",
+  MY_PRODUCT:"MY_PRODUCT",
 }
 
 export default ActionTypes

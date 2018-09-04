@@ -52,3 +52,15 @@ export const coverImageUrl = (data) => {
         })
     }
 }
+
+
+
+
+export const myProducts = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.MY_PRODUCT,
+            payload: data
+        })
+    }
+}
