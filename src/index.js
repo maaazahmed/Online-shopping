@@ -6,7 +6,9 @@ import {
     Dashboard,
     SignIn,
     AdminDashboard,
-    TestComponent
+    TestComponent,
+    ProductComponent,
+    ShopkeeperDashboard
 } from "./Components/index"
 
 
@@ -48,8 +50,20 @@ const Router = StackNavigator({
             header: null
         }
     },
+    ProductComponent: {
+        screen: ProductComponent,
+        navigationOptions: {
+            header: null
+        }
+    },
+    ShopkeeperDashboard: {
+        screen: ShopkeeperDashboard,
+        navigationOptions: {
+            header: null
+        }
+    },
 },{
-    initialRouteName:"AdminDashboard"
+    initialRouteName:"ShopkeeperDashboard"
 })
 
 export default Router

@@ -7,11 +7,11 @@ import {
     Image,
     TextInput,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
 } from 'react-native';
 import { Radio } from 'native-base';
 import firebase from "react-native-firebase";
-
+import { BarIndicator } from 'react-native-indicators';
 
 
 
@@ -26,7 +26,8 @@ export default class Signup extends Component {
             Password: "",
             Serller: false,
             Bayer: true,
-            userType: "Bayer"
+            userType: "Bayer",
+            isLoader: false
         }
     }
 
@@ -36,25 +37,46 @@ export default class Signup extends Component {
             Email: this.state.Email,
             Password: this.state.Password,
             userType: this.state.userType,
-            profilePic:"https://tse3.mm.bing.net/th?id=OIP.wbLH6MmOdiPwIi4fWjYmrAAAAA&pid=15.1&P=0&w=300&h=300"
+            profilePic: "https://tse3.mm.bing.net/th?id=OIP.wbLH6MmOdiPwIi4fWjYmrAAAAA&pid=15.1&P=0&w=300&h=300"
         }
+        this.setState({
+            isLoader: true
+        })
 
-        if (user.userType === "Serller") {
-            database.child("Shoopkeeper-Reques").push(user)
+        if (user.Username !== "" && user.Email !== "" && user.Password !== "") {
+            setTimeout(() => {
+                if (user.userType === "Seller") {
+                    database.child("Shoopkeeper-Reques").push(user)
+                    this.setState({
+                        isLoader: false
+                    })
+                }
+                else {
+                    firebase.auth().createUserWithEmailAndPassword(user.Email, user.Password)
+                        .then((res) => {
+                            database.child(`user/${res._user.uid}`).set(user)
+                                .then(() => {
+                                    alert("Success")
+                                    this.setState({
+                                        isLoader: false
+                                    })
+                                })
+                        }).catch((error) => {
+                            alert(error)
+                            this.setState({
+                                isLoader: false
+                            })
+                        });
+                }
+
+            }, 2000)
         }
         else {
-            firebase.auth().createUserWithEmailAndPassword(user.Email, user.Password)
-                .then((res) => {
-                    // console.log(res._user.uid,"===========")
-                    database.child(`user/${res._user.uid}`).set(user)
-                        .then(() => {
-                            alert("Success")
-                        })
-                }).catch((error) => {
-                    alert(error)
-                });
+            alert("All Feilds is requierd")
+            this.setState({
+                isLoader: false
+            })
         }
-
     }
 
 
@@ -62,6 +84,7 @@ export default class Signup extends Component {
         return (
 
             <View style={styles.container}>
+
                 <ImageBackground
                     style={styles.backgroundImg}
                     source={{ uri: "https://webdesignledger.com/wp-content/uploads/2015/08/Web-Design-Ledger-200px-tall.png" }}
@@ -109,11 +132,11 @@ export default class Signup extends Component {
                         </View>
                         <View style={styles.RadioContainer} >
                             <View style={styles.RadiobtnView} >
-                                <Text style={styles.RadiobtnText} >Serller</Text>
+                                <Text style={styles.RadiobtnText} >Seller</Text>
                                 <Radio
                                     color={"#fff"}
                                     selectedColor={"#fff"}
-                                    onPress={() => { this.setState({ Serller: true, Bayer: false, userType: "Serller" }) }}
+                                    onPress={() => { this.setState({ Serller: true, Bayer: false, userType: "Seller" }) }}
                                     selected={this.state.Serller} />
                             </View>
                             <View style={styles.RadiobtnView}>
@@ -122,8 +145,7 @@ export default class Signup extends Component {
                                     color={"#fff"}
                                     selectedColor={"#fff"}
                                     onPress={() => { this.setState({ Serller: false, Bayer: true, userType: "Bayer" }) }}
-                                    selected={this.state.Bayer}
-                                />
+                                    selected={this.state.Bayer}/>
                             </View>
                         </View>
                         <View style={styles.RegisterBtnView}>
@@ -132,7 +154,7 @@ export default class Signup extends Component {
                                 <Text style={styles.btnRegisterText} >Register</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => { this.props.navigation.navigate("SignIn") }}
-                             activeOpacity={0.8} style={styles.btnRegister} bordered success>
+                                activeOpacity={0.8} style={styles.btnRegister} bordered success>
                                 <Text style={styles.btnRegisterText} >Sign in</Text>
                             </TouchableOpacity>
                         </View>
@@ -140,6 +162,13 @@ export default class Signup extends Component {
                     </View>
 
                 </ImageBackground>
+                {(this.state.isLoader) ?
+                    <View style={styles.lodaerStyle} >
+
+                        <BarIndicator color='#00bcd4' count={6} />
+
+                    </View>
+                    : null}
             </View>
         );
     }
@@ -224,8 +253,17 @@ const styles = StyleSheet.create({
     RadiobtnText: {
         color: "#fff",
         fontSize: 20,
-    }
+    },
 
+    lodaerStyle: {
+        position: "absolute",
+        flex: 1,
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: "rgba(255, 255, 255, 0.5)"
+    },
 
 });
 

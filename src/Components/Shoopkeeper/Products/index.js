@@ -21,12 +21,12 @@ import { connect } from "react-redux"
 
 
 const database = firebase.database().ref("/")
-class AddCategory extends Component {
+class Products extends Component {
     constructor() {
         super()
         this.state = {
-            dialogVisible: false,
-            modalVisible: false,
+            // dialogVisible: false,
+            // modalVisible: false,
             num: 0,
             selected: [],
             coverImageUrl: "",
@@ -35,12 +35,6 @@ class AddCategory extends Component {
         }
     }
 
-    getSelectedImages(images, current) {
-        this.setState({
-            coverImageUrl: current.uri,
-            modalVisible: false
-        })
-    }
 
     ViewCategory() {
         alert("Laptop")
@@ -55,81 +49,103 @@ class AddCategory extends Component {
 
 
     componentWillMount() {
-        PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-            {
-                'title': 'Cool App ...',
-                'message': 'App needs access to external storage'
+        // PermissionsAndroid.request(
+        //     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        //     {
+        //         'title': 'Cool App ...',
+        //         'message': 'App needs access to external storage'
+        //     }
+        // ).then(() => this.setState({ permit: true }))
+
+
+        database.child("Categorys").on("value", (snap) => {
+            let obj = snap.val()
+            let categoryArr = []
+            for (let key in obj) {
+                categoryArr.push({ ...obj[key], key })
             }
-        ).then(() => this.setState({ permit: true }))
-    }
 
-
-
-    submitCategory() {
-        let categotyObj = {
-            newCategoryVal: this.state.newCategoryVal,
-            Products: {}
-        }
-        if (categotyObj.newCategoryVal !== "" && this.state.coverImageUrl !== "") {
-
-
-            firebase.auth().onAuthStateChanged((user) => {
-                if (user) {
-                    // User logged in.
-
-                    const storageRef = firebase.storage().ref('/');
-                    var file = this.state.coverImageUrl;
-                    var metadata = {
-                        contentType: 'image/jpeg'
-                    };
-
-                    var uploadTask = storageRef.child('images/' + Date.now()).put(file, metadata);
-                    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-                        function (snapshot) {
-                            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            switch (snapshot.state) {
-                                case firebase.storage.TaskState.PAUSED:
-                                    break;
-                                case firebase.storage.TaskState.RUNNING:
-                                    break;
-                            }
-                        }, function (error) {
-                            switch (error.code) {
-                                case 'storage/unauthorized':
-                                    break;
-                                case 'storage/canceled':
-                                    break;
-                                case 'storage/unknown':
-                                    break;
-                            }
-                        }, (snapshot) => {
-                            categotyObj.coverImageUrl = snapshot.downloadURL
-                            database.child("/Categorys").push(categotyObj)
-                            alert("Sussess")
-                            this.setState({
-                                dialogVisible: !this.state.dialogVisible
-                            })
-                        });
-                } else {
-                    alert("Please Login")
-                    this.props.navigation.navigate("SignIp")
+            let myProduct = []
+            categoryArr.map((val)=>{
+                for (let key in val.Products) {
+                    myProduct.push({ ...val.Products[key], key })
                 }
-            });
+                console.log(myProduct,"=========")
+            })
+            // this.props.categoryList(categoryArr)
+            // this.setState({
+            //     categoryArrtListLength: categoryArr.length,
+            //     isLoader: true
+            // })
+        })
 
-        }
-        else {
-            alert("Pleace Write something and select image")
-        }
     }
+
+
+
+    // submitCategory() {
+    //     let categotyObj = {
+    //         newCategoryVal: this.state.newCategoryVal,
+    //         Products: {}
+    //     }
+    //     if (categotyObj.newCategoryVal !== "" && this.state.coverImageUrl !== "") {
+
+
+    //         firebase.auth().onAuthStateChanged((user) => {
+    //             if (user) {
+    //                 // User logged in.
+
+    //                 const storageRef = firebase.storage().ref('/');
+    //                 var file = this.state.coverImageUrl;
+    //                 var metadata = {
+    //                     contentType: 'image/jpeg'
+    //                 };
+
+    //                 var uploadTask = storageRef.child('images/' + Date.now()).put(file, metadata);
+    //                 uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+    //                     function (snapshot) {
+    //                         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //                         switch (snapshot.state) {
+    //                             case firebase.storage.TaskState.PAUSED:
+    //                                 break;
+    //                             case firebase.storage.TaskState.RUNNING:
+    //                                 break;
+    //                         }
+    //                     }, function (error) {
+    //                         switch (error.code) {
+    //                             case 'storage/unauthorized':
+    //                                 break;
+    //                             case 'storage/canceled':
+    //                                 break;
+    //                             case 'storage/unknown':
+    //                                 break;
+    //                         }
+    //                     }, (snapshot) => {
+    //                         categotyObj.coverImageUrl = snapshot.downloadURL
+    //                         database.child("/Categorys").push(categotyObj)
+    //                         alert("Sussess")
+    //                         this.setState({
+    //                             dialogVisible: !this.state.dialogVisible
+    //                         })
+    //                     });
+    //             } else {
+    //                 alert("Please Login")
+    //                 this.props.navigation.navigate("SignIp")
+    //             }
+    //         });
+
+    //     }
+    //     else {
+    //         alert("Pleace Write something and select image")
+    //     }
+    // }
 
     render() {
         return (
             <Container>
-                <Content style={{}} >
+                <Content>
                     <View style={styles.categoryGridComponent} >
                         {this.props.catogery_List.categoryList.map((value, index) => {
-                            console.log(value)
                             return (
                                 <TouchableOpacity key={index}
                                     onPress={this.ViewCategory.bind(this)}
@@ -154,20 +170,17 @@ class AddCategory extends Component {
                                 </TouchableOpacity>
                             )
                         })}
-
-
-                        {/* // {arr} */}
                     </View>
                 </Content>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={() => { this.setState({ dialogVisible: !this.state.dialogVisible }) }}
                     style={styles.addButtonConstainer} >
                     <Text style={styles.addButtonText} >
                         +
                         </Text>
-                </TouchableOpacity>
-                <View>
+                </TouchableOpacity> */}
+                {/* <View>
                     <Dialog
                         animationType="fade"
                         visible={this.state.dialogVisible}
@@ -270,7 +283,7 @@ class AddCategory extends Component {
                             }
                         </View>
                     </Modal>
-                </View>
+                </View> */}
             </Container>
         );
     }
@@ -439,5 +452,5 @@ const mapDispatchToProp = (dispatch) => {
         // },
     };
 };
-export default connect(mapStateToProp, mapDispatchToProp)(AddCategory)
+export default connect(mapStateToProp, mapDispatchToProp)(Products)
 

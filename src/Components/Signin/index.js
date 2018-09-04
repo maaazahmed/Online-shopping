@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Container, Header, Content, Button, Radio } from 'native-base';
 import firebase from "react-native-firebase";
+import { BarIndicator } from 'react-native-indicators';
 
 
 const database = firebase.database().ref("/")
@@ -21,6 +22,7 @@ export default class SignIn extends Component {
         this.state = {
             Email: "",
             Password: "",
+            isLoader: false
         }
     }
 
@@ -29,30 +31,42 @@ export default class SignIn extends Component {
             Email: this.state.Email,
             Password: this.state.Password,
         }
-        alert("")
+        this.setState({
+            isLoader: true
+        })
         if (user.Email !== "" && user.password !== "") {
-            firebase.auth().signInWithEmailAndPassword(user.Email, user.Password)
-                .then((success) => {
-                    alert("Success")
-                    let currentUser = firebase.auth().currentUser.uid
-                    database.child(`user/${currentUser}`).on("value", (snapshoot) => {
-                        let obj = snapshoot.val()
-                        obj.id = snapshoot.key
-                        console.log(obj)
-                        if(obj.userType === "admin" ){
-                            this.props.navigation.navigate("AdminDashboard")
-                        }
+            setTimeout(() => {
+                firebase.auth().signInWithEmailAndPassword(user.Email, user.Password)
+                    .then((success) => {
+                        alert("Success")
+                        let currentUser = firebase.auth().currentUser.uid
+                        database.child(`user/${currentUser}`).on("value", (snapshoot) => {
+                            let obj = snapshoot.val()
+                            obj.id = snapshoot.key
+                            if (obj.userType === "admin") {
+                                this.props.navigation.navigate("AdminDashboard")
+                            }
+                        })
+                        this.setState({
+                            isLoader: false
+                        })
                     })
-                })
-                .catch((error) => {
-                    var errorMessage = error.message;
-                    alert(errorMessage)
-                });
+                    .catch((error) => {
+                        var errorMessage = error.message;
+                        alert(errorMessage)
+                        this.setState({
+                            isLoader: false
+                        })
+                    });
+
+            }, 2000)
         }
         else {
-            alert("Fail !")
+            alert("All Feilds is requierd")
+            this.setState({
+                isLoader: false
+            })
         }
-
     }
 
 
@@ -111,6 +125,13 @@ export default class SignIn extends Component {
                     </View>
 
                 </ImageBackground>
+                {(this.state.isLoader) ?
+                    <View style={styles.lodaerStyle} >
+
+                        <BarIndicator color='#00bcd4' count={6} />
+
+                    </View>
+                    : null}
             </View>
         );
     }
@@ -196,7 +217,17 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 20,
         //    fontWeight:"bold"
-    }
+    },
+    lodaerStyle: {
+        position: "absolute",
+        flex: 1,
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: "rgba(255, 255, 255, 0.5)"
+    },
+
 
 
 });

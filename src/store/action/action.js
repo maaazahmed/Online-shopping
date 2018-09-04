@@ -9,3 +9,46 @@ export const requestList = (data) => {
         })
     }
 }
+
+
+
+export const categoryList = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.CATEGORY_LIST,
+            payload: data
+        })
+    }
+}
+
+
+
+export const categoryID = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.CATEGORY_ID,
+            payload: data
+        })
+    }
+}
+
+
+
+export const categoryData = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.CATEGORY_DATA,
+            payload: data
+        })
+    }
+}
+
+
+export const coverImageUrl = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.COVER_IMAGE,
+            payload: data
+        })
+    }
+}

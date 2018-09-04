@@ -213,13 +213,7 @@ const styles = StyleSheet.create({
 
     row: {
         flex: 1,
-        // height:Dimensions.get("window").height,
         backgroundColor: "#f2f2f2",
-        // marginTop:80
-        // flex:2,
-        // flexDirection: 'row',
-        // alignItems:"center",
-        // flexDirection:"row"
     },
 
     reverse: {

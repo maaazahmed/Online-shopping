@@ -236,12 +236,16 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
+  Dimensions,
+  ImageBackground
 } from 'react-native';
+import { Container, Header, Body, Title, Content, Card, CardItem, Icon } from 'native-base';
 
 
 
 
-const HEADER_MAX_HEIGHT = 300;
+const HEADER_MAX_HEIGHT = 230;
 const HEADER_MIN_HEIGHT = 60;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
@@ -268,6 +272,37 @@ export default class ScrollableHeader extends Component {
   }
 
   render() {
+
+
+
+
+    let arr = []
+    for (var i = 0; i < 23; i++) {
+      arr.push(
+        <TouchableOpacity key={i} activeOpacity={0.8}>
+          <Card style={styles.categoryCard} >
+            <ImageBackground
+              resizeMode="cover"
+              source={require("./images/cadimg.jpg")}
+              style={styles.ImageBackground} >
+              <TouchableOpacity activeOpacity={0.7} style={styles.CardItemView} >
+                <Text style={styles.CardItemText} >
+                  Laptop
+                          </Text>
+                <Text style={styles.CardItemText} >
+                  Items :10
+                          </Text>
+              </TouchableOpacity>
+            </ImageBackground>
+          </Card>
+        </TouchableOpacity>
+      )
+    }
+
+
+
+
+
     const headerHeight = this.state.scrollY.interpolate({
       inputRange: [0, HEADER_SCROLL_DISTANCE],
       outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
@@ -295,9 +330,11 @@ export default class ScrollableHeader extends Component {
           scrollEventThrottle={16}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
-          )}
-        >
-          {this._renderScrollViewContent()}
+          )}>
+
+          <View style={styles.categoryGridComponent} >
+            {arr}
+          </View>
         </ScrollView>
 
         <Animated.View style={[styles.header, { height: headerHeight }]}>
@@ -305,10 +342,12 @@ export default class ScrollableHeader extends Component {
             style={[
               styles.backgroundImage,
               { opacity: imageOpacity, transform: [{ translateY: imageTranslate }] }]}
-            source={require('./images/tect.png')} />
-          <Animated.View>
-
-          </Animated.View>
+            source={require('./images/test.jpeg')} />
+          <TouchableOpacity activeOpacity={0.6} style={styles.backErrowIcon} >
+            <View style={{ backgroundColor: "trancparant", padding: 17, }} >
+              <Icon name='arrow-back' style={{ color: "#fff" }} />
+            </View>
+          </TouchableOpacity>
         </Animated.View>
       </View>
     );
@@ -320,26 +359,23 @@ const styles = StyleSheet.create({
   fill: {
     flex: 1,
   },
-  row: {
-    height: 40,
-    margin: 16,
-    backgroundColor: '#D3D3D3',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  // row: {
+  //   height: 40,
+  //   margin: 16,
+  //   backgroundColor: 'green',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  // },
   header: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#03A9F4',
+    backgroundColor: '#00bcd4',
+    // backgroundColor: 'rgba(250, 250, 250 , 0.8)',
     overflow: 'hidden',
-  },
-  bar: {
-    marginTop: 28,
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
+    elevation: 0.5,
+
   },
   title: {
     backgroundColor: 'transparent',
@@ -357,5 +393,51 @@ const styles = StyleSheet.create({
     width: null,
     height: HEADER_MAX_HEIGHT,
     resizeMode: 'cover',
+    // justifyContent:"center",
+    // alignItems:"center"
   },
+
+
+
+
+  categoryCard: {
+    width: Dimensions.get("window").width / 2 - 5,
+    height: Dimensions.get("window").height / 4.3,
+    backgroundColor: "#fff",
+    marginBottom: 0,
+    elevation: 0,
+  },
+  ImageBackground: {
+    height: Dimensions.get("window").height / 4.3,
+    width: Dimensions.get("window").width / 2 - 10,
+    justifyContent: "flex-end",
+  },
+  CardItemView: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    height: 40,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row"
+  },
+  CardItemText: {
+    color: "#fff",
+    marginLeft: 4,
+    marginRight: 4
+  },
+  categoryGridComponent: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    margin: 0,
+    marginTop: HEADER_MAX_HEIGHT
+  },
+
+  backErrowIcon:{
+    //  backgroundColor:"rgba(0, 188, 212, 0.5)",
+    // //  padding:3,
+    //  borderRadius: 100,
+    //  width:60 ,
+    //  margin:4
+  }
+
 });

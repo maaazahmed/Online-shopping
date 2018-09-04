@@ -3,21 +3,25 @@ import {
     StyleSheet,
 } from 'react-native';
 import { Container, Header, Tab, Tabs, Body, Title } from 'native-base';
-import ShoopKeeperList from "./Shoopkeepr/index"
-import AddCategory from "./addCategorys"
-import AddProduct from "./addProduct"
+import AddProduct from "./AddProduct"
+import Products from "./Products"
 import { connect } from "react-redux"
 import { categoryList } from "../../store/action/action"
 import firebase from "react-native-firebase";
 
 
 
+
+
+
+
+
 const database = firebase.database().ref("/")
-class AdminDashboard extends Component {
+class ShopkeeperDashboard extends Component {
     componentDidMount() {
         database.child("Categorys").on("value", (snap) => {
             let obj = snap.val()
-             let categoryArr = []
+            let categoryArr = []
             for (let key in obj) {
                 categoryArr.push({ ...obj[key], key })
             }
@@ -44,16 +48,8 @@ class AdminDashboard extends Component {
                         activeTabStyle={{ backgroundColor: '#00bcd4' }}
                         activeTextStyle={{ color: "#fff" }}
                         textStyle={{ color: '#f2f2f2' }}
-                        heading="REQUESTS">
-                        <ShoopKeeperList />
-                    </Tab>
-                    <Tab
-                        tabStyle={{ backgroundColor: '#00bcd4' }}
-                        activeTabStyle={{ backgroundColor: '#00bcd4' }}
-                        activeTextStyle={{ color: "#fff" }}
-                        textStyle={{ color: '#f2f2f2' }}
-                        heading="CATEGORYS">
-                        <AddCategory />
+                        heading="PRODUCT">
+                        <Products />
                     </Tab>
                     <Tab
                         tabStyle={{ backgroundColor: '#00bcd4' }}
@@ -101,6 +97,6 @@ const mapDispatchToProp = (dispatch) => {
         },
     };
 };
-export default connect(mapStateToProp, mapDispatchToProp)(AdminDashboard)
+export default connect(mapStateToProp, mapDispatchToProp)(ShopkeeperDashboard)
 
 

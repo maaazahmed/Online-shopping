@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import {
-    Platform,
     StyleSheet,
-    Text,
-    View,
-    ImageBackground,
-    // Image
+    View
 } from 'react-native';
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import Menu, { MenuItem } from 'react-native-material-menu';
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Drawer, Content } from 'native-base';
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
-import SideBar from "./Categories/index"
+import CategoryComponent from "./Categories/index"
+import CategoryListComponent from "./DrawerCategories/index"
+import { categoryList } from "../../store/action/action"
+import { connect } from "react-redux"
+import firebase from "react-native-firebase"
 
 
-
-
-
-
-
-
-export default class Dashboard extends Component {
+const database = firebase.database().ref("/")
+class Dashboard extends Component {
+    constructor(props){
+        super(props);
+    }
     _menu = null;
 
     setMenuRef = ref => {
@@ -38,8 +36,23 @@ export default class Dashboard extends Component {
     };
     openDrawer = () => {
         this.drawer._root.open()
-        // alert("openDrawer")
     };
+
+    componentDidMount() {
+        database.child("Categorys").on("value", (snap) => {
+            let obj = snap.val()
+             let categoryArr = []
+            for (let key in obj) {
+                categoryArr.push({ ...obj[key], key })
+            }
+            this.props.categoryList(categoryArr)
+            this.setState({
+                categoryArrtListLength: categoryArr.length,
+                isLoader: true
+            })
+        })
+    }
+
 
 
 
@@ -47,9 +60,8 @@ export default class Dashboard extends Component {
     render() {
         return (
             <Drawer
-
                 ref={(ref) => { this.drawer = ref; }}
-                content={<SideBar navigator={this.navigator} />}
+                content={<CategoryListComponent navigator={this.navigator} />}
                 openDrawerOffset={0.5}
                 panCloseMask={0.5}
                 onClose={() => this.closeDrawer()} >
@@ -79,21 +91,29 @@ export default class Dashboard extends Component {
                             </Menu>
                         </Right>
                     </Header>
-                    <Content >
-
-                    </Content>
+                    <CategoryComponent navigation={this.props.navigation}/>
                 </Container>
             </Drawer>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
+const styles = StyleSheet.create({});
 
-});
+
+
+const mapStateToProp = (state) => {
+    return ({
+        catogery_List: state.root,
+    });
+};
+const mapDispatchToProp = (dispatch) => {
+    return {
+        categoryList: (data) => {
+            dispatch(categoryList(data))
+        },
+    };
+};
+export default connect(mapStateToProp, mapDispatchToProp)(Dashboard)
+
+
