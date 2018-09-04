@@ -38,7 +38,7 @@ export default class ExtraDetails extends Component {
                         addarsse: this.state.addarsse,
                         Email:obj.Email,
                     }
-                    database.child(`user/moreDetails`).set(moreDetails).then(()=>{
+                    database.child(`user/${user.uid}/moreDetails`).set(moreDetails).then(()=>{
                         console.log(moreDetails,"--------")
                         
                     }).catch(()=>{

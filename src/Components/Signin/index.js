@@ -38,7 +38,6 @@ export default class SignIn extends Component {
             setTimeout(() => {
                 firebase.auth().signInWithEmailAndPassword(user.Email, user.Password)
                     .then((success) => {
-                        alert("Success")
                         let currentUser = firebase.auth().currentUser.uid
                         database.child(`user/${currentUser}`).on("value", (snapshoot) => {
                             let obj = snapshoot.val()
@@ -59,7 +58,12 @@ export default class SignIn extends Component {
                                 this.setState({
                                     isLoader: false
                                 })
-                                this.props.navigation.navigate("Dashboard")
+                                if (obj.moreDetails === undefined) {
+                                    this.props.navigation.navigate("ExtraDetails")
+                                }
+                                else {
+                                    this.props.navigation.navigate("Dashboard")
+                                }
                             }
                         })
 

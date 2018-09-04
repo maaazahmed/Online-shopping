@@ -70,7 +70,7 @@ const Router = StackNavigator({
         }
     },
 },{
-    initialRouteName:"ExtraDetails"
+    initialRouteName:"SignIn"
 })
 
 export default Router
