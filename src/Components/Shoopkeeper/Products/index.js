@@ -31,7 +31,8 @@ class Products extends Component {
             selected: [],
             coverImageUrl: "",
             newCategoryVal: "",
-            cancleCoverData: ""
+            cancleCoverData: "",
+            currentUser:""
         }
     }
 
@@ -49,34 +50,31 @@ class Products extends Component {
 
 
     componentWillMount() {
-        // PermissionsAndroid.request(
-        //     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        //     {
-        //         'title': 'Cool App ...',
-        //         'message': 'App needs access to external storage'
-        //     }
-        // ).then(() => this.setState({ permit: true }))
-
-
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                console.log(user.uid,"=-----------------")
+                // database.child(`user${user.uid}`)
+                this.setState({
+                    currentUser:user.uid
+                })
+            }
+        });
         database.child("Categorys").on("value", (snap) => {
             let obj = snap.val()
             let categoryArr = []
             for (let key in obj) {
                 categoryArr.push({ ...obj[key], key })
             }
-
             let myProduct = []
             categoryArr.map((val)=>{
+                console.log(this.state.currentUser,"==========")
                 for (let key in val.Products) {
+                    console.log(val.Products[key])
                     myProduct.push({ ...val.Products[key], key })
                 }
-                console.log(myProduct,"=========")
+                // console.log(myProduct,"=========")
+
             })
-            // this.props.categoryList(categoryArr)
-            // this.setState({
-            //     categoryArrtListLength: categoryArr.length,
-            //     isLoader: true
-            // })
         })
 
     }

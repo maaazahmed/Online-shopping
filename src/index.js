@@ -63,7 +63,7 @@ const Router = StackNavigator({
         }
     },
 },{
-    initialRouteName:"ShopkeeperDashboard"
+    initialRouteName:"SignIn"
 })
 
 export default Router

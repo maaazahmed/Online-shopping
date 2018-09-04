@@ -37,6 +37,7 @@ class AddProduct extends Component {
             dialogVisible: false,
             modalVisible: false,
             coverImageUrl: "",
+            currentUser:"",
 
         }
     }
@@ -51,6 +52,14 @@ class AddProduct extends Component {
             }
         ).then(() => this.setState({ permit: true }))
         /*PermissionsAndroid***************************************************/
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // database.child(`user${user.uid}`)
+                this.setState({
+                    currentUser:user.uid
+                })
+            }
+        });
 
     }
 
@@ -87,6 +96,9 @@ class AddProduct extends Component {
         })
     }
     add_PRODUCT() {
+
+
+        
         let productObj = {
             categoryVal: this.state.SelectedCategory,
             // sellerNameVal: this.state.sellerNameVal,
@@ -94,7 +106,9 @@ class AddProduct extends Component {
             priceVal: this.state.priceVal,
             // discriptionVal: this.state.discriptionVal,
             modalNumVal: this.state.modalNumVal,
+            currentUser:this.state.currentUser
         }
+        console.log(productObj,"=========")
         const categoryID = this.props.category_ID.categoryID
 
 
@@ -131,6 +145,7 @@ class AddProduct extends Component {
                         }, (snapshot) => {
                             productObj.coverImageUrl = snapshot.downloadURL;
                             database.child(`Categorys/${categoryID}/Products/`).push(productObj)
+                            
                             this.setState({
                                 categoryVal: "Selecte Category",
                                 sellerNameVal: "",

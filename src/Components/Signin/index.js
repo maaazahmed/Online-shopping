@@ -43,8 +43,15 @@ export default class SignIn extends Component {
                         database.child(`user/${currentUser}`).on("value", (snapshoot) => {
                             let obj = snapshoot.val()
                             obj.id = snapshoot.key
+                            console.log(obj.userType,"==============")
                             if (obj.userType === "admin") {
                                 this.props.navigation.navigate("AdminDashboard")
+                            }
+                           else if (obj.userType === "Seller") {
+                                this.props.navigation.navigate("ShopkeeperDashboard")
+                            }
+                            else if (obj.userType === "Bayer") {
+                                this.props.navigation.navigate("Dashboard")
                             }
                         })
                         this.setState({
