@@ -4,8 +4,9 @@ import Dashboard from "./Dashboard/index"
 import SignIn from "./Signin"
 import AdminDashboard from "./Admin/index";
 import TestComponent from "./Test/Test";
-import ProductComponent from "./ProductsComponent/index"
-import ShopkeeperDashboard from "./Shoopkeeper/index"
+import ProductComponent from "./ProductsComponent/index";
+import ShopkeeperDashboard from "./Shoopkeeper/index";
+import ExtraDetails from "./UserExtraDetail/index";
 export {
     Signup,
     SplashScreen,
@@ -14,5 +15,6 @@ export {
     AdminDashboard,
     TestComponent,
     ProductComponent,
-    ShopkeeperDashboard
-}
+    ShopkeeperDashboard,
+    ExtraDetails,
+};

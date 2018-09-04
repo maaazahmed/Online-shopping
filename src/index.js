@@ -1,4 +1,4 @@
-import { StackNavigator } from "react-navigation"
+import { StackNavigator } from "react-navigation";
 
 import {
     Signup,
@@ -8,8 +8,9 @@ import {
     AdminDashboard,
     TestComponent,
     ProductComponent,
-    ShopkeeperDashboard
-} from "./Components/index"
+    ShopkeeperDashboard,
+    ExtraDetails
+} from "./Components/index";
 
 
 const Router = StackNavigator({
@@ -62,8 +63,14 @@ const Router = StackNavigator({
             header: null
         }
     },
+    ExtraDetails: {
+        screen: ExtraDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
 },{
-    initialRouteName:"SignIn"
+    initialRouteName:"ExtraDetails"
 })
 
 export default Router
