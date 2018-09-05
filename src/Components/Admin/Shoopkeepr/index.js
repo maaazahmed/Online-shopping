@@ -77,9 +77,9 @@ class ShoopKeeperList extends Component {
 
         return (
             (this.state.isLoader) ?
-                <Container>
+                <View style={styles.container}  >
                     {(this.state.requestListLength > 0) ?
-                        <Content>
+                        <View style={{flex:1}} >
                             {
                                 this.props.PandingRequestList.requestList.map((val, index) => {
                                     return (
@@ -100,7 +100,7 @@ class ShoopKeeperList extends Component {
                                                                 activeOpacity={0.8} style={styles.rejectButt}>
                                                                 <Text style={styles.rejectText}>
                                                                     Reject
-                                                            </Text>
+                                                                </Text>
                                                             </TouchableOpacity>
                                                             <TouchableOpacity
                                                                 onPress={this.approve.bind(this, val, index)}
@@ -118,7 +118,7 @@ class ShoopKeeperList extends Component {
                                     )
                                 })
                             }
-                        </Content>
+                        </View>
                         :
                         <Content style={{ backgroundColor: "#e4e4e4" }} >
                             <View style={styles.noResult}>
@@ -135,7 +135,7 @@ class ShoopKeeperList extends Component {
                             </View>
                             
                         </Content>}
-                </Container>
+                </View>
                 :
                 <Container>
                     <View style={styles.row}>
@@ -149,11 +149,20 @@ class ShoopKeeperList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
         backgroundColor: '#F5FCFF',
-        height: 600
+        // height: 600
     },
+
+
+    // container: {
+    //     flex: 1,
+    //     backgroundColor: '#01579B',
+    //     padding: 20,
+    // },
+
+
     Card: {
         marginBottom: 0,
         elevation: 0,
@@ -170,7 +179,7 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 3,
         elevation: 5,
-        width: 90,
+        width: "50%",
         justifyContent: "center",
         alignItems: "center"
     },
@@ -184,7 +193,7 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 3,
         elevation: 4,
-        width: 90,
+        width: "50%",
         justifyContent: "center",
         alignItems: "center",
     },
@@ -205,11 +214,7 @@ const styles = StyleSheet.create({
         opacity: 0.4,
         marginTop: 150
     },
-    container: {
-        flex: 1,
-        backgroundColor: '#01579B',
-        padding: 20,
-    },
+   
 
     row: {
         flex: 1,

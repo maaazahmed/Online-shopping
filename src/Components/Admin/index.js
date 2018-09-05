@@ -7,7 +7,7 @@ import ShoopKeeperList from "./Shoopkeepr/index"
 import AddCategory from "./addCategorys"
 import AddProduct from "./addProduct"
 import { connect } from "react-redux"
-import { categoryList } from "../../store/action/action"
+import { categoryList, sellerList } from "../../store/action/action"
 import firebase from "react-native-firebase";
 
 
@@ -17,7 +17,7 @@ class AdminDashboard extends Component {
     componentDidMount() {
         database.child("Categorys").on("value", (snap) => {
             let obj = snap.val()
-             let categoryArr = []
+            let categoryArr = []
             for (let key in obj) {
                 categoryArr.push({ ...obj[key], key })
             }
@@ -26,6 +26,24 @@ class AdminDashboard extends Component {
                 categoryArrtListLength: categoryArr.length,
                 isLoader: true
             })
+        })
+
+        database.child("user").on("value", (snap) => {
+            let obj = snap.val()
+            let sellerArr = []
+            for (let key in obj) {
+                if (obj[key].userType === "Seller") {
+                    sellerArr.push({ ...obj[key], key })
+                }
+            }
+            // console.log(sellerArr)
+            this.props.sellerList(sellerArr)
+
+
+            // this.setState({
+            //     sellerArrtListLength: sellerArr.length,
+            //     isLoader: true
+            // })
         })
     }
 
@@ -44,14 +62,6 @@ class AdminDashboard extends Component {
                         activeTabStyle={{ backgroundColor: '#00bcd4' }}
                         activeTextStyle={{ color: "#fff" }}
                         textStyle={{ color: '#f2f2f2' }}
-                        heading="REQUESTS">
-                        <ShoopKeeperList />
-                    </Tab>
-                    <Tab
-                        tabStyle={{ backgroundColor: '#00bcd4' }}
-                        activeTabStyle={{ backgroundColor: '#00bcd4' }}
-                        activeTextStyle={{ color: "#fff" }}
-                        textStyle={{ color: '#f2f2f2' }}
                         heading="CATEGORYS">
                         <AddCategory />
                     </Tab>
@@ -62,6 +72,14 @@ class AdminDashboard extends Component {
                         textStyle={{ color: '#f2f2f2' }}
                         heading="ADD PRODUCT">
                         <AddProduct />
+                    </Tab>
+                    <Tab
+                        tabStyle={{ backgroundColor: '#00bcd4' }}
+                        activeTabStyle={{ backgroundColor: '#00bcd4' }}
+                        activeTextStyle={{ color: "#fff" }}
+                        textStyle={{ color: '#f2f2f2' }}
+                        heading="REQUESTS">
+                        <ShoopKeeperList />
                     </Tab>
                 </Tabs>
             </Container>
@@ -98,6 +116,9 @@ const mapDispatchToProp = (dispatch) => {
     return {
         categoryList: (data) => {
             dispatch(categoryList(data))
+        },
+        sellerList: (data) => {
+            dispatch(sellerList(data))
         },
     };
 };

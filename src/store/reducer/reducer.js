@@ -5,7 +5,10 @@ const INITIAL_STATE = {
     categoryList: [],
     categoryData: [],
     myProducts: [],
+    selectedProduct: [],
+    sellerList: [],
     categoryID: "",
+    shopkeeperID: "",
     coverImage: "",
 
 }
@@ -42,8 +45,24 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 myProducts: action.payload
             })
+        case ActionTypes.SELECTED_PRODUCTS:
+            return ({
+                ...state,
+                selectedProduct: action.payload
+            })
+        case ActionTypes.SELLER_LIST:
+            return ({
+                ...state,
+                sellerList: action.payload
+            })
+        case ActionTypes.SHOPKEEPER_ID:
+            return ({
+                ...state,
+                shopkeeperID: action.payload
+            })
         default:
             return state;
     }
 
 }
+// shopkeeperID

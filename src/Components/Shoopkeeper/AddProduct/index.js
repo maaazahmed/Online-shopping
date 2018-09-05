@@ -37,7 +37,7 @@ class AddProduct extends Component {
             dialogVisible: false,
             modalVisible: false,
             coverImageUrl: "",
-            currentUser:"",
+            currentUser: "",
 
         }
     }
@@ -56,7 +56,7 @@ class AddProduct extends Component {
             if (user) {
                 // database.child(`user${user.uid}`)
                 this.setState({
-                    currentUser:user.uid
+                    currentUser: user.uid
                 })
             }
         });
@@ -98,29 +98,26 @@ class AddProduct extends Component {
     add_PRODUCT() {
 
 
-        
+
         let productObj = {
             categoryVal: this.state.SelectedCategory,
-            // sellerNameVal: this.state.sellerNameVal,
             productNameVal: this.state.productNameVal,
             priceVal: this.state.priceVal,
-            // discriptionVal: this.state.discriptionVal,
             modalNumVal: this.state.modalNumVal,
-            currentUser:this.state.currentUser
+            shopkeeperID: this.state.currentUser,
+            categoryID: this.props.category_ID.categoryID
         }
-        console.log(productObj,"=========")
+
         const categoryID = this.props.category_ID.categoryID
 
-
-
-
-        if (productObj.categoryVal !== "Selecte Category" && productObj.productNameVal !== "" && productObj.priceVal !== "" &&  productObj.modalNumVal !== ""  && this.state.coverImageUrl !== "") {
+        if (productObj.categoryVal !== "Selecte Category" && productObj.productNameVal !== "" && productObj.priceVal !== "" && productObj.modalNumVal !== "" && this.state.coverImageUrl !== "") {
             firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
+                    console.log(productObj, "=========")
                     const storageRef = firebase.storage().ref('/');
                     var file = this.state.coverImageUrl;
                     var metadata = {
-                        contentType: 'image/jpeg'
+                        contentType: 'image/jpeg' | 'image/png'
                     };
 
                     var uploadTask = storageRef.child('images/' + Date.now()).put(file, metadata);
@@ -188,6 +185,7 @@ class AddProduct extends Component {
                                     <Text style={styles.SelectedCategoryText} >
                                         {this.state.SelectedCategory}
                                     </Text>
+                                    <Icon name="arrow-dropdown" style={{ color: "#00bcd4", fontSize: 30 }} />
                                 </TouchableOpacity>
                             </View>
 
@@ -218,7 +216,7 @@ class AddProduct extends Component {
                                     placeholderTextColor="#00bcd4"
                                     placeholder="Price" />
                             </View>
-                           
+
                             {(this.state.coverImageUrl == "") ?
                                 <View style={styles.imagePickerCntainer} >
                                     <TouchableOpacity
@@ -442,7 +440,10 @@ const styles = StyleSheet.create({
     SelectedCategoryBtn: {
         flex: 1,
         paddingLeft: 10,
-        justifyContent: "center"
+        paddingRight: 10,
+        justifyContent: "space-between",
+        flexDirection:"row",
+        alignItems:"center"
     },
     SelectedCategoryText: {
         fontSize: 19,

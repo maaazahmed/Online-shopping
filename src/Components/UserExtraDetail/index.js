@@ -39,10 +39,9 @@ export default class ExtraDetails extends Component {
                         Email:obj.Email,
                     }
                     database.child(`user/${user.uid}/moreDetails`).set(moreDetails).then(()=>{
-                        console.log(moreDetails,"--------")
-                        
-                    }).catch(()=>{
-                        console.log("Error")
+                        this.props.navigation.navigate("Dashboard")
+                    }).catch((error)=>{
+                        console.log(error)
                     })
                 })
             }

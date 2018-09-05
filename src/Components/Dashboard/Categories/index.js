@@ -15,7 +15,7 @@ import { Container, Content, Card, Text, Icon } from 'native-base';
 // import Icons from 'react-native-vector-icons/dist/FontAwesome';
 // import { Dialog } from 'react-native-simple-dialogs';
 import { connect } from "react-redux"
-import { categoryData, coverImageUrl } from "../../../store/action/action"
+import { categoryData, coverImageUrl, categoryID } from "../../../store/action/action"
 
 
 
@@ -44,11 +44,15 @@ class CategoryCardComponent extends Component {
 
     ViewCategory(value, index) {
         let productsArr = []
+        let valueProducts = value.Products
         for (let key in value.Products) {
-            productsArr.push(value.Products[key])
+            productsArr.push({...valueProducts[key], key })
+            // console.log(key)
         }
         this.props.categoryData(productsArr)
         this.props.coverImageUrl(value.coverImageUrl)
+        this.props.categoryID(value.key)
+        // console.log(productsArr,"===========")
         this.props.navigation.navigate("ProductComponent")
     }
 
@@ -64,7 +68,7 @@ class CategoryCardComponent extends Component {
                 <Content>
                     <View style={styles.categoryGridComponent} >
                         {this.props.catogery_List.categoryList.map((value, index) => {
-                            
+
                             return (
                                 <TouchableOpacity key={index}
                                     onPress={this.ViewCategory.bind(this, value, index)}
@@ -261,6 +265,9 @@ const mapDispatchToProp = (dispatch) => {
         },
         coverImageUrl: (data) => {
             dispatch(coverImageUrl(data))
+        },
+        categoryID: (data) => {
+            dispatch(categoryID(data))
         },
     };
 };

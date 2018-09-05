@@ -15,7 +15,7 @@ import { Content, Card, Icon } from 'native-base';
 import firebase from "react-native-firebase";
 import { BarIndicator } from 'react-native-indicators';
 import { connect } from "react-redux"
-import { categoryID } from "../../../store/action/action"
+import { categoryID, shopkeeperID } from "../../../store/action/action"
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
 
@@ -28,7 +28,7 @@ class AddProduct extends Component {
         this.state = {
             // categoryVal: "",
             SelectedCategory: "Selecte Category",
-            sellerNameVal: "",
+            sellerNameVal: "Shopkeeper",
             productNameVal: "",
             priceVal: "",
             discriptionVal: "",
@@ -36,6 +36,7 @@ class AddProduct extends Component {
             isLoader: false,
             dialogVisible: false,
             modalVisible: false,
+            sellerDialogVisible: false,
             coverImageUrl: "",
 
         }
@@ -51,22 +52,48 @@ class AddProduct extends Component {
             }
         ).then(() => this.setState({ permit: true }))
         /*PermissionsAndroid***************************************************/
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // database.child(`user${user.uid}`)
+                this.setState({
+                    currentUser: user.uid
+                })
+            }
+        });
 
     }
+    // showSeller
 
     showCategory() {
         this.setState({
             dialogVisible: true,
         })
     }
+    showSeller() {
+        this.setState({
+            sellerDialogVisible: true,
+        })
+    }
+
+
+
     selecteCategory(value, index) {
         this.setState({
             SelectedCategory: value.newCategoryVal,
             dialogVisible: false,
         })
         this.props.categoryID(value.key)
-        console.log(value.key)
     }
+
+    selecteShopkeepr(value, index) {
+        this.setState({
+            sellerNameVal: value.Username,
+            sellerDialogVisible: false,
+        })
+        this.props.shopkeeperID(value.key)
+    }
+
+    sellerDialogVisible
 
 
 
@@ -88,20 +115,21 @@ class AddProduct extends Component {
         })
     }
     add_PRODUCT() {
+
         let productObj = {
             categoryVal: this.state.SelectedCategory,
             sellerNameVal: this.state.sellerNameVal,
             productNameVal: this.state.productNameVal,
             priceVal: this.state.priceVal,
-            discriptionVal: this.state.discriptionVal,
             modalNumVal: this.state.modalNumVal,
+            categoryID: this.props.category_ID.categoryID,
+            shopkeeperID: this.props.sellerID.shopkeeperID,
+            adminID: this.state.currentUser,
         }
         const categoryID = this.props.category_ID.categoryID
 
-    console.log(categoryID,"===============")
 
-
-        if (productObj.categoryVal !== "Selecte Category" && productObj.sellerNameVal !== "" && productObj.productNameVal !== "" && productObj.priceVal !== "" && productObj.discriptionVal !== ""   && productObj.modalNumVal !== ""  && this.state.coverImageUrl !== "") {
+        if (productObj.categoryVal !== "Selecte Category" && productObj.sellerNameVal !== "" && productObj.productNameVal !== "" && productObj.priceVal !== "" && productObj.modalNumVal !== "" && this.state.coverImageUrl !== "") {
             firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
                     const storageRef = firebase.storage().ref('/');
@@ -134,7 +162,7 @@ class AddProduct extends Component {
                             database.child(`Categorys/${categoryID}/Products/`).push(productObj)
                             this.setState({
                                 categoryVal: "Selecte Category",
-                                sellerNameVal: "",
+                                sellerNameVal: "Shopkeeper",
                                 productNameVal: "",
                                 priceVal: "",
                                 discriptionVal: "",
@@ -175,17 +203,20 @@ class AddProduct extends Component {
                                     <Text style={styles.SelectedCategoryText} >
                                         {this.state.SelectedCategory}
                                     </Text>
+                                    <Icon name="arrow-dropdown" style={{ color: "#00bcd4", fontSize: 30 }} />
                                 </TouchableOpacity>
                             </View>
 
-                            <View style={styles.TextInputView}>
-                                <TextInput
-                                    style={styles.TextInput}
-                                    underlineColorAndroid="transparent"
-                                    placeholderTextColor="#00bcd4"
-                                    value={this.state.sellerNameVal}
-                                    onChangeText={(sellerNameVal) => this.setState({ sellerNameVal })}
-                                    placeholder="Seller" />
+                            <View style={styles.categoryModal} >
+                                <TouchableOpacity
+                                    onPress={this.showSeller.bind(this)}
+                                    activeOpacity={0.6}
+                                    style={styles.SelectedCategoryBtn} >
+                                    <Text style={styles.SelectedCategoryText} >
+                                        {this.state.sellerNameVal}
+                                    </Text>
+                                    <Icon name="arrow-dropdown" style={{ color: "#00bcd4", fontSize: 30 }} />
+                                </TouchableOpacity>
                             </View>
                             <View style={styles.TextInputView}>
                                 <TextInput
@@ -214,18 +245,6 @@ class AddProduct extends Component {
                                     placeholderTextColor="#00bcd4"
                                     placeholder="Price" />
                             </View>
-                            <View style={[styles.TextInputView]}>
-                                <TextInput
-                                    value={this.state.discriptionVal}
-                                    onChangeText={(discriptionVal) => this.setState({ discriptionVal })}
-                                    style={[styles.TextInput]}
-                                    underlineColorAndroid="transparent"
-                                    multiline={true}
-                                    placeholderTextColor="#00bcd4"
-                                    placeholder="Discription" />
-                            </View>
-
-
                             {(this.state.coverImageUrl == "") ?
                                 <View style={styles.imagePickerCntainer} >
                                     <TouchableOpacity
@@ -305,6 +324,47 @@ class AddProduct extends Component {
                                     </View>
                                 </View>
                             </Modal>
+
+
+
+
+                            <Modal
+                                animationType="fade"
+                                transparent={true}
+                                visible={this.state.sellerDialogVisible}
+                                onTouchOutside={() => this.setState({ sellerDialogVisible: false })} >
+                                <View style={styles.DialogContainer} >
+                                    <View style={styles.DialogContent} >
+                                        < View style={styles.ProductCancleBtnView} >
+                                            {/* <TouchableOpacity
+                                                onPress={this.ProductCancle.bind(this)}
+                                                style={styles.ProductCancleBtn} >
+                                                <Icon style={{ color: "#fff" }}
+                                                    size={30} name='md-close' />
+                                            </TouchableOpacity> */}
+                                        </View >
+                                        <ScrollView>
+                                            {this.props.seller_list.sellerList.map((value, index) => {
+                                                return (
+                                                    <TouchableOpacity
+                                                        onPress={this.selecteShopkeepr.bind(this, value, index)}
+                                                        activeOpacity={0.6}
+                                                        style={styles.categoryList}
+                                                        key={index} >
+                                                        <Text style={styles.categoryListText} >
+                                                            {value.Username}
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                )
+                                            })}
+                                        </ScrollView>
+                                    </View>
+                                </View>
+                            </Modal>
+
+
+
+
                             <Modal
                                 animationType="slide"
                                 transparent={true}
@@ -330,6 +390,7 @@ class AddProduct extends Component {
                                     }
                                 </View>
                             </Modal>
+
                         </View>
                     </Content>
                 </ImageBackground>
@@ -449,7 +510,10 @@ const styles = StyleSheet.create({
     SelectedCategoryBtn: {
         flex: 1,
         paddingLeft: 10,
-        justifyContent: "center"
+        paddingRight: 10,
+        justifyContent: "space-between",
+        flexDirection: "row",
+        alignItems: "center"
     },
     SelectedCategoryText: {
         fontSize: 19,
@@ -558,12 +622,17 @@ const mapStateToProp = (state) => {
     return ({
         catogery_List: state.root,
         category_ID: state.root,
+        seller_list: state.root,
+        sellerID: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
     return {
         categoryID: (data) => {
             dispatch(categoryID(data))
+        },
+        shopkeeperID: (data) => {
+            dispatch(shopkeeperID(data))
         },
     };
 };

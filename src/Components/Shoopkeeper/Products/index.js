@@ -65,7 +65,8 @@ class Products extends Component {
             let myProduct = []
             categoryArr.map((val) => {
                 for (let key in val.Products) {
-                    if (val.Products[key].currentUser === this.state.currentUser) {
+                    console.log(val.Products[key].shopkeeperID ,"===", this.state.currentUser)
+                    if (val.Products[key].shopkeeperID === this.state.currentUser) {
                         myProduct.push({ ...val.Products[key], key })
                     }
                 }

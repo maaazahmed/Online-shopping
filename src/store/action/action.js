@@ -64,3 +64,37 @@ export const myProducts = (data) => {
         })
     }
 }
+
+
+
+export const selectedProducts = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.SELECTED_PRODUCTS,
+            payload: data
+        })
+    }
+}
+
+
+export const sellerList = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.SELLER_LIST,
+            payload: data
+        })
+    }
+}
+
+
+export const shopkeeperID = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.SHOPKEEPER_ID,
+            payload: data
+        })
+    }
+}
+
+
+// 
