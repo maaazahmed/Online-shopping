@@ -27,13 +27,19 @@ class ProductComponent extends Component {
         super(props);
         this.state = {
             scrollY: new Animated.Value(0),
-            currentUser: ""
+            currentUser: "",
+            nextButtonFlge: false
         };
     }
 
 
     selectProduct(value, index) {
         selectProductArr.push(value)
+        if (selectProductArr.length > 0) {
+            this.setState({
+                nextButtonFlge: true
+            })
+        }
         this.props.selectedProducts(selectProductArr)
     }
 
@@ -57,12 +63,16 @@ class ProductComponent extends Component {
             this.props.navigation.navigate("SignIn")
         }
         else {
+
+
             let selectProductList = this.props.selectProductList.selectedProduct
             let categoryID = this.props.categoryID.categoryID;
             for (var i = 0; i < selectProductList.length; i++) {
                 selectProductList[i].currentByerData = currentUser;
                 database.child(`Categorys/${categoryID}/Products/${selectProductList[i].key}/SoldProducts`).push(selectProductList[i]).then((suc) => {
-                    console.log(suc)
+                    this.setState({
+                        nextButtonFlge: false
+                    })
                 }).catch((err) => {
                     console.log(err)
                 })
@@ -129,13 +139,14 @@ class ProductComponent extends Component {
                     </View>
                 </ScrollView>
 
-
-                <TouchableOpacity onPress={this.completeProductSelection.bind(this)} activeOpacity={0.5} style={styles.nextButton} >
-                    <View style={styles.nextButtonTouchableOpacity} >
-                        <Text style={styles.nextText} >Next</Text>
-                        <Icon name='arrow-forward' style={{ color: "#fff" }} />
-                    </View>
-                </TouchableOpacity>
+                {(this.state.nextButtonFlge) ?
+                    <TouchableOpacity onPress={this.completeProductSelection.bind(this)} activeOpacity={0.5} style={styles.nextButton} >
+                        <View style={styles.nextButtonTouchableOpacity} >
+                            <Text style={styles.nextText} >Next</Text>
+                            <Icon name='arrow-forward' style={{ color: "#fff" }} />
+                        </View>
+                    </TouchableOpacity>
+                    : null}
 
 
 

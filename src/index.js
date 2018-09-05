@@ -9,7 +9,8 @@ import {
     TestComponent,
     ProductComponent,
     ShopkeeperDashboard,
-    ExtraDetails
+    ExtraDetails,
+    Vieworders
 } from "./Components/index";
 
 
@@ -69,8 +70,14 @@ const Router = StackNavigator({
             header: null
         }
     },
+    Vieworders: {
+        screen: Vieworders,
+        navigationOptions: {
+            header: null
+        }
+    },
 },{
-    initialRouteName:"SignIn"
+    initialRouteName:"Vieworders"
 })
 
 export default Router

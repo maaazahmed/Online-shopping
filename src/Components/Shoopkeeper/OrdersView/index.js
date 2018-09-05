@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Card, Icon } from 'native-base';
 import { connect } from "react-redux"
-import { selectedProducts } from "../../store/action/action"
+import { selectedProducts } from "../../../store/action/action"
 import firebase from "react-native-firebase"
 
 
@@ -22,7 +22,7 @@ const HEADER_MIN_HEIGHT = 60;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 let selectProductArr = []
 const database = firebase.database().ref("/")
-class ProductComponent extends Component {
+class Vieworders extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -46,28 +46,52 @@ class ProductComponent extends Component {
                     this.setState({
                         currentUser: obj
                     })
+
+                    database.child("Categorys").on("value", (snap) => {
+                        let obj = snap.val()
+                        let productArr = []
+                        for (let key in obj) {
+                            productArr.push({ ...obj[key], key })
+                        }
+
+                        let SoldProductsArr = []
+                        for (var i = 0; i < productArr.length; i++) {
+                            for (let key2 in productArr[i].Products) {
+                                // console.log(productArr[i].Products[key2].SoldProducts,"=====")
+                                SoldProductsArr.push({ ...productArr[i].Products[key2], key2 })
+                            }
+                            let SoldProductsListArry = []
+                            for (var j = 0; j < SoldProductsArr.length; j++) {
+                                // console.log(SoldProductsArr[j].SoldProducts,"===========")
+                                for (let key3 in SoldProductsArr[j].SoldProducts) {
+                                    SoldProductsListArry.push({ ...SoldProductsArr[j].SoldProducts[key3], key3 })
+                                }
+                            }
+                            console.log(SoldProductsListArry)
+                        }
+                    })
                 })
             }
         })
     }
 
     completeProductSelection() {
-        let currentUser = this.state.currentUser
-        if (this.state.currentUser === "") {
-            this.props.navigation.navigate("SignIn")
-        }
-        else {
-            let selectProductList = this.props.selectProductList.selectedProduct
-            let categoryID = this.props.categoryID.categoryID;
-            for (var i = 0; i < selectProductList.length; i++) {
-                selectProductList[i].currentByerData = currentUser;
-                database.child(`Categorys/${categoryID}/Products/${selectProductList[i].key}/SoldProducts`).push(selectProductList[i]).then((suc) => {
-                    console.log(suc)
-                }).catch((err) => {
-                    console.log(err)
-                })
-            }
-        }
+        //     let currentUser = this.state.currentUser
+        //     if (this.state.currentUser === "") {
+        //         this.props.navigation.navigate("SignIn")
+        //     }
+        //     else {
+        //         let selectProductList = this.props.selectProductList.selectedProduct
+        //         let categoryID = this.props.categoryID.categoryID;
+        //         for (var i = 0; i < selectProductList.length; i++) {
+        //             selectProductList[i].currentByerData = currentUser;
+        //             database.child(`Categorys/${categoryID}/Products/${selectProductList[i].key}/SoldProducts`).push(selectProductList[i]).then((suc) => {
+        //                 console.log(suc)
+        //             }).catch((err) => {
+        //                 console.log(err)
+        //             })
+        //         }
+        //     }
     }
 
 
@@ -101,27 +125,7 @@ class ProductComponent extends Component {
                         {categoryData.map((value, index) => {
                             return (
                                 <View key={index}>
-                                    <Card style={styles.categoryCard} >
-                                        <View style={styles.CardViewImage} >
-                                            <Image
-                                                resizeMode="contain"
-                                                source={{ uri: value.coverImageUrl }}
-                                                style={styles.ImageBackground} />
-                                        </View>
-                                        <View style={styles.producDetailView} >
-                                            <View style={styles.producDetaContain} >
-                                                <Text style={styles.nameText} >{value.productNameVal}</Text>
-                                                <Text style={styles.modleText} >{value.modalNumVal}</Text>
-                                                <Text style={styles.priceText} >{value.priceVal}</Text>
-                                            </View>
-                                            <TouchableOpacity
-                                                onPress={this.selectProduct.bind(this, value, index)}
-                                                activeOpacity={0.5}
-                                                style={styles.bayBtnView}>
-                                                <Icon name='add' style={{ color: "#00bcd4" }} />
-                                            </TouchableOpacity>
-                                        </View>
-                                    </Card>
+
                                 </View>
                             )
                         })}
@@ -130,12 +134,12 @@ class ProductComponent extends Component {
                 </ScrollView>
 
 
-                <TouchableOpacity onPress={this.completeProductSelection.bind(this)} activeOpacity={0.5} style={styles.nextButton} >
+                {/* <TouchableOpacity onPress={this.completeProductSelection.bind(this)} activeOpacity={0.5} style={styles.nextButton} >
                     <View style={styles.nextButtonTouchableOpacity} >
                         <Text style={styles.nextText} >Next</Text>
                         <Icon name='arrow-forward' style={{ color: "#fff" }} />
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
 
 
@@ -296,4 +300,4 @@ const mapDispatchToProp = (dispatch) => {
         },
     };
 };
-export default connect(mapStateToProp, mapDispatchToProp)(ProductComponent)
+export default connect(mapStateToProp, mapDispatchToProp)(Vieworders)
