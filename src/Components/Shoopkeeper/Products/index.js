@@ -76,8 +76,11 @@ class Products extends Component {
 
     }
 
-    viewOrders(){
-      this.props.navigation.navigate("Vieworders")
+    viewOrders(value) {
+        for(let key in value.SoldProducts){
+            console.log(value.SoldProducts[key],"////////////////////")
+        }
+        // this.props.navigation.navigate("Vieworders")
     }
 
 
@@ -107,9 +110,9 @@ class Products extends Component {
                                                 <Text style={styles.priceText} >{value.priceVal}</Text>
                                             </View>
                                             <TouchableOpacity
-                                            onPress={this.viewOrders.bind(this)}
-                                             activeOpacity={0.5} style={styles.bayBtnView}   >
-                                                <Icon name='clipboard' style={{ color: "#00bcd4",fontSize:35  }} />
+                                                onPress={this.viewOrders.bind(this, value)}
+                                                activeOpacity={0.5} style={styles.bayBtnView}   >
+                                                <Icon name='clipboard' style={{ color: "#00bcd4", fontSize: 35 }} />
                                             </TouchableOpacity>
                                         </View>
                                     </Card>
@@ -147,7 +150,7 @@ const styles = StyleSheet.create({
         elevation: 0,
         marginTop: 1,
     },
- 
+
     CardViewImage: {
         flex: 2
     },
