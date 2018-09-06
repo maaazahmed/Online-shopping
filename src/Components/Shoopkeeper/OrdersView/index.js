@@ -150,7 +150,7 @@ class Vieworders extends Component {
                             { opacity: imageOpacity, transform: [{ translateY: imageTranslate }] }]}
                         source={{ uri: this.props.categoryCoverImageUrl.coverImage }} />
                     <TouchableOpacity
-                        onPress={() => { this.props.navigation.navigate("Dashboard") }}
+                        onPress={() => { this.props.navigation.navigate("ShopkeeperDashboard") }}
                         activeOpacity={0.6}  >
                         <View style={{ backgroundColor: "trancparant", padding: 17, }} >
                             <Icon name='arrow-back' style={{ color: "#fff" }} />

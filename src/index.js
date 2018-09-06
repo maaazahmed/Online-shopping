@@ -77,7 +77,7 @@ const Router = StackNavigator({
         }
     },
 },{
-    initialRouteName:"Vieworders"
+    initialRouteName:"SignIn"
 })
 
 export default Router

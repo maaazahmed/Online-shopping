@@ -76,6 +76,10 @@ class Products extends Component {
 
     }
 
+    viewOrders(){
+      this.props.navigation.navigate("Vieworders")
+    }
+
 
 
 
@@ -102,7 +106,9 @@ class Products extends Component {
                                                 <Text style={styles.modleText} >{value.modalNumVal}</Text>
                                                 <Text style={styles.priceText} >{value.priceVal}</Text>
                                             </View>
-                                            <TouchableOpacity activeOpacity={0.5} style={styles.bayBtnView}   >
+                                            <TouchableOpacity
+                                            onPress={this.viewOrders.bind(this)}
+                                             activeOpacity={0.5} style={styles.bayBtnView}   >
                                                 <Icon name='clipboard' style={{ color: "#00bcd4",fontSize:35  }} />
                                             </TouchableOpacity>
                                         </View>

@@ -49,7 +49,7 @@ class ShopkeeperDashboard extends Component {
                         activeTextStyle={{ color: "#fff" }}
                         textStyle={{ color: '#f2f2f2' }}
                         heading="PRODUCT">
-                        <Products />
+                        <Products navigation={this.props.navigation} />
                     </Tab>
                     <Tab
                         tabStyle={{ backgroundColor: '#00bcd4' }}
@@ -57,7 +57,7 @@ class ShopkeeperDashboard extends Component {
                         activeTextStyle={{ color: "#fff" }}
                         textStyle={{ color: '#f2f2f2' }}
                         heading="ADD PRODUCT">
-                        <AddProduct />
+                        <AddProduct navigation={this.props.navigation} />
                     </Tab>
                 </Tabs>
             </Container>
