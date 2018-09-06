@@ -13,7 +13,7 @@ import {
 import { Card, CardItem, Thumbnail, Icon, Left, Body, Right } from 'native-base';
 
 import { connect } from "react-redux"
-import { selectedProducts } from "../../../store/action/action"
+import { selectedProducts, orderDetailsAction } from "../../../store/action/action"
 import firebase from "react-native-firebase"
 
 
@@ -77,24 +77,8 @@ class Vieworders extends Component {
         })
     }
 
-    orderDetails() {
-        
-        //     let currentUser = this.state.currentUser
-        //     if (this.state.currentUser === "") {
-        //         this.props.navigation.navigate("SignIn")
-        //     }
-        //     else {
-        //         let selectProductList = this.props.selectProductList.selectedProduct
-        //         let categoryID = this.props.categoryID.categoryID;
-        //         for (var i = 0; i < selectProductList.length; i++) {
-        //             selectProductList[i].currentByerData = currentUser;
-        //             database.child(`Categorys/${categoryID}/Products/${selectProductList[i].key}/SoldProducts`).push(selectProductList[i]).then((suc) => {
-        //                 console.log(suc)
-        //             }).catch((err) => {
-        //                 console.log(err)
-        //             })
-        //         }
-        //     }
+    orderDetails(orderVal, index) {
+        this.props.orderDetailsAction(orderVal)
     }
 
 
@@ -131,23 +115,23 @@ class Vieworders extends Component {
                             data={orderList}
                             renderItem={({ item, index }) => {
                                 return (
-                                    <TouchableOpacity 
-                                    onPress={this.orderDetails.bind(this)}
-                                    activeOpacity={0.5}>    
-                                    <Card style={styles.orderCardContainer} key={item.key} >
-                                        <CardItem>
-                                            <Left>
-                                                <Thumbnail source={{ uri: item.currentByerData.profilePic }} />
-                                                <Body>
-                                                    <Text>NativeBase</Text>
-                                                    <Text note>GeekyAnts</Text>
-                                                </Body>
-                                            </Left>
-                                            <Right>
-                                                <Icon name="arrow-forward" style={{color:"#00bcd4", fontSize:25}}  />
-                                            </Right>
-                                        </CardItem>
-                                    </Card>
+                                    <TouchableOpacity
+                                        onPress={this.orderDetails.bind(this, item, index)}
+                                        activeOpacity={0.5}>
+                                        <Card style={styles.orderCardContainer} key={item.key} >
+                                            <CardItem>
+                                                <Left>
+                                                    <Thumbnail source={{ uri: item.currentByerData.profilePic }} />
+                                                    <Body>
+                                                        <Text>NativeBase</Text>
+                                                        <Text note>GeekyAnts</Text>
+                                                    </Body>
+                                                </Left>
+                                                <Right>
+                                                    <Icon name="arrow-forward" style={{ color: "#00bcd4", fontSize: 25 }} />
+                                                </Right>
+                                            </CardItem>
+                                        </Card>
                                     </TouchableOpacity>
 
                                 )
@@ -239,6 +223,9 @@ const mapDispatchToProp = (dispatch) => {
     return {
         selectedProducts: (data) => {
             dispatch(selectedProducts(data))
+        },
+        orderDetailsAction: (data) => {
+            dispatch(orderDetailsAction(data))
         },
     };
 };

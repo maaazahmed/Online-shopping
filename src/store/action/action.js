@@ -108,4 +108,13 @@ export const orderList = (data, coverImageUrl) => {
 }
 
 
-// 
+export const orderDetailsAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.ORDER_DETAILS,
+            payload: data, 
+        })
+    }
+}
+
+
