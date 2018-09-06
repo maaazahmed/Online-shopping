@@ -8,8 +8,10 @@ import {
     View,
     TouchableOpacity,
     Dimensions,
+    FlatList
 } from 'react-native';
-import { Card, Icon } from 'native-base';
+import { Card, CardItem, Thumbnail, Icon, Left, Body, Right } from 'native-base';
+
 import { connect } from "react-redux"
 import { selectedProducts } from "../../../store/action/action"
 import firebase from "react-native-firebase"
@@ -75,7 +77,8 @@ class Vieworders extends Component {
         })
     }
 
-    completeProductSelection() {
+    orderDetails() {
+        
         //     let currentUser = this.state.currentUser
         //     if (this.state.currentUser === "") {
         //         this.props.navigation.navigate("SignIn")
@@ -97,8 +100,10 @@ class Vieworders extends Component {
 
 
 
+
+
     render() {
-        let categoryData = this.props.catogeryData.categoryData
+        let orderList = this.props.orderList.orderList
         const headerHeight = this.state.scrollY.interpolate({
             inputRange: [0, HEADER_SCROLL_DISTANCE],
             outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
@@ -122,33 +127,43 @@ class Vieworders extends Component {
                     onScroll={Animated.event(
                         [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }])}>
                     <View style={styles.categoryGridComponent} >
-                        {categoryData.map((value, index) => {
-                            return (
-                                <View key={index}>
+                        <FlatList
+                            data={orderList}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <TouchableOpacity 
+                                    onPress={this.orderDetails.bind(this)}
+                                    activeOpacity={0.5}>    
+                                    <Card style={styles.orderCardContainer} key={item.key} >
+                                        <CardItem>
+                                            <Left>
+                                                <Thumbnail source={{ uri: item.currentByerData.profilePic }} />
+                                                <Body>
+                                                    <Text>NativeBase</Text>
+                                                    <Text note>GeekyAnts</Text>
+                                                </Body>
+                                            </Left>
+                                            <Right>
+                                                <Icon name="arrow-forward" style={{color:"#00bcd4", fontSize:25}}  />
+                                            </Right>
+                                        </CardItem>
+                                    </Card>
+                                    </TouchableOpacity>
 
-                                </View>
-                            )
-                        })}
-
+                                )
+                            }}
+                            keyExtractor={(item, index) => {
+                                return item.key
+                            }}
+                        />
                     </View>
                 </ScrollView>
-
-
-                {/* <TouchableOpacity onPress={this.completeProductSelection.bind(this)} activeOpacity={0.5} style={styles.nextButton} >
-                    <View style={styles.nextButtonTouchableOpacity} >
-                        <Text style={styles.nextText} >Next</Text>
-                        <Icon name='arrow-forward' style={{ color: "#fff" }} />
-                    </View>
-                </TouchableOpacity> */}
-
-
-
                 <Animated.View style={[styles.header, { height: headerHeight }]}>
                     <Animated.Image
                         style={[
                             styles.backgroundImage,
                             { opacity: imageOpacity, transform: [{ translateY: imageTranslate }] }]}
-                        source={{ uri: this.props.categoryCoverImageUrl.coverImage }} />
+                        source={{ uri: this.props.coverImageUrl.coverImageUrl }} />
                     <TouchableOpacity
                         onPress={() => { this.props.navigation.navigate("ShopkeeperDashboard") }}
                         activeOpacity={0.6}  >
@@ -169,66 +184,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     categoryGridComponent: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        margin: 0,
         marginTop: HEADER_MAX_HEIGHT
     },
-    categoryCard: {
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height / 2,
-        backgroundColor: "#fff",
-        marginBottom: 0,
-        elevation: 0,
-        marginTop: 1,
-    },
-    CardViewImage: {
-        flex: 2
-    },
-    ImageBackground: {
-        height: "90%",
-        height: "90%",
-        justifyContent: "flex-start",
-        margin: "3%",
-    },
-
-    producDetailView: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        padding: "2.5%",
-        alignContent: "center",
-        flex: 1,
-    },
-    producDetaContain: {
-        justifyContent: "center"
-    },
-    nameText: {
-        color: "gray",
-        fontSize: 15,
-
-    },
-    priceText: {
-        color: "#00b91f",
-        fontSize: 18,
-        fontStyle: "italic"
-    },
-    modleText: {
-        color: "#000",
-        fontSize: 20,
-    },
-    bayBtnView: {
-        justifyContent: "center",
-        width: "8%",
-        alignContent: "center",
-        alignSelf: "center",
-        alignItems: "center",
-        padding: 4,
-        borderWidth: .5,
-        borderColor: "#00bcd4",
-        borderRadius: 4
-    },
-
     header: {
         position: 'absolute',
         top: 0,
@@ -255,30 +212,13 @@ const styles = StyleSheet.create({
         height: HEADER_MAX_HEIGHT,
         resizeMode: 'cover',
     },
-    nextButton: {
-        elevation: 5,
-        borderRadius: 30,
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        right: 25,
-        bottom: 30,
-        width: '25%'
 
-    },
-    nextButtonTouchableOpacity: {
-        flex: 1,
-        backgroundColor: "#00bcd4",
-        padding: 10,
-        borderRadius: 30,
-        flexDirection: "row",
-        justifyContent: "space-around",
-        width: '100%'
-    },
-    nextText: {
-        fontSize: 20,
-        color: "#fff"
+    orderCardContainer: {
+        marginTop: 0,
+        marginBottom: 0,
+        elevation: 0
     }
+
 });
 
 
@@ -291,6 +231,8 @@ const mapStateToProp = (state) => {
         categoryCoverImageUrl: state.root,
         selectProductList: state.root,
         categoryID: state.root,
+        orderList: state.root,
+        coverImageUrl: state.root
     });
 };
 const mapDispatchToProp = (dispatch) => {

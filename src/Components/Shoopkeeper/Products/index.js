@@ -16,7 +16,7 @@ import { Container, Content, Card, Text, Icon } from 'native-base';
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
 import { Dialog } from 'react-native-simple-dialogs';
 import { connect } from "react-redux"
-import { myProducts } from "../../../store/action/action"
+import { myProducts, orderList } from "../../../store/action/action"
 
 
 
@@ -78,12 +78,16 @@ class Products extends Component {
 
 
     viewOrders(value) {
+        console.log(value)
         let SoldProductsArr = [];
-        for(let key in value.SoldProducts){
+        for (let key in value.SoldProducts) {
             SoldProductsArr.push({ ...value.SoldProducts[key], key })
-            console.log(value.SoldProducts[key],"////////////////////")
         }
-        // this.props.navigation.navigate("Vieworders")
+       let orderArr = SoldProductsArr
+
+        console.log(orderArr, "=================")
+         this.props.orderList(orderArr, value.coverImageUrl)
+        this.props.navigation.navigate("Vieworders")
     }
 
 
@@ -212,6 +216,9 @@ const mapDispatchToProp = (dispatch) => {
     return {
         myProducts: (data) => {
             dispatch(myProducts(data))
+        },
+        orderList: (data, coverImageUrl) => {
+            dispatch(orderList(data, coverImageUrl))
         },
     };
 };

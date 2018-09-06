@@ -97,4 +97,15 @@ export const shopkeeperID = (data) => {
 }
 
 
+export const orderList = (data, coverImageUrl) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.ORDER_LIST,
+            payload: data, 
+            coverImageUrl:coverImageUrl
+        })
+    }
+}
+
+
 // 
