@@ -78,7 +78,9 @@ class Vieworders extends Component {
     }
 
     orderDetails(orderVal, index) {
-        this.props.orderDetailsAction(orderVal)
+        this.props.orderDetailsAction(orderVal) 
+        this.props.navigation.navigate("OrderDetails")
+
     }
 
 

@@ -84,7 +84,6 @@ class Products extends Component {
             SoldProductsArr.push({ ...value.SoldProducts[key], key })
         }
        let orderArr = SoldProductsArr
-
         console.log(orderArr, "=================")
          this.props.orderList(orderArr, value.coverImageUrl)
         this.props.navigation.navigate("Vieworders")

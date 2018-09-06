@@ -10,7 +10,8 @@ import {
     ProductComponent,
     ShopkeeperDashboard,
     ExtraDetails,
-    Vieworders
+    Vieworders,
+    OrderDetails
 } from "./Components/index";
 
 
@@ -72,6 +73,12 @@ const Router = StackNavigator({
     },
     Vieworders: {
         screen: Vieworders,
+        navigationOptions: {
+            header: null
+        }
+    },
+    OrderDetails: {
+        screen: OrderDetails,
         navigationOptions: {
             header: null
         }
