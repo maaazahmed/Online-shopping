@@ -6,9 +6,17 @@ import { View, StyleSheet, TouchableOpacity } from "react-native"
 
 
 class OrderDetails extends Component {
+
+
+    accseOrder(orderDetails) {
+        console.log(orderDetails, "============")
+    }
+
+
+
+
     render() {
         let orderDetails = this.props.order_Detail.orderDetails
-        console.log(this.props.order_Detail.orderDetails)
         return (
             <Container>
                 <Header style={{ backgroundColor: '#00bcd4', justifyContent: "flex-start", alignItems: "center" }}>
@@ -55,7 +63,9 @@ class OrderDetails extends Component {
                 </View>
                 <View style={{ flex: 1 }} >
                     <View style={styles.accseptAndRejectBtn} >
-                        <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
+                        <TouchableOpacity
+                            onPress={this.accseOrder.bind(this, orderDetails)}
+                            activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
                             <Text style={{ color: "#fff", fontSize: 20 }} >
                                 Accept
                            </Text>
