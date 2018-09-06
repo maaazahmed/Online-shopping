@@ -69,13 +69,13 @@ class ProductComponent extends Component {
             let categoryID = this.props.categoryID.categoryID;
             for (var i = 0; i < selectProductList.length; i++) {
                 selectProductList[i].currentByerData = currentUser;
+                delete selectProductList[i].SoldProducts; 
                 database.child(`Categorys/${categoryID}/Products/${selectProductList[i].key}/SoldProducts`).push(selectProductList[i]).then((suc) => {
                     this.setState({
                         nextButtonFlge: false
                     })
-                }).catch((err) => {
-                    console.log(err)
-                })
+                    selectProductArr = []
+                }).catch((err) => {})
             }
         }
     }
