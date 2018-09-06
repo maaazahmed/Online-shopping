@@ -12,7 +12,7 @@ class OrderDetails extends Component {
         return (
             <Container>
                 <Header style={{ backgroundColor: '#00bcd4', justifyContent: "flex-start", alignItems: "center" }}>
-                    <View style={styles.HeaderContainer} >
+                    <View accessible={true} style={styles.HeaderContainer} >
                         <TouchableOpacity style={styles.IconTouchableOpacity} activeOpacity={0.5}>
                             <Icon style={{ color: "#fff", fontSize: 23 }} name='arrow-back' />
                         </TouchableOpacity>
@@ -20,15 +20,13 @@ class OrderDetails extends Component {
                             <Title>{this.props.order_Detail.orderDetails.productNameVal}</Title>
                         </View>
                     </View>
-
                 </Header>
-
-                <Content>
+                <View style={styles.ContentView} >
                     <View style={styles.imgeContainer} >
                         <View style={styles.ThumbnailView} >
                             <Thumbnail square large source={{ uri: this.props.order_Detail.orderDetails.currentByerData.profilePic }} />
                         </View>
-                        <View style={styles.headingUsernameView} >
+                        <View>
                             <Text style={styles.headingUsernameText}>{orderDetails.currentByerData.Username}</Text>
                         </View>
                     </View>
@@ -54,7 +52,21 @@ class OrderDetails extends Component {
                             </Left>
                         </ListItem>
                     </List>
-                </Content>
+                </View>
+                <View style={{ flex: 1 }} >
+                    <View style={styles.accseptAndRejectBtn} >
+                        <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
+                            <Text style={{ color: "#fff", fontSize: 20 }} >
+                                Accept
+                           </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
+                            <Text style={{ color: "#fff", fontSize: 20 }}>
+                                Reject
+                           </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </Container>
         );
     }
@@ -63,14 +75,10 @@ class OrderDetails extends Component {
 
 const styles = StyleSheet.create({
     imgeContainer: {
-        // backgroundColor: '#00bcd4',
         padding: 10
     },
     ThumbnailView: {
         margin: 5
-    },
-    headingUsernameView: {
-        // backgroundColor:"red",
     },
     headingUsernameText: {
         color: "#00bcd4",
@@ -88,8 +96,27 @@ const styles = StyleSheet.create({
     IconTouchableOpacity: {
         marginLeft: "2%"
     },
-    ListItemtext:{
-        color:"#00bcd4"
+    ListItemtext: {
+        color: "#00bcd4"
+    },
+    ContentView: {
+        flex: 1
+    },
+    accseptAndRejectBtn: {
+        justifyContent: "space-between",
+        flexDirection: "row",
+        padding: 30,
+
+    },
+    TouchableOpacityAcceptBtn: {
+        backgroundColor: "#00bcd4",
+        width: "45%",
+        paddingTop: 15,
+        paddingBottom: 15,
+        justifyContent: "center",
+        alignItems: "center",
+        elevation: 3,
+        borderRadius: 3,
     }
 })
 
@@ -104,9 +131,6 @@ const mapDispatchToProp = (dispatch) => {
     return {
         // selectedProducts: (data) => {
         //     dispatch(selectedProducts(data))
-        // },
-        // orderDetailsAction: (data) => {
-        //     dispatch(orderDetailsAction(data))
         // },
     };
 };
