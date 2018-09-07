@@ -74,10 +74,7 @@ class ProductComponent extends Component {
                     })
                     selectProductArr = []
                 }).catch((err) => { })
-                // database.child()
-                console.log(currentUser.id,"=====")
-                database.child("My-orders")
-
+                database.child(`My-orders/${currentUser.id}`).push(selectProductList[i])
             }
         }
     }
