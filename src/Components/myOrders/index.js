@@ -12,11 +12,11 @@ import {
 } from 'react-native';
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import firebase from "react-native-firebase";
-import { Container, Content, Card, Text, Icon } from 'native-base';
+import { Container, Content, Card, Text, Icon, Header, Left, Body, Right, Button, Title, } from 'native-base';
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
 import { Dialog } from 'react-native-simple-dialogs';
 import { connect } from "react-redux"
-import { myProducts, orderList } from "../../store/action/action"
+import { myOrderActioin, } from "../../store/action/action"
 
 
 
@@ -54,44 +54,42 @@ class MyOrders extends Component {
                 this.setState({
                     currentUser: user.uid
                 })
+                database.child(`My-orders/${user.uid}`).on("value", (snap) => {
+                    let obj = snap.val()
+                    let myOrdersArr = []
+                    for (let key in obj) {
+                        myOrdersArr.push({ ...obj[key], key })
+                    }
+
+                    this.props.myOrderActioin(myOrdersArr)
+
+                })
             }
         });
-        database.child("MyOrders").on("value", (snap) => {
-            let obj = snap.val()
-            let myOrdersArr = []
-            for (let key in obj) {
-                myOrdersArr.push({ ...obj[key], key })
-            }
-            console.log(myOrdersArr)
-           
-        })
 
     }
 
-
-    // viewOrders(value) {
-    //     let SoldProductsArr = [];
-    //     for (let key in value.SoldProducts) {
-    //         SoldProductsArr.push({ ...value.SoldProducts[key], key })
-    //     }
-    //     for (var i = 0; i < SoldProductsArr.length; i++) {
-    //         SoldProductsArr[i].productID = value.key
-    //     }
-    //     let orderArr = SoldProductsArr
-    //     this.props.orderList(orderArr, value.coverImageUrl)
-    //     this.props.navigation.navigate("Vieworders")
-    // }
 
 
 
 
     render() {
-        let myProducts_List = this.props.myProducts_List.myProducts
+        let myOrder_List = this.props.myOrder_List.myOrders;
         return (
-            <Container>
+            <View style={styles.container}  >
+                <Header style={{ backgroundColor: "#00bcd4" }} >
+                    <Left>
+                        <Button transparent>
+                            <Icon name='arrow-back' />
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Header</Title>
+                    </Body>
+                </Header>
                 <Content>
                     <View style={styles.categoryGridComponent} >
-                        {myProducts_List.map((value, index) => {
+                        {/* {myOrder_List.map((value, index) => {
                             return (
                                 <View key={index}
                                     activeOpacity={0.8}>
@@ -109,7 +107,6 @@ class MyOrders extends Component {
                                                 <Text style={styles.priceText} >{value.priceVal}</Text>
                                             </View>
                                             <TouchableOpacity
-                                                onPress={this.viewOrders.bind(this, value)}
                                                 activeOpacity={0.5} style={styles.bayBtnView}   >
                                                 <Icon name='clipboard' style={{ color: "#00bcd4", fontSize: 35 }} />
                                             </TouchableOpacity>
@@ -117,10 +114,10 @@ class MyOrders extends Component {
                                     </Card>
                                 </View>
                             )
-                        })}
+                        })} */}
                     </View>
                 </Content>
-            </Container>
+            </View>
         );
     }
 }
@@ -128,16 +125,16 @@ class MyOrders extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // backgroundColor: '#F5FCFF',
     },
 
     categoryGridComponent: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        marginBottom: 5,
+        // flexDirection: 'row',
+        // justifyContent: 'center',
+        // flexWrap: 'wrap',
+        // marginBottom: 5,
     },
 
 
@@ -197,16 +194,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProp = (state) => {
     return ({
-        myProducts_List: state.root,
+        myOrder_List: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        myProducts: (data) => {
-            dispatch(myProducts(data))
-        },
-        orderList: (data, coverImageUrl) => {
-            dispatch(orderList(data, coverImageUrl))
+        myOrderActioin: (data) => {
+            dispatch(myOrderActioin(data))
         },
     };
 };

@@ -118,3 +118,14 @@ export const orderDetailsAction = (data) => {
 }
 
 
+
+export const myOrderActioin = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.MY_ORDERS,
+            payload: data, 
+        })
+    }
+}
+
+

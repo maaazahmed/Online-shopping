@@ -9,6 +9,7 @@ const INITIAL_STATE = {
     sellerList: [],
     orderList: [],
     orderDetails: {},
+    myOrders: [],
     categoryID: "",
     shopkeeperID: "",
     coverImage: "",
@@ -74,6 +75,12 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 orderDetails: action.payload,
+
+            })
+        case ActionTypes.MY_ORDERS:
+            return ({
+                ...state,
+                myOrders: action.payload,
 
             })
         default:

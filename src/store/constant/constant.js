@@ -10,6 +10,7 @@ const ActionTypes = {
   SHOPKEEPER_ID:"SHOPKEEPER_ID",
   ORDER_LIST:"ORDER_LIST",
   ORDER_DETAILS:"ORDER_DETAILS",
+  MY_ORDERS:"MY_ORDERS",
 }
 
 export default ActionTypes
