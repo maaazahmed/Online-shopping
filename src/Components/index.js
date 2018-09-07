@@ -8,7 +8,8 @@ import ProductComponent from "./ProductsComponent/index";
 import ShopkeeperDashboard from "./Shoopkeeper/index";
 import ExtraDetails from "./UserExtraDetail/index";
 import Vieworders from "./Shoopkeeper/OrdersView/index"
-import OrderDetails from "./OrdersDetail/index"
+import OrderDetails from "./OrdersDetail/index";
+import MyOrders from "./myOrders/index"
 export {
     Signup,
     SplashScreen,
@@ -20,5 +21,6 @@ export {
     ShopkeeperDashboard,
     ExtraDetails,
     Vieworders,
-    OrderDetails
+    OrderDetails,
+    MyOrders
 };

@@ -11,7 +11,8 @@ import {
     ShopkeeperDashboard,
     ExtraDetails,
     Vieworders,
-    OrderDetails
+    OrderDetails,
+    MyOrders
 } from "./Components/index";
 
 
@@ -40,7 +41,7 @@ const Router = StackNavigator({
             header: null
         }
     },
-    
+
     Dashboard: {
         screen: Dashboard,
         navigationOptions: {
@@ -83,8 +84,14 @@ const Router = StackNavigator({
             header: null
         }
     },
-},{
-    initialRouteName:"ShopkeeperDashboard"
-})
+    MyOrders: {
+        screen: MyOrders,
+        navigationOptions: {
+            header: null
+        }
+    },
+}, {
+        initialRouteName: "MyOrders"
+    })
 
 export default Router
