@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    View
+    View,
+    TouchableOpacity
 } from 'react-native';
 import Menu, { MenuItem } from 'react-native-material-menu';
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Drawer, Content } from 'native-base';
@@ -91,6 +92,11 @@ class Dashboard extends Component {
                         </Right>
                     </Header>
                     <View style={styles.morOrdersContainre}>
+                        <TouchableOpacity
+                            onPress={() => { this.props.navigation.navigate("MyOrders") }}
+                            activeOpacity={0.5} style={styles.morOrdersTouchableOpacity} >
+                            <Icon name="cart" style={{ color: "#00bcd4", fontSize: 35 }} />
+                        </TouchableOpacity>
                     </View>
                     <CategoryComponent navigation={this.props.navigation} />
                 </Container>
@@ -103,8 +109,15 @@ const styles = StyleSheet.create({
     morOrdersContainre: {
         backgroundColor: "#fff",
         height: "5%",
-        elevation:3,
-        padd:5
+        elevation: 3,
+        alignItems: "flex-end",
+    },
+
+    morOrdersTouchableOpacity: {
+        flex: 1,
+        backgroundColor: "#fff",
+        padding: 15,
+        justifyContent: "center"
     }
 });
 

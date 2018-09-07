@@ -8,7 +8,8 @@ import {
     TextInput,
     Modal,
     PermissionsAndroid,
-    Image
+    Image,
+    FlatList
 } from 'react-native';
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import firebase from "react-native-firebase";
@@ -115,6 +116,34 @@ class MyOrders extends Component {
                                 </View>
                             )
                         })} */}
+                        <FlatList
+                            data={myOrder_List}
+                            renderItem={({ item, index }) =>
+                                <View key={index}
+                                    activeOpacity={0.8}>
+                                    <Card style={styles.categoryCard} >
+                                        <View style={styles.CardViewImage} >
+                                            <Image
+                                                resizeMode="contain"
+                                                source={{ uri: item.coverImageUrl }}
+                                                style={styles.ImageBackground} />
+                                        </View>
+                                        <View style={styles.producDetailView} >
+                                            <View style={styles.producDetaContain} >
+                                                <Text style={styles.nameText} >{item.productNameVal}</Text>
+                                                <Text style={styles.modleText} >{item.modalNumVal}</Text>
+                                                <Text style={styles.priceText} >{item.priceVal}</Text>
+                                            </View>
+                                            <TouchableOpacity
+                                                activeOpacity={0.5} style={styles.bayBtnView}   >
+                                                <Icon name='trash' style={{ color: "#00bcd4", fontSize: 35 }} />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </Card>
+                                </View>
+                            }
+                            keyExtractor={(item) => { return item.key }}
+                        />
                     </View>
                 </Content>
             </View>
