@@ -2,14 +2,46 @@ import React, { Component } from 'react';
 import { Container, Header, Content, List, ListItem, Text, Left, Right, Icon, Thumbnail, Button, Body, Title } from 'native-base';
 import { connect } from "react-redux"
 import { View, StyleSheet, TouchableOpacity } from "react-native"
+import firebase from "react-native-firebase";
+import { BarIndicator } from 'react-native-indicators';
+import { Dialog } from 'react-native-simple-dialogs';
 
 
 
+
+let database = firebase.database().ref("/")
 class OrderDetails extends Component {
-
-
+    constructor() {
+        super()
+        this.state = {
+            isReplyLoar: false,
+            dialogVisible:false
+        }
+    }
     accseOrder(orderDetails) {
-        console.log(orderDetails, "============")
+        this.setState({
+            isReplyLoar: true
+        })
+        setTimeout(() => {
+            database.child("Reply_Orders").push(orderDetails).then(() => {
+                database.child(`Categorys/${orderDetails.categoryID}/Products/${orderDetails.productID}/SoldProducts/${orderDetails.key}`).remove()
+                this.setState({
+                    isReplyLoar: false
+                })
+            }).catch(() => {
+                this.setState({
+                    isReplyLoar: false
+                })
+            })
+        }, 100)
+    }
+
+
+    rejectorder() {
+        alert("")
+        this.setState({
+            dialogVisible:true
+        })
     }
 
 
@@ -62,20 +94,32 @@ class OrderDetails extends Component {
                     </List>
                 </View>
                 <View style={{ flex: 1 }} >
-                    <View style={styles.accseptAndRejectBtn} >
-                        <TouchableOpacity
-                            onPress={this.accseOrder.bind(this, orderDetails)}
-                            activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
-                            <Text style={{ color: "#fff", fontSize: 20 }} >
-                                Accept
-                           </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
-                            <Text style={{ color: "#fff", fontSize: 20 }}>
-                                Reject
-                           </Text>
-                        </TouchableOpacity>
-                    </View>
+                    {(this.state.isReplyLoar) ?
+                        <View style={styles.accseptAndRejectBtn}>
+                            <BarIndicator color='#00bcd4' count={6} />
+                        </View>
+                        :
+                        <View style={styles.accseptAndRejectBtn} >
+                            <TouchableOpacity
+                                onPress={this.accseOrder.bind(this, orderDetails)}
+                                activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
+                                <Text style={{ color: "#fff", fontSize: 20 }} >
+                                    Accept
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this.rejectorder.bind(this)} activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
+                                <Text style={{ color: "#fff", fontSize: 20 }}>
+                                    Reject
+                                </Text>
+                            </TouchableOpacity>
+                        </View>}
+                </View>
+                <View>
+                    <Dialog
+                        animationType="fade"
+                        visible={this.state.dialogVisible}
+                        onTouchOutside={(dialogVisible) => this.setState({ dialogVisible: false })} >
+                    </Dialog>
                 </View>
             </Container>
         );

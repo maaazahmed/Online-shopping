@@ -78,14 +78,15 @@ class Products extends Component {
 
 
     viewOrders(value) {
-        console.log(value)
         let SoldProductsArr = [];
         for (let key in value.SoldProducts) {
             SoldProductsArr.push({ ...value.SoldProducts[key], key })
         }
-       let orderArr = SoldProductsArr
-        console.log(orderArr, "=================")
-         this.props.orderList(orderArr, value.coverImageUrl)
+        for (var i = 0; i < SoldProductsArr.length; i++) {
+            SoldProductsArr[i].productID = value.key
+        }
+        let orderArr = SoldProductsArr
+        this.props.orderList(orderArr, value.coverImageUrl)
         this.props.navigation.navigate("Vieworders")
     }
 
