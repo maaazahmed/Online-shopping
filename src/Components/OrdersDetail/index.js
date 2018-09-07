@@ -4,7 +4,6 @@ import { connect } from "react-redux"
 import { View, StyleSheet, TouchableOpacity, TextInput, Modal } from "react-native"
 import firebase from "react-native-firebase";
 import { BarIndicator } from 'react-native-indicators';
-// import { Dialog } from 'react-native-simple-dialogs';
 
 
 
@@ -24,7 +23,7 @@ class OrderDetails extends Component {
             isReplyLoar: true
         })
         setTimeout(() => {
-            database.child("Reply_Orders").push(orderDetails).then(() => {
+            database.child("accseptOrders").push(orderDetails).then(() => {
                 database.child(`Categorys/${orderDetails.categoryID}/Products/${orderDetails.productID}/SoldProducts/${orderDetails.key}`).remove()
                 this.setState({
                     isReplyLoar: false
@@ -36,8 +35,6 @@ class OrderDetails extends Component {
             })
         }, 100)
     }
-
-
     rejectorder() {
         this.setState({
             dialogVisible: true
@@ -46,7 +43,30 @@ class OrderDetails extends Component {
 
     rejectDon(){
         let orderDetails = this.props.order_Detail.orderDetails;
-        console.log(this.state.rejectDiscription,"==========")
+        if(this.state.rejectDiscription !== ""){
+        this.setState({
+            dialogVisible:false,
+            isReplyLoar:true,
+        })
+            setTimeout(()=>{
+                orderDetails.rejectDiscription = this.state.rejectDiscription
+                database.child("RejectedOrders").push(orderDetails).then(()=>{
+                    this.setState({
+                        isReplyLoar:false,
+                        rejectDiscription:""
+                    })
+                }).catch(()=>{
+                    this.setState({
+                        isReplyLoar:false
+                    })
+                })
+            }, 1000)
+        }
+        else{
+            alert("This Feild is Requierd")
+        }
+        
+       
     }
 
 
