@@ -129,3 +129,15 @@ export const myOrderActioin = (data) => {
 }
 
 
+
+
+export const AccetedOrderActioin = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.ACCEPTED_ORDER,
+            payload: data, 
+        })
+    }
+}
+
+

@@ -17,13 +17,13 @@ import { Container, Content, Card, Text, Icon, Header, Left, Body, Right, Button
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
 import { Dialog } from 'react-native-simple-dialogs';
 import { connect } from "react-redux"
-import { myOrderActioin, } from "../../store/action/action"
+import { AccetedOrderActioin, } from "../../store/action/action"
 
 
 
 
 const database = firebase.database().ref("/")
-class MyOrders extends Component {
+class acceprdOrdersCompnent extends Component {
     constructor() {
         super()
         this.state = {
@@ -57,11 +57,11 @@ class MyOrders extends Component {
                 })
                 database.child(`My-orders/${user.uid}`).on("value", (snap) => {
                     let obj = snap.val()
-                    let myOrdersArr = []
+                    let AccetedOrderArr = []
                     for (let key in obj) {
-                        myOrdersArr.push({ ...obj[key], key })
+                        AccetedOrderArr.push({ ...obj[key], key })
                     }
-                    this.props.myOrderActioin(myOrdersArr)
+                    this.props.AccetedOrderActioin(AccetedOrderArr)
 
                 })
             }
@@ -74,7 +74,7 @@ class MyOrders extends Component {
 
 
     render() {
-        let myOrder_List = this.props.myOrder_List.myOrders;
+        let acceprdOrder_List = this.props.acceprdOrder_List.acceprdOrders;
         return (
             <View style={styles.container}  >
                 <Header style={{ backgroundColor: "#00bcd4" }} >
@@ -90,7 +90,7 @@ class MyOrders extends Component {
                 <Content>
                     <View style={styles.categoryGridComponent} >
                         <FlatList
-                            data={myOrder_List}
+                            data={acceprdOrders}
                             renderItem={({ item, index }) =>
                                 <View key={index}
                                     activeOpacity={0.8}>
@@ -196,15 +196,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProp = (state) => {
     return ({
-        myOrder_List: state.root,
+        acceprdOrder_List: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        myOrderActioin: (data) => {
-            dispatch(myOrderActioin(data))
+        AccetedOrderActioin: (data) => {
+            dispatch(AccetedOrderActioin(data))
         },
     };
 };
-export default connect(mapStateToProp, mapDispatchToProp)(MyOrders)
+export default connect(mapStateToProp, mapDispatchToProp)(acceprdOrdersCompnent)
 
