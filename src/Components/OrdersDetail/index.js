@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, List, ListItem, Text, Left, Right, Icon, Thumbnail, Button, Body, Title } from 'native-base';
+import { Container, Header, Content, List, ListItem, Text, Left, Right, Icon, Thumbnail, Textarea, Form, Button, Body, Title } from 'native-base';
 import { connect } from "react-redux"
-import { View, StyleSheet, TouchableOpacity } from "react-native"
+import { View, StyleSheet, TouchableOpacity, TextInput, Modal } from "react-native"
 import firebase from "react-native-firebase";
 import { BarIndicator } from 'react-native-indicators';
-import { Dialog } from 'react-native-simple-dialogs';
+// import { Dialog } from 'react-native-simple-dialogs';
 
 
 
@@ -16,7 +16,7 @@ class OrderDetails extends Component {
         this.state = {
             isReplyLoar: false,
             dialogVisible: false,
-            rejectDiscription:""
+            rejectDiscription: ""
         }
     }
     accseOrder(orderDetails) {
@@ -39,7 +39,6 @@ class OrderDetails extends Component {
 
 
     rejectorder() {
-        alert("")
         this.setState({
             dialogVisible: true
         })
@@ -116,22 +115,40 @@ class OrderDetails extends Component {
                         </View>}
                 </View>
                 <View>
-                    <Dialog
+                    <Modal
                         animationType="fade"
+                        transparent={true}
                         visible={this.state.dialogVisible}
                         onTouchOutside={(dialogVisible) => this.setState({ dialogVisible: false })} >
-                        <View>
-                            <View style={styles.TextInputContainer}>
-                                <TextInput
-                                    value={this.state.rejectDiscription}
-                                    style={styles.TextInput}
-                                    underlineColorAndroid="transparent"
-                                    placeholderTextColor="#00bcd4"
-                                    onChangeText={(rejectDiscription) => { this.setState({ rejectDiscription }) }}
-                                    placeholder="Add catogery" />
+                        <View style={styles.DialogContainer}>
+                            <View style={styles.DialogContent}>
+                            <Text style={{color:"#00bcd4",marginBottom:2}}>Why are you reject the order ? </Text>
+                                <Form style={{height:"70%",}} >
+                                    <Textarea
+                                        value={this.state.rejectDiscription}
+                                        style={styles.TextInput}
+                                        placeholderTextColor="#00bcd4"
+                                        placeholder="Dicrieb the user"
+                                        onChangeText={(rejectDiscription) => { this.setState({ rejectDiscription }) }}
+                                        rowSpan={5}
+                                        bordered placeholder="Textarea" />
+                                </Form>
+                                <View style={styles.DoneBtn} >
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            this.setState({
+                                                dialogVisible: false
+                                            })
+                                        }}
+                                        activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
+                                        <Text style={{ color: "#fff", fontSize: 20 }} >
+                                            Done
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
-                    </Dialog>
+                    </Modal>
                 </View>
             </Container>
         );
@@ -177,13 +194,13 @@ const styles = StyleSheet.create({
     TextInput: {
         borderColor: "#00bcd4",
         borderWidth: 1,
-        height: 57,
-        borderRadius: 5,
+        height: "100%",
+        // borderRadius: 5,
         color: "#00bcd4",
         backgroundColor: "#fff",
         fontSize: 19,
-        paddingLeft: 10,
-        elevation: 5,
+        // paddingLeft: 10,
+        // elevation: 5,
     },
     TouchableOpacityAcceptBtn: {
         backgroundColor: "#00bcd4",
@@ -194,6 +211,25 @@ const styles = StyleSheet.create({
         alignItems: "center",
         elevation: 3,
         borderRadius: 3,
+    },
+    DialogContainer: {
+        flex: 1,
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    DialogContent: {
+        height: "40%",
+        width: "90%",
+        backgroundColor: "#fff",
+        padding:10
+    },
+    DoneBtn:{
+        alignItems:"center",
+        flex: 1,
+        height:"30%",
+        justifyContent:"center",
+        marginTop:20
     }
 })
 
