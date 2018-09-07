@@ -44,6 +44,10 @@ class OrderDetails extends Component {
         })
     }
 
+    rejectDon(){
+        let orderDetails = this.props.order_Detail.orderDetails;
+        console.log(this.state.rejectDiscription,"==========")
+    }
 
 
 
@@ -107,7 +111,8 @@ class OrderDetails extends Component {
                                     Accept
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={this.rejectorder.bind(this)} activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
+                            <TouchableOpacity onPress={this.rejectorder.bind(this, orderDetails)}
+                                activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
                                 <Text style={{ color: "#fff", fontSize: 20 }}>
                                     Reject
                                 </Text>
@@ -122,24 +127,20 @@ class OrderDetails extends Component {
                         onTouchOutside={(dialogVisible) => this.setState({ dialogVisible: false })} >
                         <View style={styles.DialogContainer}>
                             <View style={styles.DialogContent}>
-                            <Text style={{color:"#00bcd4",marginBottom:2}}>Why are you reject the order ? </Text>
-                                <Form style={{height:"70%",}} >
+                                <Text style={{ color: "#00bcd4", marginBottom: 2 }}>Why are you reject the order ? </Text>
+                                <Form style={{ height: "70%", }} >
                                     <Textarea
                                         value={this.state.rejectDiscription}
                                         style={styles.TextInput}
                                         placeholderTextColor="#00bcd4"
-                                        placeholder="Dicrieb the user"
+                                        placeholder="Describe the user"
                                         onChangeText={(rejectDiscription) => { this.setState({ rejectDiscription }) }}
                                         rowSpan={5}
                                         bordered placeholder="Textarea" />
                                 </Form>
                                 <View style={styles.DoneBtn} >
                                     <TouchableOpacity
-                                        onPress={() => {
-                                            this.setState({
-                                                dialogVisible: false
-                                            })
-                                        }}
+                                        onPress={this.rejectDon.bind(this)}
                                         activeOpacity={0.5} style={styles.TouchableOpacityAcceptBtn}  >
                                         <Text style={{ color: "#fff", fontSize: 20 }} >
                                             Done
@@ -219,17 +220,17 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     DialogContent: {
-        height: "40%",
+        height: "60%",
         width: "90%",
         backgroundColor: "#fff",
-        padding:10
+        padding: 10
     },
-    DoneBtn:{
-        alignItems:"center",
+    DoneBtn: {
+        alignItems: "center",
         flex: 1,
-        height:"30%",
-        justifyContent:"center",
-        marginTop:20
+        height: "30%",
+        justifyContent: "center",
+        marginTop: 20
     }
 })
 
