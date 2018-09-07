@@ -66,9 +66,6 @@ class CategoryCardComponent extends Component {
         return (
             <Container>
                 <Content>
-                    <View style={styles.morOrdersContainre}>
-
-                    </View>
                     <View style={styles.categoryGridComponent} >
                         {this.props.catogery_List.categoryList.map((value, index) => {
                             return (
@@ -249,10 +246,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderRadius: 100
     },
-    morOrdersContainre: {
-        backgroundColor: "#f2f2f2",
-        height: "10%"
-    }
+  
 });
 
 

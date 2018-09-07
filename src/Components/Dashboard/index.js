@@ -15,7 +15,7 @@ import firebase from "react-native-firebase"
 
 const database = firebase.database().ref("/")
 class Dashboard extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
     }
     _menu = null;
@@ -41,7 +41,7 @@ class Dashboard extends Component {
     componentDidMount() {
         database.child("Categorys").on("value", (snap) => {
             let obj = snap.val()
-             let categoryArr = []
+            let categoryArr = []
             for (let key in obj) {
                 categoryArr.push({ ...obj[key], key })
             }
@@ -90,14 +90,23 @@ class Dashboard extends Component {
                             </Menu>
                         </Right>
                     </Header>
-                    <CategoryComponent navigation={this.props.navigation}/>
+                    <View style={styles.morOrdersContainre}>
+                    </View>
+                    <CategoryComponent navigation={this.props.navigation} />
                 </Container>
             </Drawer>
         );
     }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    morOrdersContainre: {
+        backgroundColor: "#fff",
+        height: "5%",
+        elevation:3,
+        padd:5
+    }
+});
 
 
 
