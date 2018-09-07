@@ -63,19 +63,21 @@ class ProductComponent extends Component {
             this.props.navigation.navigate("SignIn")
         }
         else {
-
-
             let selectProductList = this.props.selectProductList.selectedProduct
             let categoryID = this.props.categoryID.categoryID;
             for (var i = 0; i < selectProductList.length; i++) {
                 selectProductList[i].currentByerData = currentUser;
-                delete selectProductList[i].SoldProducts; 
+                delete selectProductList[i].SoldProducts;
                 database.child(`Categorys/${categoryID}/Products/${selectProductList[i].key}/SoldProducts`).push(selectProductList[i]).then((suc) => {
                     this.setState({
                         nextButtonFlge: false
                     })
                     selectProductArr = []
-                }).catch((err) => {})
+                }).catch((err) => { })
+                // database.child()
+                console.log(currentUser.id,"=====")
+                database.child("My-orders")
+
             }
         }
     }
