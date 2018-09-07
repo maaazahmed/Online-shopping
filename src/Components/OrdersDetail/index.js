@@ -15,7 +15,8 @@ class OrderDetails extends Component {
         super()
         this.state = {
             isReplyLoar: false,
-            dialogVisible:false
+            dialogVisible: false,
+            rejectDiscription:""
         }
     }
     accseOrder(orderDetails) {
@@ -40,7 +41,7 @@ class OrderDetails extends Component {
     rejectorder() {
         alert("")
         this.setState({
-            dialogVisible:true
+            dialogVisible: true
         })
     }
 
@@ -119,6 +120,17 @@ class OrderDetails extends Component {
                         animationType="fade"
                         visible={this.state.dialogVisible}
                         onTouchOutside={(dialogVisible) => this.setState({ dialogVisible: false })} >
+                        <View>
+                            <View style={styles.TextInputContainer}>
+                                <TextInput
+                                    value={this.state.rejectDiscription}
+                                    style={styles.TextInput}
+                                    underlineColorAndroid="transparent"
+                                    placeholderTextColor="#00bcd4"
+                                    onChangeText={(rejectDiscription) => { this.setState({ rejectDiscription }) }}
+                                    placeholder="Add catogery" />
+                            </View>
+                        </View>
                     </Dialog>
                 </View>
             </Container>
@@ -161,6 +173,17 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         padding: 30,
 
+    },
+    TextInput: {
+        borderColor: "#00bcd4",
+        borderWidth: 1,
+        height: 57,
+        borderRadius: 5,
+        color: "#00bcd4",
+        backgroundColor: "#fff",
+        fontSize: 19,
+        paddingLeft: 10,
+        elevation: 5,
     },
     TouchableOpacityAcceptBtn: {
         backgroundColor: "#00bcd4",
