@@ -60,7 +60,6 @@ class ProductComponent extends Component {
                 })
             }
         })
-        console.log(this.props.selectProductList.selectedProduct.length)
     }
 
     completeProductSelection() {
@@ -200,7 +199,6 @@ class ProductComponent extends Component {
 
 
 const styles = StyleSheet.create({
-
     fill: {
         flex: 1,
     },
