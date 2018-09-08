@@ -51,8 +51,6 @@ class AddCategory extends Component {
         this.props.categoryData(productsArr)
         this.props.coverImageUrl(value.coverImageUrl)
         this.props.navigation.navigate("AdminProductComponent")
-        console.log(productsArr,"===================")
-        // this.props.categoryID(value.key)
     }
 
     uploadImage() {

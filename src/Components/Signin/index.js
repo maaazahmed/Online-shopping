@@ -13,6 +13,10 @@ import {
 import { Container, Header, Content, Button, Radio } from 'native-base';
 import firebase from "react-native-firebase";
 import { BarIndicator } from 'react-native-indicators';
+// ProductComponent
+import { connect } from "react-redux"
+// import { SignInRout } from "../../store/action/action"
+
 
 
 const database = firebase.database().ref("/")
@@ -27,6 +31,7 @@ export default class SignIn extends Component {
     }
 
     login() {
+        console.log(this.props.SignInRout.signInRout,"==============")
         let user = {
             Email: this.state.Email,
             Password: this.state.Password,
@@ -244,9 +249,27 @@ const styles = StyleSheet.create({
         right: 0,
         backgroundColor: "rgba(255, 255, 255, 0.5)"
     },
-
-
-
 });
+
+
+
+
+
+
+const mapStateToProp = (state) => {
+    return ({
+        SignInRout: state.root,
+    });
+};
+const mapDispatchToProp = (dispatch) => {
+    return {
+
+        // SignInRout: (data) => {
+        //     dispatch(SignInRout(data))
+        // },
+    };
+};
+export default connect(mapStateToProp, mapDispatchToProp)(SignIn)
+
 
 // https://cdn2.iconfinder.com/data/icons/color-svg-cloud-icons/512/cloud_shopping-512.png

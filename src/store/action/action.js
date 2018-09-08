@@ -135,3 +135,14 @@ export const rejectedOrdersData = (data) => {
         })
     }
 }
+
+
+
+export const SignInRout = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.SIGN_IN_ROUT,
+            payload: data, 
+        })
+    }
+}

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Card, Icon } from 'native-base';
 import { connect } from "react-redux"
-import { selectedProducts } from "../../store/action/action"
+import { selectedProducts, SignInRout } from "../../store/action/action"
 import firebase from "react-native-firebase"
 
 
@@ -57,11 +57,13 @@ class ProductComponent extends Component {
                 })
             }
         })
+
     }
 
     completeProductSelection() {
         let currentUser = this.state.currentUser
         if (this.state.currentUser === "") {
+            this.props.SignInRout("ProductComponent")  
             this.props.navigation.navigate("SignIn")
         }
         else {
@@ -127,13 +129,13 @@ class ProductComponent extends Component {
                                                 <Text style={styles.priceText} >{value.priceVal}</Text>
                                             </View>
                                             {/* {(this.state.currentUser.userType === "Bayer") ? */}
-                                                <TouchableOpacity
-                                                    onPress={this.selectProduct.bind(this, value, index)}
-                                                    activeOpacity={0.5}
-                                                    style={styles.bayBtnView}>
-                                                    <Icon name='add' style={{ color: "#00bcd4" }} />
-                                                </TouchableOpacity>
-                                                {/* : null} */}
+                                            <TouchableOpacity
+                                                onPress={this.selectProduct.bind(this, value, index)}
+                                                activeOpacity={0.5}
+                                                style={styles.bayBtnView}>
+                                                <Icon name='add' style={{ color: "#00bcd4" }} />
+                                            </TouchableOpacity>
+                                            {/* : null} */}
                                         </View>
                                     </Card>
                                 </View>
@@ -322,6 +324,9 @@ const mapDispatchToProp = (dispatch) => {
     return {
         selectedProducts: (data) => {
             dispatch(selectedProducts(data))
+        },
+        SignInRout: (data) => {
+            dispatch(SignInRout(data))
         },
     };
 };
