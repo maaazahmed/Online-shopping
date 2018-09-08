@@ -15,7 +15,7 @@ import { Container, Content, Card, Text, Icon } from 'native-base';
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
 import { Dialog } from 'react-native-simple-dialogs';
 import { connect } from "react-redux"
-// import { categoryList } from "../../../store/action/action"
+import { categoryData, coverImageUrl } from "../../../store/action/action"
 
 
 
@@ -42,8 +42,17 @@ class AddCategory extends Component {
         })
     }
 
-    ViewCategory() {
-        alert("Laptop")
+    ViewCategory(value, index) {
+        let productsArr = []
+        let valueProducts = value.Products
+        for (let key in value.Products) {
+            productsArr.push({ ...valueProducts[key], key })
+        }
+        // this.props.categoryData(productsArr)
+        // this.props.coverImageUrl(value.coverImageUrl)
+        // this.props.navigation.navigate("ProductComponent")
+        console.log(productsArr,"===================")
+        // this.props.categoryID(value.key)
     }
 
     uploadImage() {
@@ -132,7 +141,7 @@ class AddCategory extends Component {
                             console.log(value)
                             return (
                                 <TouchableOpacity key={index}
-                                    onPress={this.ViewCategory.bind(this)}
+                                    onPress={this.ViewCategory.bind(this, value, index)}
                                     activeOpacity={0.8}>
                                     <Card style={styles.categoryCard} >
                                         <ImageBackground
@@ -434,9 +443,12 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        // categoryList: (data) => {
-        //     dispatch(categoryList(data))
-        // },
+        categoryData: (data) => {
+            dispatch(categoryData(data))
+        },
+        coverImageUrl: (data) => {
+            dispatch(coverImageUrl(data))
+        },
     };
 };
 export default connect(mapStateToProp, mapDispatchToProp)(AddCategory)

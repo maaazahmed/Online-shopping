@@ -59,7 +59,6 @@ class Vieworders extends Component {
                         let SoldProductsArr = []
                         for (var i = 0; i < productArr.length; i++) {
                             for (let key2 in productArr[i].Products) {
-                                // console.log(productArr[i].Products[key2].SoldProducts,"=====")
                                 SoldProductsArr.push({ ...productArr[i].Products[key2], key2 })
                             }
                             let SoldProductsListArry = []
