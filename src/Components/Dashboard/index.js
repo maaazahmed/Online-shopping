@@ -18,6 +18,9 @@ const database = firebase.database().ref("/")
 class Dashboard extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            currentUserID: ""
+        }
     }
     _menu = null;
 
@@ -38,6 +41,19 @@ class Dashboard extends Component {
     openDrawer = () => {
         this.drawer._root.open()
     };
+
+    componentWillMount() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({
+                    currentUserID: user.uid,
+                })
+            }
+            else {
+
+            }
+        })
+    }
 
     componentDidMount() {
         database.child("Categorys").on("value", (snap) => {
@@ -91,13 +107,15 @@ class Dashboard extends Component {
                             </Menu>
                         </Right>
                     </Header>
-                    <View style={styles.morOrdersContainre}>
-                        <TouchableOpacity
-                            onPress={() => { this.props.navigation.navigate("MyOrders") }}
-                            activeOpacity={0.5} style={styles.morOrdersTouchableOpacity} >
-                            <Icon name="cart" style={{ color: "#00bcd4", fontSize: 35 }} />
-                        </TouchableOpacity>
-                    </View>
+                    {(this.state.currentUserID !== "") ?
+                        <View style={styles.morOrdersContainre}>
+                            <TouchableOpacity
+                                onPress={() => { this.props.navigation.navigate("MyOrders") }}
+                                activeOpacity={0.5} style={styles.morOrdersTouchableOpacity} >
+                                <Icon name="cart" style={{ color: "#00bcd4", fontSize: 35 }} />
+                            </TouchableOpacity>
+                        </View>
+                        : null}
                     <CategoryComponent navigation={this.props.navigation} />
                 </Container>
             </Drawer>

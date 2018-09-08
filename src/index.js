@@ -78,20 +78,20 @@ const Router = StackNavigator({
             header: null
         }
     },
-    OrderDetails: {
-        screen: OrderDetails,
-        navigationOptions: {
-            header: null
-        }
-    },
     MyOrders: {
         screen: MyOrders,
         navigationOptions: {
             header: null
         }
     },
+    OrderDetails: {
+        screen: OrderDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
 }, {
-        initialRouteName: "Dashboard"
+        initialRouteName: "SignIn"
     })
 
 export default Router

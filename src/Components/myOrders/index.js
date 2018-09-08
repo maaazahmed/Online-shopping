@@ -3,22 +3,16 @@ import {
     StyleSheet,
     View,
     Dimensions,
-    ImageBackground,
-    TouchableOpacity,
-    TextInput,
-    Modal,
-    PermissionsAndroid,
-    Image,
-    FlatList
 } from 'react-native';
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import firebase from "react-native-firebase";
-import { Container, Content, Card, Text, Icon, Header, Left, Body, Right, Button, Title, } from 'native-base';
+import { Tab, Tabs, Content, Card, Text, Icon, Header, Left, Body, Right, Button, Title, } from 'native-base';
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
 import { Dialog } from 'react-native-simple-dialogs';
 import { connect } from "react-redux"
-import { myOrderActioin, } from "../../store/action/action"
-
+import { accetedOrder, rejectedOrdersData } from "../../store/action/action"
+import AcceptedOrders from "./AcceptedOrder/index";
+import RejectedOrders from  "./RejectedOrders/index"
 
 
 
@@ -47,26 +41,38 @@ class MyOrders extends Component {
         })
     }
 
-
-
     componentWillMount() {
+        let myOrdersArr = []
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 this.setState({
                     currentUser: user.uid
                 })
-                database.child(`My-orders/${user.uid}`).on("value", (snap) => {
+                database.child(`accseptOrders/${user.uid}`).on("value", (snap) => {
                     let obj = snap.val()
-                    let myOrdersArr = []
                     for (let key in obj) {
                         myOrdersArr.push({ ...obj[key], key })
                     }
-                    this.props.myOrderActioin(myOrdersArr)
-
+                    this.props.accetedOrder(myOrdersArr)
                 })
             }
         });
 
+        let rejectedOrdersArr = []
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({
+                    currentUser: user.uid
+                })
+                database.child(`RejectedOrders/${user.uid}`).on("value", (snap) => {
+                    let obj = snap.val()
+                    for (let key in obj) {
+                        rejectedOrdersArr.push({ ...obj[key], key })
+                    }
+                    this.props.rejectedOrdersData(rejectedOrdersArr)
+                })
+            }
+        });
     }
 
 
@@ -79,7 +85,7 @@ class MyOrders extends Component {
             <View style={styles.container}  >
                 <Header style={{ backgroundColor: "#00bcd4" }} >
                     <Left>
-                        <Button transparent>
+                        <Button onPress={() => { this.props.navigation.navigate("Dashboard") }} transparent>
                             <Icon name='arrow-back' />
                         </Button>
                     </Left>
@@ -87,38 +93,22 @@ class MyOrders extends Component {
                         <Title>Header</Title>
                     </Body>
                 </Header>
-                <Content>
-                    <View style={styles.categoryGridComponent} >
-                        <FlatList
-                            data={myOrder_List}
-                            renderItem={({ item, index }) =>
-                                <View key={index}
-                                    activeOpacity={0.8}>
-                                    <Card style={styles.categoryCard} >
-                                        <View style={styles.CardViewImage} >
-                                            <Image
-                                                resizeMode="contain"
-                                                source={{ uri: item.coverImageUrl }}
-                                                style={styles.ImageBackground} />
-                                        </View>
-                                        <View style={styles.producDetailView} >
-                                            <View style={styles.producDetaContain} >
-                                                <Text style={styles.nameText} >{item.productNameVal}</Text>
-                                                <Text style={styles.modleText} >{item.modalNumVal}</Text>
-                                                <Text style={styles.priceText} >{item.priceVal}</Text>
-                                            </View>
-                                            <TouchableOpacity
-                                                activeOpacity={0.5} style={styles.bayBtnView}   >
-                                                <Icon name='trash' style={{ color: "#00bcd4", fontSize: 35 }} />
-                                            </TouchableOpacity>
-                                        </View>
-                                    </Card>
-                                </View>
-                            }
-                            keyExtractor={(item) => { return item.key }}
-                        />
-                    </View>
-                </Content>
+                <Tabs>
+                    <Tab tabStyle={{ backgroundColor: '#00bcd4' }}
+                        activeTabStyle={{ backgroundColor: '#00bcd4' }}
+                        activeTextStyle={{ color: "#fff" }}
+                        textStyle={{ color: '#f2f2f2' }}
+                        heading="Accepted orders ">
+                        <AcceptedOrders />
+                    </Tab>
+                    <Tab tabStyle={{ backgroundColor: '#00bcd4' }}
+                        activeTabStyle={{ backgroundColor: '#00bcd4' }}
+                        activeTextStyle={{ color: "#fff" }}
+                        textStyle={{ color: '#f2f2f2' }}
+                        heading="Accepted orders ">
+                        <RejectedOrders />
+                    </Tab>
+                </Tabs>
             </View>
         );
     }
@@ -201,8 +191,11 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        myOrderActioin: (data) => {
-            dispatch(myOrderActioin(data))
+        accetedOrder: (data) => {
+            dispatch(accetedOrder(data))
+        },
+        rejectedOrdersData: (data) => {
+            dispatch(rejectedOrdersData(data))
         },
     };
 };

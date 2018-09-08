@@ -23,7 +23,7 @@ class OrderDetails extends Component {
             isReplyLoar: true
         })
         setTimeout(() => {
-            database.child("accseptOrders").push(orderDetails).then(() => {
+            database.child(`accseptOrders/${orderDetails.currentByerData.id}`).push(orderDetails).then(() => {
                 database.child(`Categorys/${orderDetails.categoryID}/Products/${orderDetails.productID}/SoldProducts/${orderDetails.key}`).remove()
                 this.setState({
                     isReplyLoar: false
@@ -48,9 +48,11 @@ class OrderDetails extends Component {
             dialogVisible:false,
             isReplyLoar:true,
         })
+        console.log(orderDetails.currentByerData.id)
             setTimeout(()=>{
-                orderDetails.rejectDiscription = this.state.rejectDiscription
-                database.child("RejectedOrders").push(orderDetails).then(()=>{
+                orderDetails.rejectDiscription = this.state.rejectDiscription;
+
+                database.child(`RejectedOrders/${orderDetails.currentByerData.id}`).push(orderDetails).then(()=>{
                     this.setState({
                         isReplyLoar:false,
                         rejectDiscription:""

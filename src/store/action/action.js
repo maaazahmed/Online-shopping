@@ -116,13 +116,10 @@ export const orderDetailsAction = (data) => {
         })
     }
 }
-
-
-
-export const myOrderActioin = (data) => {
+export const accetedOrder = (data) => {
     return dispatch => {
         dispatch({
-            type: ActionTypes.MY_ORDERS,
+            type: ActionTypes.ACCEPTED_ORDERS,
             payload: data, 
         })
     }
@@ -130,14 +127,11 @@ export const myOrderActioin = (data) => {
 
 
 
-
-export const AccetedOrderActioin = (data) => {
+export const rejectedOrdersData = (data) => {
     return dispatch => {
         dispatch({
-            type: ActionTypes.ACCEPTED_ORDER,
+            type: ActionTypes.REJECTED_ORDER,
             payload: data, 
         })
     }
 }
-
-
