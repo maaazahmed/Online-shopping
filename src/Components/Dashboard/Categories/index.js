@@ -47,12 +47,10 @@ class CategoryCardComponent extends Component {
         let valueProducts = value.Products
         for (let key in value.Products) {
             productsArr.push({ ...valueProducts[key], key })
-            // console.log(key)
         }
         this.props.categoryData(productsArr)
         this.props.coverImageUrl(value.coverImageUrl)
         this.props.categoryID(value.key)
-        // console.log(productsArr,"===========")
         this.props.navigation.navigate("ProductComponent")
     }
 
@@ -246,7 +244,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderRadius: 100
     },
-  
+
 });
 
 

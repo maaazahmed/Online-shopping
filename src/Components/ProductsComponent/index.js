@@ -28,7 +28,8 @@ class ProductComponent extends Component {
         this.state = {
             scrollY: new Animated.Value(0),
             currentUser: "",
-            nextButtonFlge: false
+            nextButtonFlge: false,
+            numOfproducts: 0
         };
     }
 
@@ -37,7 +38,8 @@ class ProductComponent extends Component {
         selectProductArr.push(value)
         if (selectProductArr.length > 0) {
             this.setState({
-                nextButtonFlge: true
+                nextButtonFlge: true,
+                numOfproducts: selectProductArr.length
             })
         }
         this.props.selectedProducts(selectProductArr)
@@ -129,6 +131,7 @@ class ProductComponent extends Component {
                                                 style={styles.bayBtnView}>
                                                 <Icon name='add' style={{ color: "#00bcd4" }} />
                                             </TouchableOpacity>
+
                                         </View>
                                     </Card>
                                 </View>
@@ -141,12 +144,27 @@ class ProductComponent extends Component {
                 {(this.state.nextButtonFlge) ?
                     <TouchableOpacity onPress={this.completeProductSelection.bind(this)} activeOpacity={0.5} style={styles.nextButton} >
                         <View style={styles.nextButtonTouchableOpacity} >
-                            <Text style={styles.nextText} >Next</Text>
+                            <Text style={styles.nextText} >Check out</Text>
                             <Icon name='arrow-forward' style={{ color: "#fff" }} />
                         </View>
                     </TouchableOpacity>
                     : null}
-
+                {(this.state.nextButtonFlge) ?
+                    <View style={{
+                        elevation: 5,
+                        borderRadius: 30,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "absolute",
+                        left: 20,
+                        bottom: 90,
+                        width: '20%'
+                    }} >
+                        <View style={styles.nextButtonTouchableOpacity}>
+                            <Text style={styles.nextText} >{selectProductArr.length}</Text>
+                        </View>
+                    </View>
+                    : null}
 
 
                 <Animated.View style={[styles.header, { height: headerHeight }]}>
@@ -267,10 +285,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         position: "absolute",
-        right: 25,
+        left: 20,
         bottom: 30,
-        width: '25%'
-
+        width: '32%'
     },
     nextButtonTouchableOpacity: {
         flex: 1,

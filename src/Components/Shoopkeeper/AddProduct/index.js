@@ -117,7 +117,7 @@ class AddProduct extends Component {
                     const storageRef = firebase.storage().ref('/');
                     var file = this.state.coverImageUrl;
                     var metadata = {
-                        contentType: 'image/jpeg' | 'image/png'
+                        contentType: 'image/jpeg' | 'image/png',
                     };
 
                     var uploadTask = storageRef.child('images/' + Date.now()).put(file, metadata);

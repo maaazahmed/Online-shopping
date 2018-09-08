@@ -69,7 +69,6 @@ class Vieworders extends Component {
                                     SoldProductsListArry.push({ ...SoldProductsArr[j].SoldProducts[key3], key3 })
                                 }
                             }
-                            console.log(SoldProductsListArry)
                         }
                     })
                 })
@@ -80,6 +79,7 @@ class Vieworders extends Component {
     orderDetails(orderVal, index) {
         this.props.orderDetailsAction(orderVal) 
         this.props.navigation.navigate("OrderDetails")
+        
 
     }
 
@@ -125,7 +125,7 @@ class Vieworders extends Component {
                                                 <Left>
                                                     <Thumbnail source={{ uri: item.currentByerData.profilePic }} />
                                                     <Body>
-                                                        <Text>NativeBase</Text>
+                                                        <Text style={{color:"#00bcd4", fontSize:15,fontWeight:"bold"}} >{item.currentByerData.Username}</Text>
                                                         <Text note>GeekyAnts</Text>
                                                     </Body>
                                                 </Left>
