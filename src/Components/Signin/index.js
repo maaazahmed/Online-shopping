@@ -20,7 +20,7 @@ import { connect } from "react-redux"
 
 
 const database = firebase.database().ref("/")
-export default class SignIn extends Component {
+class SignIn extends Component {
     constructor() {
         super()
         this.state = {
@@ -67,7 +67,7 @@ export default class SignIn extends Component {
                                     this.props.navigation.navigate("ExtraDetails")
                                 }
                                 else {
-                                    this.props.navigation.navigate("Dashboard")
+                                    this.props.navigation.navigate(this.props.SignInRout.signInRout)
                                 }
                             }
                         })

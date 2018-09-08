@@ -54,16 +54,19 @@ class ProductComponent extends Component {
                     this.setState({
                         currentUser: obj
                     })
+                    if (this.props.selectProductList.selectedProduct.length !== 0) {
+                        this.completeProductSelection()
+                    }
                 })
             }
         })
-
+        console.log(this.props.selectProductList.selectedProduct.length)
     }
 
     completeProductSelection() {
         let currentUser = this.state.currentUser
         if (this.state.currentUser === "") {
-            this.props.SignInRout("ProductComponent")  
+            this.props.SignInRout("ProductComponent")
             this.props.navigation.navigate("SignIn")
         }
         else {
@@ -73,10 +76,12 @@ class ProductComponent extends Component {
                 selectProductList[i].currentByerData = currentUser;
                 delete selectProductList[i].SoldProducts;
                 database.child(`Categorys/${categoryID}/Products/${selectProductList[i].key}/SoldProducts`).push(selectProductList[i]).then((suc) => {
+                    alert("Order submit successfuly")
                     this.setState({
                         nextButtonFlge: false
                     })
                     selectProductArr = []
+                    this.props.selectedProducts(selectProductArr)
                 }).catch((err) => { })
                 database.child(`My-orders/${currentUser.id}`).push(selectProductList[i])
             }
@@ -87,7 +92,6 @@ class ProductComponent extends Component {
 
 
     render() {
-        console.log(this.state.currentUser.userType)
         let categoryData = this.props.catogeryData.categoryData
         const headerHeight = this.state.scrollY.interpolate({
             inputRange: [0, HEADER_SCROLL_DISTANCE],
@@ -128,14 +132,14 @@ class ProductComponent extends Component {
                                                 <Text style={styles.modleText} >{value.modalNumVal}</Text>
                                                 <Text style={styles.priceText} >{value.priceVal}</Text>
                                             </View>
-                                            {/* {(this.state.currentUser.userType === "Bayer") ? */}
+
                                             <TouchableOpacity
                                                 onPress={this.selectProduct.bind(this, value, index)}
                                                 activeOpacity={0.5}
                                                 style={styles.bayBtnView}>
                                                 <Icon name='add' style={{ color: "#00bcd4" }} />
                                             </TouchableOpacity>
-                                            {/* : null} */}
+
                                         </View>
                                     </Card>
                                 </View>
@@ -178,7 +182,11 @@ class ProductComponent extends Component {
                             { opacity: imageOpacity, transform: [{ translateY: imageTranslate }] }]}
                         source={{ uri: this.props.categoryCoverImageUrl.coverImage }} />
                     <TouchableOpacity
-                        onPress={() => { this.props.navigation.navigate("Dashboard") }}
+                        onPress={() => {
+                            selectProductArr = []
+                            this.props.selectedProducts(selectProductArr)
+                            this.props.navigation.navigate("Dashboard")
+                        }}
                         activeOpacity={0.6}  >
                         <View style={{ backgroundColor: "trancparant", padding: 17, }} >
                             <Icon name='arrow-back' style={{ color: "#fff" }} />
