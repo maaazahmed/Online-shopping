@@ -79,7 +79,7 @@ class OrderDetails extends Component {
             <Container>
                 <Header style={{ backgroundColor: '#00bcd4', justifyContent: "flex-start", alignItems: "center" }}>
                     <View accessible={true} style={styles.HeaderContainer} >
-                        <TouchableOpacity style={styles.IconTouchableOpacity} activeOpacity={0.5}>
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Vieworders")}} style={styles.IconTouchableOpacity} activeOpacity={0.5}>
                             <Icon style={{ color: "#fff", fontSize: 23 }} name='arrow-back' />
                         </TouchableOpacity>
                         <View style={styles.productNameVal} >
