@@ -12,7 +12,8 @@ import {
     ExtraDetails,
     Vieworders,
     OrderDetails,
-    MyOrders
+    MyOrders,
+    AdminProductComponent
 } from "./Components/index";
 
 
@@ -86,6 +87,12 @@ const Router = StackNavigator({
     },
     OrderDetails: {
         screen: OrderDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
+    AdminProductComponent: {
+        screen: AdminProductComponent,
         navigationOptions: {
             header: null
         }

@@ -63,7 +63,7 @@ class AdminDashboard extends Component {
                         activeTextStyle={{ color: "#fff" }}
                         textStyle={{ color: '#f2f2f2' }}
                         heading="CATEGORYS">
-                        <AddCategory />
+                        <AddCategory navigation={this.props.navigation} />
                     </Tab>
                     <Tab
                         tabStyle={{ backgroundColor: '#00bcd4' }}

@@ -10,6 +10,7 @@ import ExtraDetails from "./UserExtraDetail/index";
 import Vieworders from "./Shoopkeeper/OrdersView/index"
 import OrderDetails from "./OrdersDetail/index";
 import MyOrders from "./myOrders/index"
+import AdminProductComponent from "./Admin/AdminproductsList/index"
 export {
     Signup,
     SplashScreen,
@@ -22,5 +23,6 @@ export {
     ExtraDetails,
     Vieworders,
     OrderDetails,
-    MyOrders
+    MyOrders,
+    AdminProductComponent
 };

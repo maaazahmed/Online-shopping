@@ -48,9 +48,9 @@ class AddCategory extends Component {
         for (let key in value.Products) {
             productsArr.push({ ...valueProducts[key], key })
         }
-        // this.props.categoryData(productsArr)
-        // this.props.coverImageUrl(value.coverImageUrl)
-        // this.props.navigation.navigate("ProductComponent")
+        this.props.categoryData(productsArr)
+        this.props.coverImageUrl(value.coverImageUrl)
+        this.props.navigation.navigate("AdminProductComponent")
         console.log(productsArr,"===================")
         // this.props.categoryID(value.key)
     }

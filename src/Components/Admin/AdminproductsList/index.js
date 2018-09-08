@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Card, Icon } from 'native-base';
 import { connect } from "react-redux"
-import { selectedProducts } from "../../store/action/action"
+import { selectedProducts } from "../../../store/action/action"
 import firebase from "react-native-firebase"
 
 
@@ -21,8 +21,11 @@ const HEADER_MAX_HEIGHT = 230;
 const HEADER_MIN_HEIGHT = 60;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 let selectProductArr = []
+
+
+
 const database = firebase.database().ref("/")
-class ProductComponent extends Component {
+class AdminProductComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -126,14 +129,14 @@ class ProductComponent extends Component {
                                                 <Text style={styles.modleText} >{value.modalNumVal}</Text>
                                                 <Text style={styles.priceText} >{value.priceVal}</Text>
                                             </View>
-                                            {/* {(this.state.currentUser.userType === "Bayer") ? */}
+                                            {/* {(this.state.currentUser.userType === "Bayer") ?
                                                 <TouchableOpacity
                                                     onPress={this.selectProduct.bind(this, value, index)}
                                                     activeOpacity={0.5}
                                                     style={styles.bayBtnView}>
                                                     <Icon name='add' style={{ color: "#00bcd4" }} />
                                                 </TouchableOpacity>
-                                                {/* : null} */}
+                                                : null} */}
                                         </View>
                                     </Card>
                                 </View>
@@ -176,7 +179,7 @@ class ProductComponent extends Component {
                             { opacity: imageOpacity, transform: [{ translateY: imageTranslate }] }]}
                         source={{ uri: this.props.categoryCoverImageUrl.coverImage }} />
                     <TouchableOpacity
-                        onPress={() => { this.props.navigation.navigate("Dashboard") }}
+                        onPress={() => { this.props.navigation.navigate("AdminDashboard") }}
                         activeOpacity={0.6}  >
                         <View style={{ backgroundColor: "trancparant", padding: 17, }} >
                             <Icon name='arrow-back' style={{ color: "#fff" }} />
@@ -325,4 +328,4 @@ const mapDispatchToProp = (dispatch) => {
         },
     };
 };
-export default connect(mapStateToProp, mapDispatchToProp)(ProductComponent)
+export default connect(mapStateToProp, mapDispatchToProp)(AdminProductComponent)
