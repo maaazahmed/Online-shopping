@@ -100,10 +100,7 @@ class SignIn extends Component {
         }
     }
 
-    componentDidMount() {
-        this.props.navigation.navigate("SignIn")
-    }
-
+ 
     render() {
         return (
             (!this.state.isLoader) ?

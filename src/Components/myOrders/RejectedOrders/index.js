@@ -73,30 +73,44 @@ class RejectedOrders extends Component {
         let rejectedOrder_List = this.props.rejectedOrder_List.reJectedOrders;
         return (
             <View style={styles.container}  >
-                <Content>
-                    <View style={styles.categoryGridComponent} >
+                {(rejectedOrder_List.length) ?
+                    <View style={{ flex: 1 }} >
                         <FlatList
+                            style={{}}
                             data={rejectedOrder_List}
                             renderItem={({ item, index }) =>
-                                <View
-                                    activeOpacity={0.8}>
-                                    <Card>
-                                        <CardItem header style={{ backgroundColor: "red" }} >
+                                <View style={{ height: "100%", flex: 1 }} >
+                                    <Card style={{ flex: 1 }} >
+                                        <View style={{ backgroundColor: "#00bcd4", padding: 10, fontSize: "25", fontWeight: "bold" }} >
                                             <Text style={{ color: "#fff" }} >{item.categoryVal}</Text>
-                                        </CardItem>
-                                        <CardItem>
-                                            <Body>
-                                                <Text style={{ color: "red" }} >
-                                                    {item.rejectDiscription}
-                                                </Text>
-                                            </Body>
-                                        </CardItem>
+                                        </View>
+                                        <View style={{ minHeight: 100 }} >
+                                            <Text style={{ color: "#00bcd4", margin: 10 }} >
+                                                {item.rejectDiscription}
+                                            </Text>
+                                            <View style={{ margin: 10, justifyContent: "flex-end", alignItems: "flex-end" }} >
+                                                <Image source={require("./images/error-512.png")} style={{ height: 25, width: 25 }} />
+                                            </View>
+                                        </View>
                                     </Card>
                                 </View>}
                             keyExtractor={(item) => { return item.key }}
                         />
                     </View>
-                </Content>
+                    :
+                    <View style={{
+                        flex: 1,
+                        backgroundColor: "#f2f2f2",
+                        justifyContent: "center",
+                        alignItems: "center"}}>
+                        <Text style={{
+                            fontSize: 25,
+                            fontWeight: "bold",
+                            color: "gray"}} >
+                            No Rejected orders
+                          </Text>
+                    </View>
+                }
             </View>
         );
     }
@@ -107,10 +121,13 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center',
-        // backgroundColor: '#F5FCFF',
+        backgroundColor: '#F5FCFF',
     },
 
     categoryGridComponent: {
+        flex: 1,
+        height: "100%"
+
         // flexDirection: 'row',
         // justifyContent: 'center',
         // flexWrap: 'wrap',

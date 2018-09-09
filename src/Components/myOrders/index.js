@@ -90,7 +90,7 @@ class MyOrders extends Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Title>Header</Title>
+                        {/* <Title>Header</Title> */}
                     </Body>
                 </Header>
                 <Tabs>

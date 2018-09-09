@@ -73,38 +73,49 @@ class AcceptedOrders extends Component {
         let myOrder_List = this.props.myOrder_List.myOrders;
         return (
             <View style={styles.container}  >
-                <Content>
-                    <View style={styles.categoryGridComponent} >
-                        <FlatList
-                            data={myOrder_List}
-                            renderItem={({ item, index }) =>
-                                <View key={index}
-                                    activeOpacity={0.8}>
-                                    <Card style={styles.categoryCard} >
-                                        <View style={styles.CardViewImage} >
-                                            <Image
-                                                resizeMode="contain"
-                                                source={{ uri: item.coverImageUrl }}
-                                                style={styles.ImageBackground} />
-                                        </View>
-                                        <View style={styles.producDetailView} >
-                                            <View style={styles.producDetaContain} >
-                                                <Text style={styles.nameText} >{item.productNameVal}</Text>
-                                                <Text style={styles.modleText} >{item.modalNumVal}</Text>
-                                                <Text style={styles.priceText} >{item.priceVal}</Text>
+                {(myOrder_List.length > 0) ?
+                    <Content>
+                        <View style={styles.categoryGridComponent} >
+                            <FlatList
+                                data={myOrder_List}
+                                renderItem={({ item, index }) =>
+                                    <View key={index}
+                                        activeOpacity={0.8}>
+                                        <Card style={styles.categoryCard} >
+                                            <View style={styles.CardViewImage} >
+                                                <Image
+                                                    resizeMode="contain"
+                                                    source={{ uri: item.coverImageUrl }}
+                                                    style={styles.ImageBackground} />
                                             </View>
-                                            <TouchableOpacity
-                                                activeOpacity={0.5} style={styles.bayBtnView}   >
-                                                <Icon name='done-all' style={{ color: "green", fontSize: 35 }} />
-                                            </TouchableOpacity>
-                                        </View>
-                                    </Card>
-                                </View>
-                            }
-                            keyExtractor={(item) => { return item.key }}
-                        />
+                                            <View style={styles.producDetailView} >
+                                                <View style={styles.producDetaContain} >
+                                                    <Text style={styles.nameText} >{item.productNameVal}</Text>
+                                                    <Text style={styles.modleText} >{item.modalNumVal}</Text>
+                                                    <Text style={styles.priceText} >{item.priceVal}</Text>
+                                                </View>
+                                                <TouchableOpacity
+                                                    activeOpacity={0.5} style={styles.bayBtnView}   >
+                                                    <Icon name='done-all' style={{ color: "green", fontSize: 35 }} />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </Card>
+                                    </View>}
+                                keyExtractor={(item) => { return item.key }} />
+                        </View>
+                    </Content>
+                    :
+                    <View style={{
+                        flex: 1,
+                        backgroundColor: "#f2f2f2",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                        <Text style={{ fontSize: 25, fontWeight: "bold", color: "gray" }} >
+                            No accepted orders
+                              </Text>
                     </View>
-                </Content>
+                }
             </View>
         );
     }
@@ -120,9 +131,10 @@ const styles = StyleSheet.create({
 
     categoryGridComponent: {
         // flexDirection: 'row',
-        // justifyContent: 'center',
+        justifyContent: 'center',
         // flexWrap: 'wrap',
         // marginBottom: 5,
+        flex: 1
     },
 
 
