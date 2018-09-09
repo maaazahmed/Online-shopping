@@ -83,8 +83,8 @@ export default class Signup extends Component {
 
     render() {
         return (
-
-            <View style={styles.container}>
+            (!this.state.isLoader) ?
+                <View style={styles.container}>
                     <View style={styles.darazHeadingContainer} >
                         <Text style={styles.darazHeading} >
                             SHOPPER
@@ -140,7 +140,7 @@ export default class Signup extends Component {
                                     color={"#fff"}
                                     selectedColor={"#fff"}
                                     onPress={() => { this.setState({ Serller: false, Bayer: true, userType: "Bayer" }) }}
-                                    selected={this.state.Bayer}/>
+                                    selected={this.state.Bayer} />
                             </View>
                         </View>
                         <View style={styles.RegisterBtnView}>
@@ -153,16 +153,12 @@ export default class Signup extends Component {
                                 <Text style={styles.btnRegisterText} >Sign in</Text>
                             </TouchableOpacity>
                         </View>
-
                     </View>
-                {(this.state.isLoader) ?
-                    <View style={styles.lodaerStyle} >
-
-                        <BarIndicator color='#00bcd4' count={6} />
-
-                    </View>
-                    : null}
-            </View>
+                </View>
+                :
+                <View style={styles.lodaerStyle} >
+                    <BarIndicator color='#00bcd4' count={6} />
+                </View>
         );
     }
 }

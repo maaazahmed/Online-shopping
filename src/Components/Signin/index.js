@@ -106,60 +106,57 @@ class SignIn extends Component {
 
     render() {
         return (
-
-            <View style={styles.container}>
-                <View style={styles.darazHeadingContainer} >
-                    <Text style={styles.darazHeading} >
-                        SHPOP
+            (!this.state.isLoader) ?
+                <View style={styles.container}>
+                    <View style={styles.darazHeadingContainer} >
+                        <Text style={styles.darazHeading} >
+                            SHPOP
                      </Text>
+                    </View>
+                    <View style={{ elevation: 10, backgroundColor: "#fff", height: 230, width: 240, borderRadius: 1000, justifyContent: "center", alignSelf: "center" }} >
+                        <Image
+                            resizeMode="stretch"
+                            style={{ height: 150, width: 150, alignSelf: "center", }}
+                            source={require("./images/shopping-basket-icon.png")} />
+                    </View>
+
+                    <View style={styles.TextInputContainer} >
+                        <View style={styles.TextInputView}>
+                            <TextInput
+                                style={styles.TextInput}
+                                underlineColorAndroid="transparent"
+                                placeholderTextColor="#00bcd4"
+                                value={this.state.Email}
+                                onChangeText={(Email) => this.setState({ Email })}
+                                placeholder="Email" />
+                        </View>
+                        <View style={styles.TextInputView}>
+                            <TextInput
+                                value={this.state.Password}
+                                onChangeText={(Password) => this.setState({ Password })}
+                                style={styles.TextInput}
+                                underlineColorAndroid="transparent"
+                                placeholderTextColor="#00bcd4"
+                                placeholder="Password" />
+                        </View>
+
+                        <View style={styles.RegisterBtnView}>
+                            <TouchableOpacity activeOpacity={0.8} style={styles.btnRegister}
+                                onPress={this.login.bind(this)} bordered success>
+                                <Text style={styles.btnRegisterText} >Sign in</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => { this.props.navigation.navigate("Signup") }}
+                                activeOpacity={0.8} style={styles.btnRegister} bordered success>
+                                <Text style={styles.btnRegisterText} >Register</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
-                <View style={{ elevation: 10, backgroundColor: "#fff", height: 230, width: 240, borderRadius: 1000, justifyContent: "center", alignSelf: "center" }} >
-                    <Image
-                        resizeMode="stretch"
-                        style={{ height: 150, width: 150, alignSelf: "center", }}
-                        source={require("./images/shopping-basket-icon.png")} />
+                :
+                <View style={styles.lodaerStyle} >
+                    <BarIndicator color='#00bcd4' count={6} />
                 </View>
 
-                <View style={styles.TextInputContainer} >
-                    <View style={styles.TextInputView}>
-                        <TextInput
-                            style={styles.TextInput}
-                            underlineColorAndroid="transparent"
-                            placeholderTextColor="#00bcd4"
-                            value={this.state.Email}
-                            onChangeText={(Email) => this.setState({ Email })}
-                            placeholder="Email" />
-                    </View>
-                    <View style={styles.TextInputView}>
-                        <TextInput
-                            value={this.state.Password}
-                            onChangeText={(Password) => this.setState({ Password })}
-                            style={styles.TextInput}
-                            underlineColorAndroid="transparent"
-                            placeholderTextColor="#00bcd4"
-                            placeholder="Password" />
-                    </View>
-
-                    <View style={styles.RegisterBtnView}>
-                        <TouchableOpacity activeOpacity={0.8} style={styles.btnRegister}
-                            onPress={this.login.bind(this)} bordered success>
-                            <Text style={styles.btnRegisterText} >Sign in</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { this.props.navigation.navigate("Signup") }}
-                            activeOpacity={0.8} style={styles.btnRegister} bordered success>
-                            <Text style={styles.btnRegisterText} >Register</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                </View>
-
-                {/* </ImageBackground> */}
-                {(this.state.isLoader) ?
-                    <View style={styles.lodaerStyle} >
-                        <BarIndicator color='#00bcd4' count={6} />
-                    </View>
-                    : null}
-            </View>
         );
     }
 }
@@ -253,7 +250,9 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: "rgba(255, 255, 255, 0.5)"
+        backgroundColor: "rgba(255, 255, 255, 0.5)",
+        justifyContent: "center",
+        alignItems: "center"
     },
 });
 
