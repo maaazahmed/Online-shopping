@@ -76,9 +76,9 @@ class Vieworders extends Component {
     }
 
     orderDetails(orderVal, index) {
-        this.props.orderDetailsAction(orderVal) 
+        this.props.orderDetailsAction(orderVal)
         this.props.navigation.navigate("OrderDetails")
-        
+
 
     }
 
@@ -111,37 +111,53 @@ class Vieworders extends Component {
                     scrollEventThrottle={16}
                     onScroll={Animated.event(
                         [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }])}>
-                    <View style={styles.categoryGridComponent} >
-                        <FlatList
-                            data={orderList}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <TouchableOpacity
-                                        onPress={this.orderDetails.bind(this, item, index)}
-                                        activeOpacity={0.5}>
-                                        <Card style={styles.orderCardContainer} key={item.key} >
-                                            <CardItem>
-                                                <Left>
-                                                    <Thumbnail source={{ uri: item.currentByerData.profilePic }} />
-                                                    <Body>
-                                                        <Text style={{color:"#00bcd4", fontSize:15,fontWeight:"bold"}} >{item.currentByerData.Username}</Text>
-                                                        <Text note>GeekyAnts</Text>
-                                                    </Body>
-                                                </Left>
-                                                <Right>
-                                                    <Icon name="arrow-forward" style={{ color: "#00bcd4", fontSize: 25 }} />
-                                                </Right>
-                                            </CardItem>
-                                        </Card>
-                                    </TouchableOpacity>
 
-                                )
-                            }}
-                            keyExtractor={(item, index) => {
-                                return item.key
-                            }}
-                        />
-                    </View>
+                    {(orderList.length <= 0) ?
+                        <View>
+                            <View>
+                                <View style={{
+                                    flex: 1,
+                                    backgroundColor: "#f2f2f2",
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}>
+                                    <Text style={{ fontSize: 25, fontWeight: "bold", color: "gray" }} >
+                                        No Orders
+                              </Text>
+                                </View>
+                            </View>
+                        </View>
+                        :
+                        <View style={styles.categoryGridComponent} >
+                            <FlatList
+                                data={orderList}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <TouchableOpacity
+                                            onPress={this.orderDetails.bind(this, item, index)}
+                                            activeOpacity={0.5}>
+                                            <Card style={styles.orderCardContainer} key={item.key} >
+                                                <CardItem>
+                                                    <Left>
+                                                        <Thumbnail source={{ uri: item.currentByerData.profilePic }} />
+                                                        <Body>
+                                                            <Text style={{ color: "#00bcd4", fontSize: 15, fontWeight: "bold" }} >{item.currentByerData.Username}</Text>
+                                                            <Text note>GeekyAnts</Text>
+                                                        </Body>
+                                                    </Left>
+                                                    <Right>
+                                                        <Icon name="arrow-forward" style={{ color: "#00bcd4", fontSize: 25 }} />
+                                                    </Right>
+                                                </CardItem>
+                                            </Card>
+                                        </TouchableOpacity>)
+                                }}
+                                keyExtractor={(item, index) => {
+                                    return item.key
+                                }}
+                            />
+                        </View>}
+
                 </ScrollView>
                 <Animated.View style={[styles.header, { height: headerHeight }]}>
                     <Animated.Image

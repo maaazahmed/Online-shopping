@@ -46,29 +46,6 @@ class RejectedOrders extends Component {
             modalVisible: true
         })
     }
-
-
-
-    // componentWillMount() {
-    //     let myOrdersArr = []
-    //     firebase.auth().onAuthStateChanged((user) => {
-    //         if (user) {
-    //             this.setState({
-    //                 currentUser: user.uid
-    //             })
-    //             database.child(`My-orders/${user.uid}`).on("value", (snap) => {
-    //                 let obj = snap.val()
-    //                 for (let key in obj) {
-    //                     myOrdersArr.push({ ...obj[key], key })
-    //                 }
-    //                 this.props.myOrdersData(myOrdersArr)
-    //                 // console.log()
-    //             })
-    //         }
-    //     });
-
-    // }
-
     render() {
         let rejectedOrder_List = this.props.rejectedOrder_List.reJectedOrders;
         return (
@@ -119,8 +96,6 @@ class RejectedOrders extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
 
@@ -128,16 +103,10 @@ const styles = StyleSheet.create({
         flex: 1,
         height: "100%"
 
-        // flexDirection: 'row',
-        // justifyContent: 'center',
-        // flexWrap: 'wrap',
-        // marginBottom: 5,
     },
 
 
     categoryCard: {
-        // width: Dimensions.get("window").width,
-        // height: Dimensions.get("window").height / 4,
         backgroundColor: "green",
         marginBottom: 0,
         elevation: 0,

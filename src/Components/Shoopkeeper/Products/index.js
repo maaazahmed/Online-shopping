@@ -90,44 +90,55 @@ class Products extends Component {
         this.props.navigation.navigate("Vieworders")
     }
 
-
-
-
     render() {
         let myProducts_List = this.props.myProducts_List.myProducts
         return (
             <Container>
-                <Content>
-                    <View style={styles.categoryGridComponent} >
-                        {myProducts_List.map((value, index) => {
-                            return (
-                                <View key={index}
-                                    activeOpacity={0.8}>
-                                    <Card style={styles.categoryCard} >
-                                        <View style={styles.CardViewImage} >
-                                            <Image
-                                                resizeMode="contain"
-                                                source={{ uri: value.coverImageUrl }}
-                                                style={styles.ImageBackground} />
-                                        </View>
-                                        <View style={styles.producDetailView} >
-                                            <View style={styles.producDetaContain} >
-                                                <Text style={styles.nameText} >{value.productNameVal}</Text>
-                                                <Text style={styles.modleText} >{value.modalNumVal}</Text>
-                                                <Text style={styles.priceText} >{value.priceVal}</Text>
-                                            </View>
-                                            <TouchableOpacity
-                                                onPress={this.viewOrders.bind(this, value)}
-                                                activeOpacity={0.5} style={styles.bayBtnView}   >
-                                                <Icon name='clipboard' style={{ color: "#00bcd4", fontSize: 35 }} />
-                                            </TouchableOpacity>
-                                        </View>
-                                    </Card>
-                                </View>
-                            )
-                        })}
+                {(myProducts_List.length <= 0) ?
+                    <View>
+                        <View style={{
+                            flex: 1,
+                            backgroundColor: "#f2f2f2",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}>
+                            <Text style={{ fontSize: 25, fontWeight: "bold", color: "gray" }} >
+                                You have no product
+                              </Text>
+                        </View>
                     </View>
-                </Content>
+                    :
+                    <Content>
+                        <View style={styles.categoryGridComponent} >
+                            {myProducts_List.map((value, index) => {
+                                return (
+                                    <View key={index}
+                                        activeOpacity={0.8}>
+                                        <Card style={styles.categoryCard} >
+                                            <View style={styles.CardViewImage} >
+                                                <Image
+                                                    resizeMode="contain"
+                                                    source={{ uri: value.coverImageUrl }}
+                                                    style={styles.ImageBackground} />
+                                            </View>
+                                            <View style={styles.producDetailView} >
+                                                <View style={styles.producDetaContain} >
+                                                    <Text style={styles.nameText} >{value.productNameVal}</Text>
+                                                    <Text style={styles.modleText} >{value.modalNumVal}</Text>
+                                                    <Text style={styles.priceText} >{value.priceVal}</Text>
+                                                </View>
+                                                <TouchableOpacity
+                                                    onPress={this.viewOrders.bind(this, value)}
+                                                    activeOpacity={0.5} style={styles.bayBtnView}   >
+                                                    <Icon name='clipboard' style={{ color: "#00bcd4", fontSize: 35 }} />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </Card>
+                                    </View>
+                                )
+                            })}
+                        </View>
+                    </Content>}
             </Container>
         );
     }

@@ -80,7 +80,6 @@ class ProductComponent extends Component {
         setTimeout(() => {
             let currentUser = this.state.currentUser
             if (this.state.currentUser === "") {
-                // this.props.SignInRout("ProductComponent")
                 this.props.navigation.navigate("SignIn")
             }
             else {
@@ -125,53 +124,65 @@ class ProductComponent extends Component {
         });
         return (
             <View style={styles.fill}>
-                <ScrollView
-                    style={styles.fill}
-                    scrollEventThrottle={16}
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }])}>
-                    <View style={styles.categoryGridComponent} >
-                        {categoryData.map((value, index) => {
-                            return (
-                                <View key={index}>
-                                    <Card style={styles.categoryCard} >
-                                        <View style={styles.CardViewImage} >
-                                            <Image
-                                                resizeMode="contain"
-                                                source={{ uri: value.coverImageUrl }}
-                                                style={styles.ImageBackground} />
-                                        </View>
-                                        <View style={styles.producDetailView} >
-                                            <View style={styles.producDetaContain} >
-                                                <Text style={styles.nameText} >{value.productNameVal}</Text>
-                                                <Text style={styles.modleText} >{value.modalNumVal}</Text>
-                                                <Text style={styles.priceText} >{value.priceVal}</Text>
+                {(categoryData.length <= 0) ?
+                        <View style={{
+                            flex: 1,
+                            backgroundColor: "#f2f2f2",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}>
+                            <Text style={{ fontSize: 25, fontWeight: "bold", color: "gray" }} >
+                                No Product
+                              </Text>
+                        </View>
+                    :
+                    <ScrollView
+                        style={styles.fill}
+                        scrollEventThrottle={16}
+                        onScroll={Animated.event(
+                            [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }])}>
+                        <View style={styles.categoryGridComponent} >
+                            {categoryData.map((value, index) => {
+                                return (
+                                    <View key={index}>
+                                        <Card style={styles.categoryCard} >
+                                            <View style={styles.CardViewImage} >
+                                                <Image
+                                                    resizeMode="contain"
+                                                    source={{ uri: value.coverImageUrl }}
+                                                    style={styles.ImageBackground} />
                                             </View>
+                                            <View style={styles.producDetailView} >
+                                                <View style={styles.producDetaContain} >
+                                                    <Text style={styles.nameText} >{value.productNameVal}</Text>
+                                                    <Text style={styles.modleText} >{value.modalNumVal}</Text>
+                                                    <Text style={styles.priceText} >{value.priceVal}</Text>
+                                                </View>
 
-                                            <TouchableOpacity
-                                                onPress={this.selectProduct.bind(this, value, index)}
-                                                activeOpacity={0.5}
-                                                style={styles.bayBtnView}>
-                                                <Icon name='add' style={{ color: "#00bcd4" }} />
-                                            </TouchableOpacity>
+                                                <TouchableOpacity
+                                                    onPress={this.selectProduct.bind(this, value, index)}
+                                                    activeOpacity={0.5}
+                                                    style={styles.bayBtnView}>
+                                                    <Icon name='add' style={{ color: "#00bcd4" }} />
+                                                </TouchableOpacity>
 
-                                        </View>
-                                    </Card>
-                                </View>
-                            )
-                        })}
+                                            </View>
+                                        </Card>
+                                    </View>
+                                )
+                            })}
 
-                    </View>
-                </ScrollView>
+                        </View>
+                    </ScrollView>}
 
                 {(this.state.nextButtonFlge) ?
                     <TouchableOpacity onPress={this.completeProductSelection.bind(this)} activeOpacity={0.5} style={styles.nextButton} >
-                        <View style={styles.nextButtonTouchableOpacity} >
-                            <Text style={styles.nextText} >Check out</Text>
-                            <Icon name='arrow-forward' style={{ color: "#fff" }} />
-                        </View>
-                    </TouchableOpacity>
-                    : null}
+                    <View style={styles.nextButtonTouchableOpacity} >
+                        <Text style={styles.nextText} >Check out</Text>
+                        <Icon name='arrow-forward' style={{ color: "#fff" }} />
+                    </View>
+                </TouchableOpacity>
+                : null}
                 {(this.state.nextButtonFlge) ?
                     <View style={{
                         elevation: 5,
