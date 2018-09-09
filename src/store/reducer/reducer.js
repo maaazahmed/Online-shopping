@@ -15,7 +15,8 @@ const INITIAL_STATE = {
     shopkeeperID: "",
     coverImage: "",
     coverImageUrl: "",
-    signInRout:"Dashboard"
+    signInRout: "Dashboard",
+    DashboardRout: "Dashboard"
 
 }
 
@@ -91,11 +92,16 @@ export default (state = INITIAL_STATE, action) => {
                 reJectedOrders: action.payload,
 
             })
-            case ActionTypes.SIGN_IN_ROUT:
+        case ActionTypes.SIGN_IN_ROUT:
             return ({
                 ...state,
                 signInRout: action.payload,
+            })
 
+        case ActionTypes.DASHBOARD_ROUT:
+            return ({
+                ...state,
+                DashboardRout: action.payload,
             })
         default:
             return state;

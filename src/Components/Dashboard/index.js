@@ -9,9 +9,12 @@ import { Container, Header, Left, Body, Right, Button, Icon, Title, Drawer, Cont
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
 import CategoryComponent from "./Categories/index"
 import CategoryListComponent from "./DrawerCategories/index"
-import { categoryList } from "../../store/action/action"
+import { categoryList, DashboardRout } from "../../store/action/action"
 import { connect } from "react-redux"
 import firebase from "react-native-firebase"
+import { BarIndicator } from 'react-native-indicators';
+
+
 
 
 const database = firebase.database().ref("/")
@@ -20,7 +23,8 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             currentUserID: "",
-            currentUser: {}
+            currentUser: {},
+            isLoader: true
         }
     }
     _menu = null;
@@ -54,6 +58,7 @@ class Dashboard extends Component {
                         currentUser: obj,
                     })
                 })
+                this.props.DashboardRout("Dashboard")
             }
             else {
 
@@ -71,9 +76,33 @@ class Dashboard extends Component {
             this.props.categoryList(categoryArr)
             this.setState({
                 categoryArrtListLength: categoryArr.length,
+            })
+            setTimeout(()=>{
+                this.setState({
+                    isLoader: false
+                })
+            }, 2000)
+        })
+    }
+
+
+    SignOut() {
+        firebase.auth().signOut().then(() => {
+            this.setState({
                 isLoader: true
             })
+            setTimeout(()=>{
+                this.setState({
+                    isLoader: false
+                })
+                // this.props.DashboardRout("SignIn")
+                this.props.navigation.navigate("SignIn")
+            }, 2000)
+        }).catch(() => {
+            console.log("Logged out Fail")
         })
+        this.hideMenu()
+
     }
 
     render() {
@@ -84,53 +113,59 @@ class Dashboard extends Component {
                 openDrawerOffset={0.5}
                 panCloseMask={0.5}
                 onClose={() => this.closeDrawer()} >
-                <Container>
-                    <Header style={{ backgroundColor: "#00bcd4" }} >
-                        <Left>
-                            <Button onPress={() => this.openDrawer()} transparent>
-                                <Icon name='menu' />
-                            </Button>
-                        </Left>
-                        <Body>
-                           
-                        </Body>
-                        <Right>
-                            <Button onPress={this.showMenu} transparent >
-                                <Icons color="#fff" size={20} name='ellipsis-v' />
-                            </Button>
-                            <Menu ref={this.setMenuRef}>
-                               {(this.state.currentUser.userType !== "Bayer")?
-                                <MenuItem
-                                    onPress={() => {
-                                        this.props.navigation.navigate("SignIn")
-                                        this.hideMenu()}}>
-                                    Sign in
+                {(this.state.isLoader) ?
+                    <View style={styles.lodaerStyle} >
+                        <BarIndicator color='#00bcd4' count={6} />
+                    </View>
+                    :
+                    <Container>
+                        <Header style={{ backgroundColor: "#00bcd4" }} >
+                            <Left>
+                                <Button onPress={() => this.openDrawer()} transparent>
+                                    <Icon name='menu' />
+                                </Button>
+                            </Left>
+                            <Body>
+
+                            </Body>
+                            <Right>
+                                <Button onPress={this.showMenu} transparent >
+                                    <Icons color="#fff" size={20} name='ellipsis-v' />
+                                </Button>
+                                <Menu ref={this.setMenuRef}>
+                                    {(this.state.currentUser.userType !== "Bayer") ?
+                                        <MenuItem
+                                            onPress={() => {
+                                                this.props.DashboardRout("SignIn")
+                                                this.props.navigation.navigate("SignIn")
+                                                this.hideMenu()
+                                            }}>
+                                            Sign in
                                 </MenuItem>
-                                :
-                                <MenuItem
-                                onPress={() => {
-                                    this.hideMenu()}}>
-                                Sign out
+                                        :
+                                        <MenuItem
+                                            onPress={this.SignOut.bind(this)}>
+                                            Sign out
                                </MenuItem>}
 
-                                <MenuItem
-                                    onPress={() => {
-                                        this.hideMenu()
-                                    }}>Profile</MenuItem>
-                            </Menu>
-                        </Right>
-                    </Header>
-                    {(this.state.currentUserID !== "") ?
-                        <View style={styles.morOrdersContainre}>
-                            <TouchableOpacity
-                                onPress={() => { this.props.navigation.navigate("MyOrders") }}
-                                activeOpacity={0.5} style={styles.morOrdersTouchableOpacity} >
-                                <Icon name="cart" style={{ color: "#00bcd4", fontSize: 35 }} />
-                            </TouchableOpacity>
-                        </View>
-                        : null}
-                    <CategoryComponent navigation={this.props.navigation} />
-                </Container>
+                                    <MenuItem
+                                        onPress={() => {
+                                            this.hideMenu()
+                                        }}>Profile</MenuItem>
+                                </Menu>
+                            </Right>
+                        </Header>
+                        {(this.state.currentUserID !== "") ?
+                            <View style={styles.morOrdersContainre}>
+                                <TouchableOpacity
+                                    onPress={() => { this.props.navigation.navigate("MyOrders") }}
+                                    activeOpacity={0.5} style={styles.morOrdersTouchableOpacity} >
+                                    <Icon name="cart" style={{ color: "#00bcd4", fontSize: 35 }} />
+                                </TouchableOpacity>
+                            </View>
+                            : null}
+                        <CategoryComponent navigation={this.props.navigation} />
+                    </Container>}
             </Drawer>
         );
     }
@@ -149,6 +184,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         padding: 15,
         justifyContent: "center"
+    },
+    lodaerStyle: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
     }
 });
 
@@ -163,6 +203,9 @@ const mapDispatchToProp = (dispatch) => {
     return {
         categoryList: (data) => {
             dispatch(categoryList(data))
+        },
+        DashboardRout: (data) => {
+            dispatch(DashboardRout(data))
         },
     };
 };

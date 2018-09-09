@@ -146,3 +146,18 @@ export const SignInRout = (data) => {
         })
     }
 }
+
+
+export const DashboardRout = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.DASHBOARD_ROUT,
+            payload: data, 
+        })
+    }
+}
+
+
+
+
+

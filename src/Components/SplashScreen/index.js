@@ -5,26 +5,43 @@ import {
     Text,
     View,
     ImageBackground,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
+import firebase from "react-native-firebase"
+import { connect } from "react-redux"
+import {  } from "../../store/action/action"
 
 
 
-export default class SplashScreen extends Component {
+
+
+
+let database = firebase.database().ref("/")
+ class SplashScreen extends Component {
     componentWillMount() {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                database.child(`user/${user.uid}`).on("value", (snap) => {
-                    let obj = snap.val()
-                    obj.id = snap.key;
-                    console.log(obj.userType !== "Bayer")
-                })
-                // userType !== "Bayer"
-            }
-            else {
-
-            }
-        })
+        setTimeout(() => {
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    database.child(`user/${user.uid}`).on("value", (snap) => {
+                        let obj = snap.val()
+                        obj.id = snap.key;
+                        if (obj.userType === "Bayer") {
+                            this.props.navigation.navigate("Dashboard");
+                        }
+                        else if (obj.userType === "Seller") {
+                            this.props.navigation.navigate("ShopkeeperDashboard");
+                        }
+                        else if (obj.userType === "admin") {
+                            this.props.navigation.navigate("AdminDashboard")
+                        }
+                    })
+                }
+                else {
+                    this.props.navigation.navigate(this.props.Dashboard_Rout.DashboardRout)
+                }
+            })
+        }, 4000)
     }
 
 
@@ -37,17 +54,6 @@ export default class SplashScreen extends Component {
                     style={styles.backgroundImg}
                     source={{ uri: "https://www.wiscomsolutions.com/wp-content/uploads/2016/05/wicom-web-ecommerce.png" }}
                     resizeMode="contain">
-                    {/* <View style={styles.darazHeadingContainer}>
-                        <View style={styles.darazHeadingView} >
-                            <Text style={styles.darazHeading}>
-                                DARAZ
-                            </Text>
-                        </View>
-
-                        <View style={styles.headingImgView}>  
-                            <Image style={styles.headingImg} source={{uri:"https://www.j2store.org/images/themeparrot/home_page/shopping-cart.png"}} />
-                        </View>
-                    </View> */}
                 </ImageBackground>
             </View>
         );
@@ -103,3 +109,22 @@ const styles = StyleSheet.create({
     }
 
 });
+
+
+
+
+const mapStateToProp = (state) => {
+    return ({
+        Dashboard_Rout: state.root,
+    });
+};
+const mapDispatchToProp = (dispatch) => {
+    return {
+        // DashboardRout: (data) => {
+        //     dispatch(DashboardRout(data))
+        // },
+    };
+};
+export default connect(mapStateToProp, mapDispatchToProp)(SplashScreen)
+
+

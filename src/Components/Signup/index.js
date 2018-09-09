@@ -8,6 +8,7 @@ import {
     TextInput,
     TouchableOpacity,
     Dimensions,
+    AsyncStorage
 } from 'react-native';
 import { Radio } from 'native-base';
 import firebase from "react-native-firebase";

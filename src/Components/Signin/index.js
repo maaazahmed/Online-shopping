@@ -8,14 +8,15 @@ import {
     Image,
     TextInput,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    AsyncStorage
 } from 'react-native';
 import { Container, Header, Content, Button, Radio } from 'native-base';
 import firebase from "react-native-firebase";
 import { BarIndicator } from 'react-native-indicators';
 // ProductComponent
 import { connect } from "react-redux"
-// import { SignInRout } from "../../store/action/action"
+import { DashboardRout } from "../../store/action/action"
 
 
 
@@ -29,6 +30,9 @@ class SignIn extends Component {
             isLoader: false
         }
     }
+    // componentWillMount(){
+    //     this.props.DashboardRout("SignIn")
+    // }
 
     login() {
         console.log(this.props.SignInRout.signInRout,"==============")
@@ -70,6 +74,11 @@ class SignIn extends Component {
                                     this.props.navigation.navigate(this.props.SignInRout.signInRout)
                                 }
                             }
+                            AsyncStorage.setItem("auther",JSON.stringify(obj)).then(()=>{
+                                console.log(obj)
+                            }).catch(()=>{
+                                console.log("Faile")
+                            })
                         })
 
                     })
@@ -91,6 +100,9 @@ class SignIn extends Component {
         }
     }
 
+    componentDidMount(){
+        this.props.navigation.navigate("SignIn")
+    }
 
     render() {
         return (
@@ -264,9 +276,9 @@ const mapStateToProp = (state) => {
 const mapDispatchToProp = (dispatch) => {
     return {
 
-        // SignInRout: (data) => {
-        //     dispatch(SignInRout(data))
-        // },
+        DashboardRout: (data) => {
+            dispatch(DashboardRout(data))
+        },
     };
 };
 export default connect(mapStateToProp, mapDispatchToProp)(SignIn)
