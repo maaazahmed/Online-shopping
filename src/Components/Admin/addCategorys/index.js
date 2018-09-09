@@ -133,39 +133,49 @@ class AddCategory extends Component {
     render() {
         return (
             <Container>
-                <Content style={{}} >
-                    <View style={styles.categoryGridComponent} >
-                        {this.props.catogery_List.categoryList.map((value, index) => {
-                            console.log(value)
-                            return (
-                                <TouchableOpacity key={index}
-                                    onPress={this.ViewCategory.bind(this, value, index)}
-                                    activeOpacity={0.8}>
-                                    <Card style={styles.categoryCard} >
-                                        <ImageBackground
-                                            resizeMode="cover"
-                                            source={{ uri: value.coverImageUrl }}
-                                            style={styles.ImageBackground} >
-                                            <TouchableOpacity
-                                                onPress={this.ViewCategory.bind(this)}
-                                                activeOpacity={0.7} style={styles.CardItemView} >
-                                                <Text style={styles.CardItemText} >
-                                                    {value.newCategoryVal}
-                                                </Text>
-                                                <Text style={styles.CardItemText} >
-                                                    Items :{index}
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </ImageBackground>
-                                    </Card>
-                                </TouchableOpacity>
-                            )
-                        })}
-
-
-                        {/* // {arr} */}
+                {(this.props.catogery_List.categoryList.length <= 0) ?
+                    <View style={{
+                        flex: 1,
+                        backgroundColor: "#f2f2f2",
+                        justifyContent: "center",
+                        alignItems: "center"}}>
+                        <Text style={{ fontSize: 25, fontWeight: "bold", color: "gray" }} >
+                            No Category
+                   </Text>
                     </View>
-                </Content>
+                    :
+                    <Content>
+                        <View style={styles.categoryGridComponent} >
+                            {this.props.catogery_List.categoryList.map((value, index) => {
+                                return (
+                                    <TouchableOpacity key={index}
+                                        onPress={this.ViewCategory.bind(this, value, index)}
+                                        activeOpacity={0.8}>
+                                        <Card style={styles.categoryCard} >
+                                            <ImageBackground
+                                                resizeMode="cover"
+                                                source={{ uri: value.coverImageUrl }}
+                                                style={styles.ImageBackground} >
+                                                <TouchableOpacity
+                                                    onPress={this.ViewCategory.bind(this)}
+                                                    activeOpacity={0.7} style={styles.CardItemView} >
+                                                    <Text style={styles.CardItemText} >
+                                                        {value.newCategoryVal}
+                                                    </Text>
+                                                    <Text style={styles.CardItemText} >
+                                                        Items :{index}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </ImageBackground>
+                                        </Card>
+                                    </TouchableOpacity>
+                                )
+                            })}
+                        </View>
+                    </Content>}
+
+
+
                 <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={() => { this.setState({ dialogVisible: !this.state.dialogVisible }) }}

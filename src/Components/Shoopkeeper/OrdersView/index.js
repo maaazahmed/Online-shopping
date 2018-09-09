@@ -106,28 +106,25 @@ class Vieworders extends Component {
         });
         return (
             <View style={styles.fill}>
-                <ScrollView
-                    style={styles.fill}
-                    scrollEventThrottle={16}
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }])}>
-
-                    {(orderList.length <= 0) ?
-                        <View>
-                            <View>
-                                <View style={{
-                                    flex: 1,
-                                    backgroundColor: "#f2f2f2",
-                                    justifyContent: "center",
-                                    alignItems: "center"
-                                }}>
-                                    <Text style={{ fontSize: 25, fontWeight: "bold", color: "gray" }} >
-                                        No Orders
-                              </Text>
-                                </View>
+                {(orderList.length <= 0) ?
+                            <View style={{
+                                flex: 1,
+                                backgroundColor: "#f2f2f2",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}>
+                                <Text style={{ fontSize: 25, fontWeight: "bold", color: "gray" }} >
+                                    No Orders
+                               </Text>
                             </View>
-                        </View>
-                        :
+                    :
+                    <ScrollView
+                        style={styles.fill}
+                        scrollEventThrottle={16}
+                        onScroll={Animated.event(
+                            [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }])}>
+
+
                         <View style={styles.categoryGridComponent} >
                             <FlatList
                                 data={orderList}
@@ -156,9 +153,8 @@ class Vieworders extends Component {
                                     return item.key
                                 }}
                             />
-                        </View>}
-
-                </ScrollView>
+                        </View>
+                    </ScrollView>}
                 <Animated.View style={[styles.header, { height: headerHeight }]}>
                     <Animated.Image
                         style={[

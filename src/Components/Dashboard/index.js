@@ -141,12 +141,12 @@ class Dashboard extends Component {
                                                 this.hideMenu()
                                             }}>
                                             Sign in
-                                </MenuItem>
+                                         </MenuItem>
                                         :
                                         <MenuItem
                                             onPress={this.SignOut.bind(this)}>
                                             Sign out
-                               </MenuItem>}
+                                        </MenuItem>}
 
                                     <MenuItem
                                         onPress={() => {
