@@ -35,7 +35,7 @@ class SignIn extends Component {
     // }
 
     login() {
-        console.log(this.props.SignInRout.signInRout,"==============")
+        console.log(this.props.SignInRout.signInRout, "==============")
         let user = {
             Email: this.state.Email,
             Password: this.state.Password,
@@ -74,9 +74,9 @@ class SignIn extends Component {
                                     this.props.navigation.navigate(this.props.SignInRout.signInRout)
                                 }
                             }
-                            AsyncStorage.setItem("auther",JSON.stringify(obj)).then(()=>{
+                            AsyncStorage.setItem("auther", JSON.stringify(obj)).then(() => {
                                 console.log(obj)
-                            }).catch(()=>{
+                            }).catch(() => {
                                 console.log("Faile")
                             })
                         })
@@ -100,7 +100,7 @@ class SignIn extends Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.navigation.navigate("SignIn")
     }
 
@@ -108,62 +108,55 @@ class SignIn extends Component {
         return (
 
             <View style={styles.container}>
-                <ImageBackground
-                    style={styles.backgroundImg}
-                    source={{ uri: "https://webdesignledger.com/wp-content/uploads/2015/08/Web-Design-Ledger-200px-tall.png" }}
-                    resizeMode="cover"
-                >
-                    <View style={styles.darazHeadingContainer} >
-                        <Text style={styles.darazHeading} >
-                            SHOPPER
-                       </Text>
+                <View style={styles.darazHeadingContainer} >
+                    <Text style={styles.darazHeading} >
+                        SHPOP
+                     </Text>
+                </View>
+                <View style={{ elevation: 10, backgroundColor: "#fff", height: 230, width: 240, borderRadius: 1000, justifyContent: "center", alignSelf: "center" }} >
+                    <Image
+                        resizeMode="stretch"
+                        style={{ height: 150, width: 150, alignSelf: "center", }}
+                        source={require("./images/shopping-basket-icon.png")} />
+                </View>
+
+                <View style={styles.TextInputContainer} >
+                    <View style={styles.TextInputView}>
+                        <TextInput
+                            style={styles.TextInput}
+                            underlineColorAndroid="transparent"
+                            placeholderTextColor="#00bcd4"
+                            value={this.state.Email}
+                            onChangeText={(Email) => this.setState({ Email })}
+                            placeholder="Email" />
                     </View>
-                    <View style={{ elevation: 10, backgroundColor: "#fff", height: 230, width: 240, borderRadius: 1000, justifyContent: "center", alignSelf: "center" }} >
-                        <Image
-                            resizeMode="stretch"
-                            style={{ height: 150, width: 150, alignSelf: "center", }}
-                            source={{ uri: "https://img.clipartxtras.com/6098bd25b34a0ba05b12f59dfdddaa38_grocery-cart-clipart-png-clipartxtras-shopping-cart-clipart-transparent-background_1000-860.png" }} />
-                    </View>
-
-                    <View style={styles.TextInputContainer} >
-                        <View style={styles.TextInputView}>
-                            <TextInput
-                                style={styles.TextInput}
-                                underlineColorAndroid="transparent"
-                                placeholderTextColor="#00bcd4"
-                                value={this.state.Email}
-                                onChangeText={(Email) => this.setState({ Email })}
-                                placeholder="Email" />
-                        </View>
-                        <View style={styles.TextInputView}>
-                            <TextInput
-                                value={this.state.Password}
-                                onChangeText={(Password) => this.setState({ Password })}
-                                style={styles.TextInput}
-                                underlineColorAndroid="transparent"
-                                placeholderTextColor="#00bcd4"
-                                placeholder="Password" />
-                        </View>
-
-                        <View style={styles.RegisterBtnView}>
-                            <TouchableOpacity activeOpacity={0.8} style={styles.btnRegister}
-                                onPress={this.login.bind(this)} bordered success>
-                                <Text style={styles.btnRegisterText} >Sign in</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => { this.props.navigation.navigate("Signup") }}
-                                activeOpacity={0.8} style={styles.btnRegister} bordered success>
-                                <Text style={styles.btnRegisterText} >Register</Text>
-                            </TouchableOpacity>
-                        </View>
-
+                    <View style={styles.TextInputView}>
+                        <TextInput
+                            value={this.state.Password}
+                            onChangeText={(Password) => this.setState({ Password })}
+                            style={styles.TextInput}
+                            underlineColorAndroid="transparent"
+                            placeholderTextColor="#00bcd4"
+                            placeholder="Password" />
                     </View>
 
-                </ImageBackground>
+                    <View style={styles.RegisterBtnView}>
+                        <TouchableOpacity activeOpacity={0.8} style={styles.btnRegister}
+                            onPress={this.login.bind(this)} bordered success>
+                            <Text style={styles.btnRegisterText} >Sign in</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { this.props.navigation.navigate("Signup") }}
+                            activeOpacity={0.8} style={styles.btnRegister} bordered success>
+                            <Text style={styles.btnRegisterText} >Register</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+
+                {/* </ImageBackground> */}
                 {(this.state.isLoader) ?
                     <View style={styles.lodaerStyle} >
-
                         <BarIndicator color='#00bcd4' count={6} />
-
                     </View>
                     : null}
             </View>
@@ -174,6 +167,7 @@ class SignIn extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#00bcd4"
     },
     darazHeading: {
         fontSize: 50,
@@ -271,6 +265,7 @@ const styles = StyleSheet.create({
 const mapStateToProp = (state) => {
     return ({
         SignInRout: state.root,
+        selectProductList: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {

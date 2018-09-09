@@ -85,12 +85,6 @@ export default class Signup extends Component {
         return (
 
             <View style={styles.container}>
-
-                <ImageBackground
-                    style={styles.backgroundImg}
-                    source={{ uri: "https://webdesignledger.com/wp-content/uploads/2015/08/Web-Design-Ledger-200px-tall.png" }}
-                    resizeMode="cover"
-                >
                     <View style={styles.darazHeadingContainer} >
                         <Text style={styles.darazHeading} >
                             SHOPPER
@@ -100,7 +94,7 @@ export default class Signup extends Component {
                         <Image
                             resizeMode="stretch"
                             style={{ height: 150, width: 150, alignSelf: "center", }}
-                            source={{ uri: "https://img.clipartxtras.com/6098bd25b34a0ba05b12f59dfdddaa38_grocery-cart-clipart-png-clipartxtras-shopping-cart-clipart-transparent-background_1000-860.png" }} />
+                            source={require("./images/shopping-basket-icon.png")} />
                     </View>
 
                     <View style={styles.TextInputContainer} >
@@ -161,8 +155,6 @@ export default class Signup extends Component {
                         </View>
 
                     </View>
-
-                </ImageBackground>
                 {(this.state.isLoader) ?
                     <View style={styles.lodaerStyle} >
 
@@ -178,6 +170,8 @@ export default class Signup extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#00bcd4"
+
     },
     darazHeading: {
         fontSize: 50,

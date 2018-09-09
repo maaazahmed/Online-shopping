@@ -29,8 +29,7 @@ class ProductComponent extends Component {
             scrollY: new Animated.Value(0),
             currentUser: "",
             nextButtonFlge: false,
-            numOfproducts: 0,
-            currentUserFlage: false
+            numOfproducts: 0
         };
     }
 
@@ -46,18 +45,31 @@ class ProductComponent extends Component {
         this.props.selectedProducts(selectProductArr)
     }
 
-    componentDidMount() {
+    componentWillMount() {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 database.child(`user/${user.uid}`).on("value", (snap) => {
                     let obj = snap.val();
                     obj.id = snap.key;
                     this.setState({
-                        currentUser: obj,
-                        currentUserFlage: true
+                        currentUser: obj
                     })
                     if (this.props.selectProductList.selectedProduct.length !== 0) {
-                        this.completeProductSelection()
+                        let selectProductList = this.props.selectProductList.selectedProduct
+                        let categoryID = this.props.categoryID.categoryID;
+                        for (var i = 0; i < selectProductList.length; i++) {
+                            selectProductList[i].currentByerData = obj;
+                            delete selectProductList[i].SoldProducts;
+                            database.child(`Categorys/${categoryID}/Products/${selectProductList[i].key}/SoldProducts`).push(selectProductList[i]).then((suc) => {
+                                alert("Order submit successfuly")
+                                this.setState({
+                                    nextButtonFlge: false
+                                })
+                                selectProductArr = []
+                                this.props.selectedProducts(selectProductArr)
+                            }).catch((err) => { })
+                            database.child(`My-orders/${obj.id}`).push(selectProductList[i])
+                        }
                     }
                 })
             }
@@ -65,34 +77,30 @@ class ProductComponent extends Component {
     }
 
     completeProductSelection() {
-        let currentUser = this.state.currentUser
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                setTimeout(() => {
-                    this.props.SignInRout("Dashboard")
-                    let selectProductList = this.props.selectProductList.selectedProduct
-                    let categoryID = this.props.categoryID.categoryID;
-                    for (var i = 0; i < selectProductList.length; i++) {
-                        selectProductList[i].currentByerData = currentUser;
-                        delete selectProductList[i].SoldProducts;
-                        database.child(`Categorys/${categoryID}/Products/${selectProductList[i].key}/SoldProducts`).push(selectProductList[i]).then((suc) => {
-                            alert("Order submit successfuly")
-                            this.setState({
-                                nextButtonFlge: false
-                            })
-                            selectProductArr = []
-                            this.props.selectedProducts(selectProductArr)
-
-                        }).catch((err) => { })
-                        database.child(`My-orders/${currentUser.id}`).push(selectProductList[i])
-                    }
-                }, 1000)
-            }
-            else {
-                this.props.SignInRout("ProductComponent")
+        setTimeout(() => {
+            let currentUser = this.state.currentUser
+            if (this.state.currentUser === "") {
+                // this.props.SignInRout("ProductComponent")
                 this.props.navigation.navigate("SignIn")
             }
-        })
+            else {
+                let selectProductList = this.props.selectProductList.selectedProduct
+                let categoryID = this.props.categoryID.categoryID;
+                for (var i = 0; i < selectProductList.length; i++) {
+                    selectProductList[i].currentByerData = currentUser;
+                    delete selectProductList[i].SoldProducts;
+                    database.child(`Categorys/${categoryID}/Products/${selectProductList[i].key}/SoldProducts`).push(selectProductList[i]).then((suc) => {
+                        alert("Order submit successfuly")
+                        this.setState({
+                            nextButtonFlge: false
+                        })
+                        selectProductArr = []
+                        this.props.selectedProducts(selectProductArr)
+                    }).catch((err) => { })
+                    database.child(`My-orders/${currentUser.id}`).push(selectProductList[i])
+                }
+            }
+        }, 1000)
     }
 
 
