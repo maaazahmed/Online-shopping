@@ -98,7 +98,7 @@ const Router = StackNavigator({
         }
     },
 }, {
-        initialRouteName: "SignIn"
+        initialRouteName: "SplashScreen"
     })
 
 export default Router

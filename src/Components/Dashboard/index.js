@@ -19,7 +19,8 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUserID: ""
+            currentUserID: "",
+            currentUser: {}
         }
     }
     _menu = null;
@@ -45,8 +46,13 @@ class Dashboard extends Component {
     componentWillMount() {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                this.setState({
-                    currentUserID: user.uid,
+                database.child(`user/${user.uid}`).on("value", (snap) => {
+                    let obj = snap.val()
+                    obj.id = snap.key;
+                    this.setState({
+                        currentUserID: user.uid,
+                        currentUser: obj,
+                    })
                 })
             }
             else {
@@ -70,15 +76,11 @@ class Dashboard extends Component {
         })
     }
 
-
-
-
-
     render() {
         return (
             <Drawer
                 ref={(ref) => { this.drawer = ref; }}
-                content={<CategoryListComponent navigator={this.navigator} />}
+                content={<CategoryListComponent navigation={this.props.navigation} />}
                 openDrawerOffset={0.5}
                 panCloseMask={0.5}
                 onClose={() => this.closeDrawer()} >
@@ -90,20 +92,31 @@ class Dashboard extends Component {
                             </Button>
                         </Left>
                         <Body>
-                            <Title>User name</Title>
+                           
                         </Body>
                         <Right>
                             <Button onPress={this.showMenu} transparent >
                                 <Icons color="#fff" size={20} name='ellipsis-v' />
                             </Button>
                             <Menu ref={this.setMenuRef}>
+                               {(this.state.currentUser.userType !== "Bayer")?
                                 <MenuItem
-                                    onPress={this.hideMenu}
-                                >Sign in</MenuItem>
-                                <MenuItem onPress={() => {
-                                    this.props.navigation.navigate("Signup")
-                                    this.hideMenu()
-                                }}>Sign up</MenuItem>
+                                    onPress={() => {
+                                        this.props.navigation.navigate("SignIn")
+                                        this.hideMenu()}}>
+                                    Sign in
+                                </MenuItem>
+                                :
+                                <MenuItem
+                                onPress={() => {
+                                    this.hideMenu()}}>
+                                Sign out
+                               </MenuItem>}
+
+                                <MenuItem
+                                    onPress={() => {
+                                        this.hideMenu()
+                                    }}>Profile</MenuItem>
                             </Menu>
                         </Right>
                     </Header>

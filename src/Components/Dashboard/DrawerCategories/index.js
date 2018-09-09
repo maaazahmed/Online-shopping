@@ -16,6 +16,7 @@ import { Container, Content, Card, Text, Icon } from 'native-base';
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
 import { Dialog } from 'react-native-simple-dialogs';
 import { connect } from "react-redux"
+import { categoryData, coverImageUrl, categoryID } from "../../../store/action/action"
 
 
 
@@ -35,29 +36,17 @@ class CategoryListComponent extends Component {
         }
     }
 
-    getSelectedImages(images, current) {
-        this.setState({
-            coverImageUrl: current.uri,
-            modalVisible: false
-        })
+    ViewCategory(value, index) {
+        let productsArr = []
+        let valueProducts = value.Products
+        for (let key in value.Products) {
+            productsArr.push({ ...valueProducts[key], key })
+        }
+        this.props.categoryData(productsArr)
+        this.props.coverImageUrl(value.coverImageUrl)
+        this.props.categoryID(value.key)
+        this.props.navigation.navigate("ProductComponent")
     }
-
-    ViewCategory() {
-        alert("Laptop")
-    }
-
-    uploadImage() {
-        this.setState({
-            modalVisible: true
-        })
-    }
-
-
-
-
-
-
-
 
     render() {
         return (
@@ -67,7 +56,7 @@ class CategoryListComponent extends Component {
                         {this.props.catogery_List.categoryList.map((value, index) => {
                             return (
                                 <TouchableOpacity style={styles.categoryList} key={index}
-                                    onPress={this.ViewCategory.bind(this)}
+                                    onPress={this.ViewCategory.bind(this, value)}
                                     activeOpacity={0.5}>
                                     <Text style={styles.categoryListLText} >
                                         {value.newCategoryVal}
@@ -87,8 +76,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "#f2f2f2",
         flex: 1,
-
-
     },
     categoryList: {
         height: 50,
@@ -97,18 +84,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: .5,
         borderBottomColor: "#7d7d7d",
         backgroundColor: "#f2f2f2",
-
-
-
     },
     categoryListLText: {
         color: "#7d7d7d",
         fontSize: 20,
-
-
-
     }
-
 });
 
 
@@ -122,9 +102,15 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        // categoryList: (data) => {
-        //     dispatch(categoryList(data))
-        // },
+        categoryData: (data) => {
+            dispatch(categoryData(data))
+        },
+        coverImageUrl: (data) => {
+            dispatch(coverImageUrl(data))
+        },
+        categoryID: (data) => {
+            dispatch(categoryID(data))
+        },
     };
 };
 export default connect(mapStateToProp, mapDispatchToProp)(CategoryListComponent)

@@ -10,7 +10,26 @@ import {
 
 
 
-    export default class SplashScreen extends Component {
+export default class SplashScreen extends Component {
+    componentWillMount() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                database.child(`user/${user.uid}`).on("value", (snap) => {
+                    let obj = snap.val()
+                    obj.id = snap.key;
+                    console.log(obj.userType !== "Bayer")
+                })
+                // userType !== "Bayer"
+            }
+            else {
+
+            }
+        })
+    }
+
+
+
+
     render() {
         return (
             <View style={styles.container}>
@@ -38,7 +57,7 @@ import {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:"#000"
+        backgroundColor: "#000"
     },
     darazHeading: {
         fontSize: 50,
@@ -56,7 +75,7 @@ const styles = StyleSheet.create({
 
     darazHeadingContainer: {
         flexDirection: "row",
-        justifyContent:"center",
+        justifyContent: "center",
         // borderWidth:1,
         // borderColor:"#000",
         alignItems: "center",
@@ -65,19 +84,19 @@ const styles = StyleSheet.create({
 
 
     },
-    darazHeadingView:{
-       flex:2,
-    //    borderWidth:1,
-    //    borderColor:"#000",
-    
+    darazHeadingView: {
+        flex: 2,
+        //    borderWidth:1,
+        //    borderColor:"#000",
+
     },
 
-    headingImgView:{
-       flex:1
+    headingImgView: {
+        flex: 1
     },
-    headingImg:{
-        height:80,
-        width:80,
+    headingImg: {
+        height: 80,
+        width: 80,
         // marginTop:55,
 
 

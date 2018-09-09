@@ -35,12 +35,7 @@ class CategoryCardComponent extends Component {
         }
     }
 
-    getSelectedImages(images, current) {
-        this.setState({
-            coverImageUrl: current.uri,
-            modalVisible: false
-        })
-    }
+  
 
     ViewCategory(value, index) {
         let productsArr = []
@@ -54,12 +49,7 @@ class CategoryCardComponent extends Component {
         this.props.navigation.navigate("ProductComponent")
     }
 
-    uploadImage() {
-        this.setState({
-            modalVisible: true
-        })
-    }
-
+    
     render() {
         return (
             <Container>
