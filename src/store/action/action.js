@@ -157,6 +157,18 @@ export const DashboardRout = (data) => {
     }
 }
 
+export const devicesToken = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.DEVICES_TOKEN,
+            payload: data, 
+        })
+    }
+}
+
+
+
+
 
 
 

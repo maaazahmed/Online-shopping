@@ -26,7 +26,6 @@ class AddProduct extends Component {
     constructor() {
         super()
         this.state = {
-            // categoryVal: "",
             SelectedCategory: "Selecte Category",
             sellerNameVal: "",
             productNameVal: "",
@@ -38,11 +37,15 @@ class AddProduct extends Component {
             modalVisible: false,
             coverImageUrl: "",
             currentUser: "",
+            token: ""
 
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
+
+        console.log(this.props.devicesToken.devicesToken, "-------")
+
         /*PermissionsAndroid***************************************************/
         PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
@@ -96,9 +99,6 @@ class AddProduct extends Component {
         })
     }
     add_PRODUCT() {
-
-
-
         let productObj = {
             categoryVal: this.state.SelectedCategory,
             productNameVal: this.state.productNameVal,
@@ -113,7 +113,6 @@ class AddProduct extends Component {
         if (productObj.categoryVal !== "Selecte Category" && productObj.productNameVal !== "" && productObj.priceVal !== "" && productObj.modalNumVal !== "" && this.state.coverImageUrl !== "") {
             firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
-                    console.log(productObj, "=========")
                     const storageRef = firebase.storage().ref('/');
                     var file = this.state.coverImageUrl;
                     var metadata = {
@@ -142,6 +141,19 @@ class AddProduct extends Component {
                         }, (snapshot) => {
                             productObj.coverImageUrl = snapshot.downloadURL;
                             database.child(`Categorys/${categoryID}/Products/`).push(productObj)
+
+                            fetch("https://us-central1-polling-application-9938a.cloudfunctions.net/helloWorld", {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    token: this.props.devicesToken.devicesToken,
+                                    title: productObj.productNameVal,
+                                    message: productObj.priceVal,
+                                    token: this.state.token,
+                                    url: "https://us-central1-polling-application-9938a.cloudfunctions.net/helloWorld"
+                                })
+                            }).then((res) =>
+                                console.log(res, "==========")
+                            ).catch((err) => console.log(err, "==a========"))
                             this.setState({
                                 categoryVal: "Selecte Category",
                                 sellerNameVal: "",
@@ -171,159 +183,153 @@ class AddProduct extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <ImageBackground
-                    style={styles.backgroundImg}
-                    source={{ uri: "https://webdesignledger.com/wp-content/uploads/2015/08/Web-Design-Ledger-200px-tall.png" }}
-                    resizeMode="cover">
-                    <Content>
-                        <View style={styles.TextInputContainer} >
-                            <View style={styles.categoryModal} >
+                <Content>
+                    <View style={styles.TextInputContainer} >
+                        <View style={styles.categoryModal} >
+                            <TouchableOpacity
+                                onPress={this.showCategory.bind(this)}
+                                activeOpacity={0.6}
+                                style={styles.SelectedCategoryBtn} >
+                                <Text style={styles.SelectedCategoryText} >
+                                    {this.state.SelectedCategory}
+                                </Text>
+                                <Icon name="arrow-dropdown" style={{ color: "#00bcd4", fontSize: 30 }} />
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={styles.TextInputView}>
+                            <TextInput
+                                value={this.state.productNameVal}
+                                onChangeText={(productNameVal) => this.setState({ productNameVal })}
+                                style={styles.TextInput}
+                                underlineColorAndroid="transparent"
+                                placeholderTextColor="#00bcd4"
+                                placeholder="Product name" />
+                        </View>
+                        <View style={styles.TextInputView}>
+                            <TextInput
+                                value={this.state.modalNumVal}
+                                onChangeText={(modalNumVal) => this.setState({ modalNumVal })}
+                                style={styles.TextInput}
+                                underlineColorAndroid="transparent"
+                                placeholderTextColor="#00bcd4"
+                                placeholder="Model" />
+                        </View>
+                        <View style={styles.TextInputView}>
+                            <TextInput
+                                value={this.state.priceVal}
+                                onChangeText={(priceVal) => this.setState({ priceVal })}
+                                style={styles.TextInput}
+                                underlineColorAndroid="transparent"
+                                placeholderTextColor="#00bcd4"
+                                placeholder="Price" />
+                        </View>
+
+                        {(this.state.coverImageUrl == "") ?
+                            <View style={styles.imagePickerCntainer} >
                                 <TouchableOpacity
-                                    onPress={this.showCategory.bind(this)}
+                                    onPress={this.uploadImage.bind(this)}
                                     activeOpacity={0.6}
-                                    style={styles.SelectedCategoryBtn} >
-                                    <Text style={styles.SelectedCategoryText} >
-                                        {this.state.SelectedCategory}
-                                    </Text>
-                                    <Icon name="arrow-dropdown" style={{ color: "#00bcd4", fontSize: 30 }} />
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={styles.TextInputView}>
-                                <TextInput
-                                    value={this.state.productNameVal}
-                                    onChangeText={(productNameVal) => this.setState({ productNameVal })}
-                                    style={styles.TextInput}
-                                    underlineColorAndroid="transparent"
-                                    placeholderTextColor="#00bcd4"
-                                    placeholder="Product name" />
-                            </View>
-                            <View style={styles.TextInputView}>
-                                <TextInput
-                                    value={this.state.modalNumVal}
-                                    onChangeText={(modalNumVal) => this.setState({ modalNumVal })}
-                                    style={styles.TextInput}
-                                    underlineColorAndroid="transparent"
-                                    placeholderTextColor="#00bcd4"
-                                    placeholder="Model" />
-                            </View>
-                            <View style={styles.TextInputView}>
-                                <TextInput
-                                    value={this.state.priceVal}
-                                    onChangeText={(priceVal) => this.setState({ priceVal })}
-                                    style={styles.TextInput}
-                                    underlineColorAndroid="transparent"
-                                    placeholderTextColor="#00bcd4"
-                                    placeholder="Price" />
-                            </View>
-
-                            {(this.state.coverImageUrl == "") ?
-                                <View style={styles.imagePickerCntainer} >
-                                    <TouchableOpacity
-                                        onPress={this.uploadImage.bind(this)}
-                                        activeOpacity={0.6}
-                                        style={styles.imagePickerButton}>
-                                        <View>
-                                            <Icons color="#00bcd4" size={130} name='upload' />
-                                        </View>
-                                        <View>
-                                            <Text style={styles.imagePickerText} >Uploade Photo</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                                :
-                                <View style={styles.demoCardContainer} >
-                                    <Card style={styles.categoryCard} >
-                                        <ImageBackground
-                                            resizeMode="cover"
-                                            source={{ uri: this.state.coverImageUrl }}
-                                            style={styles.ImageBackground} >
-
-                                            <TouchableOpacity
-                                                activeOpacity={0.5}
-                                                onPress={() => { this.setState({ coverImageUrl: "" }) }}
-                                                style={styles.cancleCoverImage} >
-                                                <Icon
-                                                    style={{ color: "#00bcd4", fontSize: 70 }}
-                                                    name='md-close' />
-                                            </TouchableOpacity>
-                                        </ImageBackground>
-                                    </Card>
-                                </View>
-                            }
-
-
-                            <View style={styles.RegisterBtnView}>
-                                <TouchableOpacity onPress={this.add_PRODUCT.bind(this)}
-                                    activeOpacity={0.8} style={styles.btnRegister} bordered success>
-                                    <Text style={styles.btnRegisterText} >SUBMIT</Text>
-                                </TouchableOpacity>
-                            </View>
-
-
-                        </View>
-                        <View>
-                            <Modal
-                                animationType="fade"
-                                transparent={true}
-                                visible={this.state.dialogVisible}
-                                onTouchOutside={() => this.setState({ dialogVisible: false })} >
-                                <View style={styles.DialogContainer} >
-                                    <View style={styles.DialogContent} >
-                                        < View style={styles.ProductCancleBtnView} >
-                                            <TouchableOpacity
-                                                onPress={this.ProductCancle.bind(this)}
-                                                style={styles.ProductCancleBtn} >
-                                                <Icon style={{ color: "#fff" }}
-                                                    size={30} name='md-close' />
-                                            </TouchableOpacity>
-                                        </View >
-                                        <ScrollView>
-                                            {this.props.catogery_List.categoryList.map((value, index) => {
-                                                return (
-                                                    <TouchableOpacity
-                                                        onPress={this.selecteCategory.bind(this, value, index)}
-                                                        activeOpacity={0.6}
-                                                        style={styles.categoryList}
-                                                        key={index} >
-                                                        <Text style={styles.categoryListText} >
-                                                            {value.newCategoryVal}
-                                                        </Text>
-                                                    </TouchableOpacity>
-                                                )
-                                            })}
-                                        </ScrollView>
+                                    style={styles.imagePickerButton}>
+                                    <View>
+                                        <Icons color="#00bcd4" size={130} name='upload' />
                                     </View>
-                                </View>
-                            </Modal>
-                            <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={this.state.modalVisible}
-                                onRequestClose={() => {
-                                    alert('Modal has been closed.');
-                                }}>
-                                <View style={styles.galleryContainer} >
-                                    {this.state.permit &&
-                                        <CameraRollPicker
-                                            scrollRenderAheadDistance={500}
-                                            initialListSize={1}
-                                            pageSize={3}
-                                            removeClippedSubviews={false}
-                                            groupTypes='SavedPhotos'
-                                            batchSize={5}
-                                            maximum={3}
-                                            selected={this.state.selected}
-                                            assetType='Photos'
-                                            imagesPerRow={3}
-                                            imageMargin={5}
-                                            callback={this.getSelectedImages.bind(this)} />
-                                    }
-                                </View>
-                            </Modal>
+                                    <View>
+                                        <Text style={styles.imagePickerText} >Uploade Photo</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <View style={styles.demoCardContainer} >
+                                <Card style={styles.categoryCard} >
+                                    <ImageBackground
+                                        resizeMode="cover"
+                                        source={{ uri: this.state.coverImageUrl }}
+                                        style={styles.ImageBackground} >
+
+                                        <TouchableOpacity
+                                            activeOpacity={0.5}
+                                            onPress={() => { this.setState({ coverImageUrl: "" }) }}
+                                            style={styles.cancleCoverImage} >
+                                            <Icon
+                                                style={{ color: "#00bcd4", fontSize: 70 }}
+                                                name='md-close' />
+                                        </TouchableOpacity>
+                                    </ImageBackground>
+                                </Card>
+                            </View>
+                        }
+
+
+                        <View style={styles.RegisterBtnView}>
+                            <TouchableOpacity onPress={this.add_PRODUCT.bind(this)}
+                                activeOpacity={0.8} style={styles.btnRegister} bordered success>
+                                <Text style={styles.btnRegisterText} >SUBMIT</Text>
+                            </TouchableOpacity>
                         </View>
-                    </Content>
-                </ImageBackground>
+
+
+                    </View>
+                    <View>
+                        <Modal
+                            animationType="fade"
+                            transparent={true}
+                            visible={this.state.dialogVisible}
+                            onTouchOutside={() => this.setState({ dialogVisible: false })} >
+                            <View style={styles.DialogContainer} >
+                                <View style={styles.DialogContent} >
+                                    < View style={styles.ProductCancleBtnView} >
+                                        <TouchableOpacity
+                                            onPress={this.ProductCancle.bind(this)}
+                                            style={styles.ProductCancleBtn} >
+                                            <Icon style={{ color: "#fff" }}
+                                                size={30} name='md-close' />
+                                        </TouchableOpacity>
+                                    </View >
+                                    <ScrollView>
+                                        {this.props.catogery_List.categoryList.map((value, index) => {
+                                            return (
+                                                <TouchableOpacity
+                                                    onPress={this.selecteCategory.bind(this, value, index)}
+                                                    activeOpacity={0.6}
+                                                    style={styles.categoryList}
+                                                    key={index} >
+                                                    <Text style={styles.categoryListText} >
+                                                        {value.newCategoryVal}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            )
+                                        })}
+                                    </ScrollView>
+                                </View>
+                            </View>
+                        </Modal>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={this.state.modalVisible}
+                            onRequestClose={() => {
+                                alert('Modal has been closed.');
+                            }}>
+                            <View style={styles.galleryContainer} >
+                                {this.state.permit &&
+                                    <CameraRollPicker
+                                        scrollRenderAheadDistance={500}
+                                        initialListSize={1}
+                                        pageSize={3}
+                                        removeClippedSubviews={false}
+                                        groupTypes='SavedPhotos'
+                                        batchSize={5}
+                                        maximum={3}
+                                        selected={this.state.selected}
+                                        assetType='Photos'
+                                        imagesPerRow={3}
+                                        imageMargin={5}
+                                        callback={this.getSelectedImages.bind(this)} />}
+                            </View>
+                        </Modal>
+                    </View>
+                </Content>
                 {(this.state.isLoader) ?
                     <View style={styles.lodaerStyle} >
                         <BarIndicator color='#00bcd4' count={6} />
@@ -337,6 +343,7 @@ class AddProduct extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#00bcd4"
     },
     darazHeading: {
         fontSize: 50,
@@ -442,8 +449,8 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         justifyContent: "space-between",
-        flexDirection:"row",
-        alignItems:"center"
+        flexDirection: "row",
+        alignItems: "center"
     },
     SelectedCategoryText: {
         fontSize: 19,
@@ -552,6 +559,7 @@ const mapStateToProp = (state) => {
     return ({
         catogery_List: state.root,
         category_ID: state.root,
+        devicesToken: state.root
     });
 };
 const mapDispatchToProp = (dispatch) => {

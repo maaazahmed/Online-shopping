@@ -12,6 +12,9 @@ import com.facebook.soloader.SoLoader;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
 import io.invertase.firebase.database.RNFirebaseDatabasePackage; // <-- Add this line
 import io.invertase.firebase.storage.RNFirebaseStoragePackage;
+import io.invertase.firebase.functions.RNFirebaseFunctionsPackage; // <-- Add this line
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage; // <-- Add this line
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,8 +35,11 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFirebasePackage(),
             new RNFirebaseAuthPackage(), // <-- Add this line
             new RNFirebaseDatabasePackage(), // <-- Add this line
-            new RNFirebaseStoragePackage()
-           
+            new RNFirebaseStoragePackage(),
+            new RNFirebaseFunctionsPackage(),
+            new RNFirebaseMessagingPackage(),
+            new RNFirebaseNotificationsPackage() // <-- Add this line
+             // <-- Add this line
       );
     }
 

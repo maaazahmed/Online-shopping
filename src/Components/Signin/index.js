@@ -16,7 +16,7 @@ import firebase from "react-native-firebase";
 import { BarIndicator } from 'react-native-indicators';
 // ProductComponent
 import { connect } from "react-redux"
-import { DashboardRout } from "../../store/action/action"
+import { DashboardRout, devicesToken } from "../../store/action/action"
 
 
 
@@ -30,9 +30,7 @@ class SignIn extends Component {
             isLoader: false
         }
     }
-    // componentWillMount(){
-    //     this.props.DashboardRout("SignIn")
-    // }
+ 
 
     login() {
         console.log(this.props.SignInRout.signInRout, "==============")
@@ -74,11 +72,15 @@ class SignIn extends Component {
                                     this.props.navigation.navigate(this.props.SignInRout.signInRout)
                                 }
                             }
-                            AsyncStorage.setItem("auther", JSON.stringify(obj)).then(() => {
-                                console.log(obj)
-                            }).catch(() => {
-                                console.log("Faile")
-                            })
+                            firebase.messaging().getToken()
+                                .then(fcmToken => {
+                                    if (fcmToken) {
+                                        console.log(fcmToken, "=============")
+                                        database.child(`token`).push({ fcmToken })
+                                        this.props.devicesToken(fcmToken)
+                                    } else {
+                                    }
+                                });
                         })
 
                     })
@@ -100,7 +102,7 @@ class SignIn extends Component {
         }
     }
 
- 
+
     render() {
         return (
             (!this.state.isLoader) ?
@@ -270,8 +272,11 @@ const mapDispatchToProp = (dispatch) => {
         DashboardRout: (data) => {
             dispatch(DashboardRout(data))
         },
-    };
-};
+        devicesToken: (data) => {
+            dispatch(devicesToken(data))
+        },
+    }
+}
 export default connect(mapStateToProp, mapDispatchToProp)(SignIn)
 
 

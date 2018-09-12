@@ -16,7 +16,8 @@ const INITIAL_STATE = {
     coverImage: "",
     coverImageUrl: "",
     signInRout: "Dashboard",
-    DashboardRout: "Dashboard"
+    DashboardRout: "Dashboard",
+    devicesToken:""
 
 }
 
@@ -102,6 +103,11 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 DashboardRout: action.payload,
+            })
+            case ActionTypes.DEVICES_TOKEN:
+            return ({
+                ...state,
+                devicesToken: action.payload,
             })
         default:
             return state;
