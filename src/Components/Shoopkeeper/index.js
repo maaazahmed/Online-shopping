@@ -60,7 +60,7 @@ class ShopkeeperDashboard extends Component {
                 this.setState({
                     isLoader: true
                 })
-                this.props.SignOutAction("data")
+                this.props.SignOutAction()
                 this.props.navigation.navigate("SignIn")
             }, 2000)
         })
@@ -148,8 +148,8 @@ const mapDispatchToProp = (dispatch) => {
         categoryList: (data) => {
             dispatch(categoryList(data))
         },
-        SignOutAction: (data) => {
-            dispatch(SignOutAction(data))
+        SignOutAction: () => {
+            dispatch(SignOutAction())
         },
     };
 };

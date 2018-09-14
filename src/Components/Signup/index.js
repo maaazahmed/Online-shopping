@@ -3,12 +3,9 @@ import {
     StyleSheet,
     Text,
     View,
-    ImageBackground,
-    Image,
     TextInput,
     TouchableOpacity,
     Dimensions,
-    AsyncStorage
 } from 'react-native';
 import { Radio } from 'native-base';
 import firebase from "react-native-firebase";
@@ -87,16 +84,9 @@ export default class Signup extends Component {
                 <View style={styles.container}>
                     <View style={styles.darazHeadingContainer} >
                         <Text style={styles.darazHeading} >
-                            SHOPPER
+                            SIGN UP
                        </Text>
                     </View>
-                    <View style={{ elevation: 10, backgroundColor: "#fff", height: 230, width: 240, borderRadius: 1000, justifyContent: "center", alignSelf: "center" }} >
-                        <Image
-                            resizeMode="stretch"
-                            style={{ height: 150, width: 150, alignSelf: "center", }}
-                            source={require("./images/shopping-basket-icon.png")} />
-                    </View>
-
                     <View style={styles.TextInputContainer} >
                         <View style={styles.TextInputView}  >
                             <TextInput
@@ -170,7 +160,7 @@ const styles = StyleSheet.create({
 
     },
     darazHeading: {
-        fontSize: 50,
+        fontSize: 40,
         textAlign: 'center',
         color: "#fff",
         fontWeight: "bold"
@@ -187,11 +177,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 50,
+        height: "30%"
     },
     TextInputContainer: {
         margin: 12,
-        marginTop: 30
+        height: "70%",
+        flex: 1
+
     },
 
     TextInputView: {
@@ -207,7 +199,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         fontSize: 19,
         paddingLeft: 10,
-        elevation: 5
+        elevation: 2
     },
     RegisterBtnView: {
         margin: 12,
@@ -257,5 +249,3 @@ const styles = StyleSheet.create({
     },
 
 });
-
-// https://cdn2.iconfinder.com/data/icons/color-svg-cloud-icons/512/cloud_shopping-512.png

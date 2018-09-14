@@ -3,7 +3,6 @@ import {
     StyleSheet,
     Text,
     View,
-    Image,
     TextInput,
     TouchableOpacity,
     Dimensions,
@@ -115,15 +114,10 @@ class SignIn extends Component {
                 <View style={styles.container}>
                     <View style={styles.darazHeadingContainer} >
                         <Text style={styles.darazHeading} >
-                            SHPOP
+                            SIGN IN
                      </Text>
                     </View>
-                    <View style={{ elevation: 10, backgroundColor: "#fff", height: 230, width: 240, borderRadius: 1000, justifyContent: "center", alignSelf: "center" }} >
-                        <Image
-                            resizeMode="stretch"
-                            style={{ height: 150, width: 150, alignSelf: "center", }}
-                            source={require("./images/shopping-basket-icon.png")} />
-                    </View>
+                  
 
                     <View style={styles.TextInputContainer} >
                         <View style={styles.TextInputView}>
@@ -172,7 +166,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#00bcd4"
     },
     darazHeading: {
-        fontSize: 50,
+        fontSize: 40,
         textAlign: 'center',
         color: "#fff",
         fontWeight: "bold"
@@ -189,15 +183,22 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 50,
+        height: "30%",
+        // backgroundColor: "red",
+        
     },
     TextInputContainer: {
+        flex:1,
         margin: 12,
-        marginTop: 30
+        // marginTop: 30,
+        // backgroundColor: "green",
+        height: "70%",
+
     },
 
     TextInputView: {
         marginTop: 15
+
     },
 
     TextInput: {
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         fontSize: 19,
         paddingLeft: 10,
-        elevation: 5
+        elevation: 2
     },
     RegisterBtnView: {
         margin: 12,
@@ -285,5 +286,3 @@ const mapDispatchToProp = (dispatch) => {
 }
 export default connect(mapStateToProp, mapDispatchToProp)(SignIn)
 
-
-// https://cdn2.iconfinder.com/data/icons/color-svg-cloud-icons/512/cloud_shopping-512.png

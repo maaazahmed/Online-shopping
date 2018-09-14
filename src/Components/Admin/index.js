@@ -88,7 +88,7 @@ class AdminDashboard extends Component {
 
     render() {
         return (
-            (this.state.isLoader) ?
+            // (this.state.isLoader) ?
                 <Container>
                     <Header style={{ backgroundColor: "#00bcd4" }} hasTabs >
                         <Right>
@@ -134,12 +134,12 @@ class AdminDashboard extends Component {
                         </Tab>
                     </Tabs>
                 </Container>
-                :
-                <Container>
-                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-                        <BarIndicator color='#00bcd4' count={6} />
-                    </View>
-                </Container>
+                // :
+                // <Container>
+                //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+                //         <BarIndicator color='#00bcd4' count={6} />
+                //     </View>
+                // </Container>
         );
     }
 }

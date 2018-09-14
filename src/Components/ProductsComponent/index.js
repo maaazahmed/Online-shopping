@@ -1,4 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux"
+import firebase from "react-native-firebase"
+import {
+    selectedProducts,
+    SignInRout
+} from "../../store/action/action"
+import {
+    Card,
+    Icon
+} from 'native-base';
 import {
     Animated,
     Image,
@@ -9,10 +19,6 @@ import {
     TouchableOpacity,
     Dimensions,
 } from 'react-native';
-import { Card, Icon } from 'native-base';
-import { connect } from "react-redux"
-import { selectedProducts, SignInRout } from "../../store/action/action"
-import firebase from "react-native-firebase"
 
 
 
@@ -125,16 +131,16 @@ class ProductComponent extends Component {
         return (
             <View style={styles.fill}>
                 {(categoryData.length <= 0) ?
-                        <View style={{
-                            flex: 1,
-                            backgroundColor: "#f2f2f2",
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }}>
-                            <Text style={{ fontSize: 25, fontWeight: "bold", color: "gray" }} >
-                                No Product
+                    <View style={{
+                        flex: 1,
+                        backgroundColor: "#f2f2f2",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                        <Text style={{ fontSize: 25, fontWeight: "bold", color: "gray" }} >
+                            No Product
                               </Text>
-                        </View>
+                    </View>
                     :
                     <ScrollView
                         style={styles.fill}
@@ -177,12 +183,12 @@ class ProductComponent extends Component {
 
                 {(this.state.nextButtonFlge) ?
                     <TouchableOpacity onPress={this.completeProductSelection.bind(this)} activeOpacity={0.5} style={styles.nextButton} >
-                    <View style={styles.nextButtonTouchableOpacity} >
-                        <Text style={styles.nextText} >Check out</Text>
-                        <Icon name='arrow-forward' style={{ color: "#fff" }} />
-                    </View>
-                </TouchableOpacity>
-                : null}
+                        <View style={styles.nextButtonTouchableOpacity} >
+                            <Text style={styles.nextText} >Check out</Text>
+                            <Icon name='arrow-forward' style={{ color: "#fff" }} />
+                        </View>
+                    </TouchableOpacity>
+                    : null}
                 {(this.state.nextButtonFlge) ?
                     <View style={{
                         elevation: 5,
@@ -340,8 +346,6 @@ const styles = StyleSheet.create({
         color: "#fff"
     }
 });
-
-
 
 
 

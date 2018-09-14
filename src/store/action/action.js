@@ -167,12 +167,12 @@ export const devicesToken = (data) => {
 }
 
 
-export const SignOutAction = (data) => {
+export const SignOutAction = () => {
     return dispatch => {
-        dispatch({
-            type: ActionTypes.SIGN_OUT,
-            payload: data, 
-        })
+        // dispatch({
+        //     type: ActionTypes.SIGN_OUT,
+        //     payload: "data", 
+        // })
     }
 }
 

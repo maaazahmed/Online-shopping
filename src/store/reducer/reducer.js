@@ -109,26 +109,26 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 devicesToken: action.payload,
             })
-        case ActionTypes.SIGN_OUT:
-            return ({
-                requestList: [],
-                categoryList: [],
-                categoryData: [],
-                myProducts: [],
-                selectedProduct: [],
-                reJectedOrders: [],
-                sellerList: [],
-                orderList: [],
-                myOrders: [],
-                orderDetails: {},
-                categoryID: "",
-                shopkeeperID: "",
-                coverImage: "",
-                coverImageUrl: "",
-                signInRout: "Dashboard",
-                DashboardRout: "Dashboard",
-                devicesToken: ""
-            })
+        // case ActionTypes.SIGN_OUT:
+        //     return ({
+        //         // requestList: [],
+        //         // categoryList: [],
+        //         // categoryData: [],
+        //         // myProducts: [],
+        //         // selectedProduct: [],
+        //         // reJectedOrders: [],
+        //         // sellerList: [],
+        //         // orderList: [],
+        //         // myOrders: [],
+        //         // orderDetails: {},
+        //         // categoryID: "",
+        //         // shopkeeperID: "",
+        //         // coverImage: "",
+        //         // coverImageUrl: "",
+        //         // signInRout: "Dashboard",
+        //         // DashboardRout: "Dashboard",
+        //         // devicesToken: ""
+        //     })
         default:
             return state;
     }

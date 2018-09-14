@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
+import AcceptedOrders from "./AcceptedOrder/index";
+import RejectedOrders from "./RejectedOrders/index"
+import firebase from "react-native-firebase";
+import {
+    accetedOrder,
+    rejectedOrdersData
+} from "../../store/action/action"
 import {
     StyleSheet,
     View,
     Dimensions,
 } from 'react-native';
-import CameraRollPicker from 'react-native-camera-roll-picker';
-import firebase from "react-native-firebase";
-import { Tab, Tabs, Content, Card, Text, Icon, Header, Left, Body, Right, Button, Title, } from 'native-base';
-import Icons from 'react-native-vector-icons/dist/FontAwesome';
-import { Dialog } from 'react-native-simple-dialogs';
+import {
+    Tab,
+    Tabs,
+    Icon,
+    Header,
+    Left,
+    Body,
+    Button,
+} from 'native-base';
 import { connect } from "react-redux"
-import { accetedOrder, rejectedOrdersData } from "../../store/action/action"
-import AcceptedOrders from "./AcceptedOrder/index";
-import RejectedOrders from  "./RejectedOrders/index"
 
 
 
@@ -80,17 +88,17 @@ class MyOrders extends Component {
 
 
     render() {
-        let myOrder_List = this.props.myOrder_List.myOrders;
         return (
             <View style={styles.container}  >
                 <Header style={{ backgroundColor: "#00bcd4" }} >
                     <Left>
-                        <Button onPress={() => { this.props.navigation.navigate("Dashboard") }} transparent>
+                        <Button
+                            onPress={() => { this.props.navigation.navigate("Dashboard") }}
+                            transparent>
                             <Icon name='arrow-back' />
                         </Button>
                     </Left>
                     <Body>
-                        {/* <Title>Header</Title> */}
                     </Body>
                 </Header>
                 <Tabs>
@@ -117,18 +125,7 @@ class MyOrders extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // backgroundColor: '#F5FCFF',
     },
-
-    categoryGridComponent: {
-        // flexDirection: 'row',
-        // justifyContent: 'center',
-        // flexWrap: 'wrap',
-        // marginBottom: 5,
-    },
-
 
     categoryCard: {
         width: Dimensions.get("window").width,

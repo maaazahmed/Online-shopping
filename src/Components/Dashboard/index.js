@@ -1,18 +1,31 @@
 import React, { Component } from 'react';
+import Icons from 'react-native-vector-icons/dist/FontAwesome';
+import { connect } from "react-redux"
+import firebase from "react-native-firebase"
+import { BarIndicator } from 'react-native-indicators';
+import CategoryComponent from "./Categories/index"
+import CategoryListComponent from "./DrawerCategories/index"
 import {
     StyleSheet,
     View,
     TouchableOpacity
 } from 'react-native';
 import Menu, { MenuItem } from 'react-native-material-menu';
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Drawer, Content } from 'native-base';
-import Icons from 'react-native-vector-icons/dist/FontAwesome';
-import CategoryComponent from "./Categories/index"
-import CategoryListComponent from "./DrawerCategories/index"
-import { categoryList, DashboardRout, SignOutAction } from "../../store/action/action"
-import { connect } from "react-redux"
-import firebase from "react-native-firebase"
-import { BarIndicator } from 'react-native-indicators';
+import {
+    Container,
+    Header,
+    Left,
+    Body,
+    Right,
+    Button,
+    Icon,
+    Drawer,
+} from 'native-base';
+import {
+    categoryList,
+    DashboardRout,
+    SignOutAction
+} from "../../store/action/action"
 
 
 
@@ -77,7 +90,7 @@ class Dashboard extends Component {
             this.setState({
                 categoryArrtListLength: categoryArr.length,
             })
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.setState({
                     isLoader: false
                 })
@@ -91,15 +104,14 @@ class Dashboard extends Component {
             this.setState({
                 isLoader: true
             })
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.setState({
                     isLoader: false
                 })
-                this.props.SignOutAction(data)
+                this.props.SignOutAction()
                 this.props.navigation.navigate("SignIn")
             }, 2000)
         }).catch(() => {
-            console.log("Logged out Fail")
         })
         this.hideMenu()
 
@@ -207,7 +219,7 @@ const mapDispatchToProp = (dispatch) => {
         DashboardRout: (data) => {
             dispatch(DashboardRout(data))
         },
-        SignOutAction:(data) => {
+        SignOutAction: (data) => {
             dispatch(SignOutAction(data))
         },
     };
