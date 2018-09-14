@@ -9,7 +9,7 @@ import { Container, Header, Left, Body, Right, Button, Icon, Title, Drawer, Cont
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
 import CategoryComponent from "./Categories/index"
 import CategoryListComponent from "./DrawerCategories/index"
-import { categoryList, DashboardRout } from "../../store/action/action"
+import { categoryList, DashboardRout, SignOutAction } from "../../store/action/action"
 import { connect } from "react-redux"
 import firebase from "react-native-firebase"
 import { BarIndicator } from 'react-native-indicators';
@@ -95,7 +95,7 @@ class Dashboard extends Component {
                 this.setState({
                     isLoader: false
                 })
-                // this.props.DashboardRout("SignIn")
+                this.props.SignOutAction(data)
                 this.props.navigation.navigate("SignIn")
             }, 2000)
         }).catch(() => {
@@ -206,6 +206,9 @@ const mapDispatchToProp = (dispatch) => {
         },
         DashboardRout: (data) => {
             dispatch(DashboardRout(data))
+        },
+        SignOutAction:(data) => {
+            dispatch(SignOutAction(data))
         },
     };
 };

@@ -17,7 +17,7 @@ const INITIAL_STATE = {
     coverImageUrl: "",
     signInRout: "Dashboard",
     DashboardRout: "Dashboard",
-    devicesToken:""
+    devicesToken: ""
 
 }
 
@@ -104,10 +104,30 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 DashboardRout: action.payload,
             })
-            case ActionTypes.DEVICES_TOKEN:
+        case ActionTypes.DEVICES_TOKEN:
             return ({
                 ...state,
                 devicesToken: action.payload,
+            })
+        case ActionTypes.SIGN_OUT:
+            return ({
+                requestList: [],
+                categoryList: [],
+                categoryData: [],
+                myProducts: [],
+                selectedProduct: [],
+                reJectedOrders: [],
+                sellerList: [],
+                orderList: [],
+                myOrders: [],
+                orderDetails: {},
+                categoryID: "",
+                shopkeeperID: "",
+                coverImage: "",
+                coverImageUrl: "",
+                signInRout: "Dashboard",
+                DashboardRout: "Dashboard",
+                devicesToken: ""
             })
         default:
             return state;

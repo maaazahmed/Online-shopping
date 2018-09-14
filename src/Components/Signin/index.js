@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import {
-    Platform,
     StyleSheet,
     Text,
     View,
-    ImageBackground,
     Image,
     TextInput,
     TouchableOpacity,
     Dimensions,
-    AsyncStorage
 } from 'react-native';
-import { Container, Header, Content, Button, Radio } from 'native-base';
 import firebase from "react-native-firebase";
 import { BarIndicator } from 'react-native-indicators';
-// ProductComponent
 import { connect } from "react-redux"
 import { DashboardRout, devicesToken } from "../../store/action/action"
 
@@ -30,7 +25,7 @@ class SignIn extends Component {
             isLoader: false
         }
     }
- 
+
 
     login() {
         console.log(this.props.SignInRout.signInRout, "==============")
@@ -53,6 +48,16 @@ class SignIn extends Component {
                                 this.setState({
                                     isLoader: false
                                 })
+                                firebase.messaging().getToken()
+                                    .then(fcmToken => {
+                                        if (fcmToken) {
+                                            console.log(fcmToken, "=============")
+                                            database.child(`token`).push({ fcmToken })
+                                            database.child(`adminToken`).set({ fcmToken })
+                                            this.props.devicesToken(fcmToken)
+                                        } else {
+                                        }
+                                    });
                                 this.props.navigation.navigate("AdminDashboard")
                             }
                             else if (obj.userType === "Seller") {
@@ -71,16 +76,17 @@ class SignIn extends Component {
                                 else {
                                     this.props.navigation.navigate(this.props.SignInRout.signInRout)
                                 }
+                                firebase.messaging().getToken()
+                                    .then(fcmToken => {
+                                        if (fcmToken) {
+                                            console.log(fcmToken, "=============")
+                                            database.child(`token`).push({ fcmToken })
+                                            this.props.devicesToken(fcmToken)
+                                        } else {
+                                        }
+                                    });
                             }
-                            firebase.messaging().getToken()
-                                .then(fcmToken => {
-                                    if (fcmToken) {
-                                        console.log(fcmToken, "=============")
-                                        database.child(`token`).push({ fcmToken })
-                                        this.props.devicesToken(fcmToken)
-                                    } else {
-                                    }
-                                });
+
                         })
 
                     })

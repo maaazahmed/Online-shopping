@@ -167,6 +167,16 @@ export const devicesToken = (data) => {
 }
 
 
+export const SignOutAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.SIGN_OUT,
+            payload: data, 
+        })
+    }
+}
+
+
 
 
 

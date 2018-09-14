@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
 } from 'react-native';
-import { Container, Header, Tab, Tabs, Body, Title, Right, Button } from 'native-base';
+import { Container, Header, Tab, Tabs, Body, Title, Right, Button, Content, View } from 'native-base';
 import ShoopKeeperList from "./Shoopkeepr/index"
 import AddCategory from "./addCategorys"
 import AddProduct from "./addProduct"
 import { connect } from "react-redux"
-import { categoryList, sellerList } from "../../store/action/action"
+import { categoryList, sellerList, SignOutAction } from "../../store/action/action"
 import firebase from "react-native-firebase";
 import Menu, { MenuItem } from 'react-native-material-menu';
 import Icons from 'react-native-vector-icons/dist/FontAwesome';
+import { BarIndicator } from 'react-native-indicators';
 
 
 
@@ -48,14 +49,7 @@ class AdminDashboard extends Component {
                     sellerArr.push({ ...obj[key], key })
                 }
             }
-            // console.log(sellerArr)
             this.props.sellerList(sellerArr)
-
-
-            // this.setState({
-            //     sellerArrtListLength: sellerArr.length,
-            //     isLoader: true
-            // })
         })
     }
 
@@ -70,17 +64,20 @@ class AdminDashboard extends Component {
     showMenu = () => {
         this._menu.show();
     };
+
+
     SignOut() {
+        this.setState({
+            isLoader: false
+        })
         firebase.auth().signOut().then(() => {
-            this.setState({
-                isLoader: true
-            })
             setTimeout(() => {
                 this.setState({
-                    isLoader: false
+                    isLoader: true
                 })
+                this.props.SignOutAction()
                 this.props.navigation.navigate("SignIn")
-            }, 2000)
+            },1)
         }).catch(() => {
             console.log("Logged out Fail")
         })
@@ -91,51 +88,58 @@ class AdminDashboard extends Component {
 
     render() {
         return (
-            <Container>
-                <Header style={{ backgroundColor: "#00bcd4" }} hasTabs >
-                    <Right>
-                        <Button onPress={this.showMenu} transparent >
-                            <Icons color="#fff" size={20} name='ellipsis-v' />
-                        </Button>
-                        <Menu ref={this.setMenuRef}>
-                            <MenuItem
-                                onPress={this.SignOut.bind(this)}>
-                                Sign out
+            (this.state.isLoader) ?
+                <Container>
+                    <Header style={{ backgroundColor: "#00bcd4" }} hasTabs >
+                        <Right>
+                            <Button onPress={this.showMenu} transparent >
+                                <Icons color="#fff" size={20} name='ellipsis-v' />
+                            </Button>
+                            <Menu ref={this.setMenuRef}>
+                                <MenuItem
+                                    onPress={this.SignOut.bind(this)}>
+                                    Sign out
                                </MenuItem>
-                            <MenuItem
-                                onPress={() => {
-                                    this.hideMenu()
-                                }}>Profile</MenuItem>
-                        </Menu>
-                    </Right>
-                </Header>
-                <Tabs>
-                    <Tab
-                        tabStyle={{ backgroundColor: '#00bcd4' }}
-                        activeTabStyle={{ backgroundColor: '#00bcd4' }}
-                        activeTextStyle={{ color: "#fff" }}
-                        textStyle={{ color: '#f2f2f2' }}
-                        heading="CATEGORYS">
-                        <AddCategory navigation={this.props.navigation} />
-                    </Tab>
-                    <Tab
-                        tabStyle={{ backgroundColor: '#00bcd4' }}
-                        activeTabStyle={{ backgroundColor: '#00bcd4' }}
-                        activeTextStyle={{ color: "#fff" }}
-                        textStyle={{ color: '#f2f2f2' }}
-                        heading="ADD PRODUCT">
-                        <AddProduct />
-                    </Tab>
-                    <Tab
-                        tabStyle={{ backgroundColor: '#00bcd4' }}
-                        activeTabStyle={{ backgroundColor: '#00bcd4' }}
-                        activeTextStyle={{ color: "#fff" }}
-                        textStyle={{ color: '#f2f2f2' }}
-                        heading="REQUESTS">
-                        <ShoopKeeperList />
-                    </Tab>
-                </Tabs>
-            </Container>
+                                <MenuItem
+                                    onPress={() => {
+                                        this.hideMenu()
+                                    }}>Profile</MenuItem>
+                            </Menu>
+                        </Right>
+                    </Header>
+                    <Tabs>
+                        <Tab
+                            tabStyle={{ backgroundColor: '#00bcd4' }}
+                            activeTabStyle={{ backgroundColor: '#00bcd4' }}
+                            activeTextStyle={{ color: "#fff" }}
+                            textStyle={{ color: '#f2f2f2' }}
+                            heading="CATEGORYS">
+                            <AddCategory navigation={this.props.navigation} />
+                        </Tab>
+                        <Tab
+                            tabStyle={{ backgroundColor: '#00bcd4' }}
+                            activeTabStyle={{ backgroundColor: '#00bcd4' }}
+                            activeTextStyle={{ color: "#fff" }}
+                            textStyle={{ color: '#f2f2f2' }}
+                            heading="ADD PRODUCT">
+                            <AddProduct />
+                        </Tab>
+                        <Tab
+                            tabStyle={{ backgroundColor: '#00bcd4' }}
+                            activeTabStyle={{ backgroundColor: '#00bcd4' }}
+                            activeTextStyle={{ color: "#fff" }}
+                            textStyle={{ color: '#f2f2f2' }}
+                            heading="REQUESTS">
+                            <ShoopKeeperList />
+                        </Tab>
+                    </Tabs>
+                </Container>
+                :
+                <Container>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+                        <BarIndicator color='#00bcd4' count={6} />
+                    </View>
+                </Container>
         );
     }
 }
@@ -172,6 +176,9 @@ const mapDispatchToProp = (dispatch) => {
         },
         sellerList: (data) => {
             dispatch(sellerList(data))
+        },
+        SignOutAction: (data) => {
+            dispatch(SignOutAction(data))
         },
     };
 };
