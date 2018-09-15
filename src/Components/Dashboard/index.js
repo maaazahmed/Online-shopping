@@ -74,7 +74,10 @@ class Dashboard extends Component {
                 this.props.DashboardRout("Dashboard")
             }
             else {
-
+                this.setState({
+                    currentUserID: "",
+                    currentUser:"" ,
+                })
             }
         })
     }
@@ -100,10 +103,10 @@ class Dashboard extends Component {
 
 
     SignOut() {
+        this.setState({
+            isLoader: true
+        })
         firebase.auth().signOut().then(() => {
-            this.setState({
-                isLoader: true
-            })
             setTimeout(() => {
                 this.setState({
                     isLoader: false
@@ -114,7 +117,6 @@ class Dashboard extends Component {
         }).catch(() => {
         })
         this.hideMenu()
-
     }
 
     render() {

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import firebase from "react-native-firebase"
 import { connect } from "react-redux"
-import {  } from "../../store/action/action"
+import { } from "../../store/action/action"
 
 
 
@@ -18,7 +18,7 @@ import {  } from "../../store/action/action"
 
 
 let database = firebase.database().ref("/")
- class SplashScreen extends Component {
+class SplashScreen extends Component {
     componentWillMount() {
         setTimeout(() => {
             firebase.auth().onAuthStateChanged((user) => {

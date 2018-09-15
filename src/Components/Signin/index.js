@@ -37,11 +37,12 @@ class SignIn extends Component {
         })
         if (user.Email !== "" && user.password !== "") {
             setTimeout(() => {
+                // alert("reached")
                 firebase.auth().signInWithEmailAndPassword(user.Email, user.Password)
                     .then((success) => {
                         let currentUser = firebase.auth().currentUser.uid
-                        database.child(`user/${currentUser}`).on("value", (snapshoot) => {
-                            let obj = snapshoot.val()
+                        database.child(`user/${currentUser}`).once("value", (snapshoot) => {
+                            let obj = snapshoot.val() 
                             obj.id = snapshoot.key
                             if (obj.userType === "admin") {
                                 this.setState({
@@ -50,7 +51,6 @@ class SignIn extends Component {
                                 firebase.messaging().getToken()
                                     .then(fcmToken => {
                                         if (fcmToken) {
-                                            console.log(fcmToken, "=============")
                                             database.child(`token`).push({ fcmToken })
                                             database.child(`adminToken`).set({ fcmToken })
                                             this.props.devicesToken(fcmToken)

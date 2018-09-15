@@ -45,7 +45,7 @@ class ShopkeeperDashboard extends Component {
             this.props.categoryList(categoryArr)
             this.setState({
                 categoryArrtListLength: categoryArr.length,
-                // isLoader: true
+                isLoader: true
             })
         })
     }
@@ -55,15 +55,14 @@ class ShopkeeperDashboard extends Component {
         this.setState({
             isLoader: false
         })
-        firebase.auth().signOut().then(() => {
-            setTimeout(() => {
+        setTimeout(() => {
+            firebase.auth().signOut().then(() => {
                 this.setState({
                     isLoader: true
                 })
-                this.props.SignOutAction()
-                this.props.navigation.navigate("SignIn")
-            }, 2000)
-        })
+                // this.props.navigation.navigate("SignIn")
+            })
+        }, 2000)
         this.hideMenu()
     }
 
